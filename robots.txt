@@ -1,0 +1,55 @@
+# ============================================
+# robots.txt — tutor.podlevskikh.com
+# Цель: клиенты из AI-ответов (ChatGPT Search / Perplexity / Bing)
+# Сценарий 4 (KB 08/03): услуговый сайт, разрешить AI search-ботов
+# Последнее обновление: 2026-06-08
+# ============================================
+
+# Заблокировать агрессивный краулер (полный блок возможен только тут —
+# GitHub Pages не даёт WAF; Bytespider robots.txt обычно игнорирует,
+# но декларацию оставляем как явный сигнал).
+User-agent: Bytespider
+Disallow: /
+
+# Разрешить основные AI search-боты явно
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# Всё остальное — разрешено (одностраничный публичный лендинг)
+User-agent: *
+Allow: /
+
+Sitemap: https://tutor.podlevskikh.com/sitemap.xml
