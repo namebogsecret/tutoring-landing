@@ -2,19 +2,35 @@
 """Page registry for the content layer. Edit prose in src/*.html; edit
 meta/FAQ/schema here, then run `python3 build.py`."""
 
+# Канонический узел бренд-сущности — один @id + sameAs на всю сеть сайтов (GEO entity graph).
+PERSON_ID = "https://tutor.podlevskikh.com/#vladimir"
+PERSON_SAMEAS = [
+    "https://linkedin.com/in/vladimir-podlevskikh",
+    "https://preply.in/VLADIMIR6EN2958527510",
+    "https://podlevskikh.com",
+    "https://calculators.podlevskikh.com/",
+    "https://calc.podlevskikh.com/",
+    "https://olymp.podlevskikh.com/",
+    "https://events.podlevskikh.com/",
+    "https://t.me/VladimirPodlevskikh",
+]
 PROVIDER = {
     "@type": "Person",
+    "@id": PERSON_ID,
     "name": "Vladimir Podlevskikh",
     "url": "https://tutor.podlevskikh.com/",
     "alumniOf": {"@type": "CollegeOrUniversity", "name": "Lomonosov Moscow State University", "alternateName": "MSU"},
+    "sameAs": PERSON_SAMEAS,
 }
+# Лёгкая ссылка на ту же сущность по @id (для author/provider/instructor на дочерних страницах).
+PERSON_REF = {"@id": PERSON_ID}
 
 def course(name, desc):
     return {
         "@context": "https://schema.org", "@type": "Course", "name": name, "description": desc,
-        "provider": {"@type": "Person", "name": "Vladimir Podlevskikh", "url": "https://tutor.podlevskikh.com/"},
+        "provider": PROVIDER,
         "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online",
-                              "courseWorkload": "PT1H", "instructor": {"@type": "Person", "name": "Vladimir Podlevskikh"}},
+                              "courseWorkload": "PT1H", "instructor": PROVIDER},
         "inLanguage": ["en", "ru"],
     }
 
@@ -22,7 +38,7 @@ def service(name, desc, area="Worldwide"):
     return {
         "@context": "https://schema.org", "@type": "Service", "serviceType": "Online tutoring",
         "name": name, "description": desc, "areaServed": area,
-        "provider": {"@type": "Person", "name": "Vladimir Podlevskikh", "url": "https://tutor.podlevskikh.com/"},
+        "provider": PROVIDER,
     }
 
 PAGES = [
@@ -183,7 +199,7 @@ PAGES = [
     "@context": "https://schema.org", "@type": "Blog",
     "name": "Podlevskikh — Physics & Maths Method Blog",
     "url": "https://tutor.podlevskikh.com/blog/",
-    "author": {"@type": "Person", "name": "Vladimir Podlevskikh"},
+    "author": PROVIDER,
     "description": "Worked-problem walkthroughs and exam-technique notes for IB, AP, SAT, A-Level and ЕГЭ physics and maths.",
   }],
 },
@@ -198,9 +214,9 @@ PAGES = [
   "jsonld": [{
     "@context": "https://schema.org", "@type": "Article",
     "headline": "Как читать графики движения: разбор типовых задач кинематики",
-    "author": {"@type": "Person", "name": "Vladimir Podlevskikh", "url": "https://tutor.podlevskikh.com/"},
+    "author": PROVIDER,
     "datePublished": "2026-06-14", "inLanguage": "ru",
-    "publisher": {"@type": "Person", "name": "Vladimir Podlevskikh"},
+    "publisher": PROVIDER,
     "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/kinematics-grafiki/",
     "about": ["Kinematics", "Physics graphs", "ЕГЭ физика"],
   }],
@@ -216,9 +232,9 @@ PAGES = [
   "jsonld": [{
     "@context": "https://schema.org", "@type": "Article",
     "headline": "Второй закон Ньютона: типовые задачи и частые ошибки",
-    "author": {"@type": "Person", "name": "Vladimir Podlevskikh", "url": "https://tutor.podlevskikh.com/"},
+    "author": PROVIDER,
     "datePublished": "2026-06-14", "inLanguage": "ru",
-    "publisher": {"@type": "Person", "name": "Vladimir Podlevskikh"},
+    "publisher": PROVIDER,
     "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/newton-zakony-zadachi/",
     "about": ["Newton's laws", "Dynamics", "Physics problem solving"],
   }],
@@ -234,9 +250,9 @@ PAGES = [
   "jsonld": [{
     "@context": "https://schema.org", "@type": "Article",
     "headline": "IB Physics Paper 2: how to structure long-answer questions",
-    "author": {"@type": "Person", "name": "Vladimir Podlevskikh", "url": "https://tutor.podlevskikh.com/"},
+    "author": PROVIDER,
     "datePublished": "2026-06-14", "inLanguage": "en",
-    "publisher": {"@type": "Person", "name": "Vladimir Podlevskikh"},
+    "publisher": PROVIDER,
     "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/ib-physics-paper-2/",
     "about": ["IB Physics", "Exam technique", "Command terms"],
   }],
