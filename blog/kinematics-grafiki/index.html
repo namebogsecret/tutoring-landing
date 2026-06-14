@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light" data-accent="gold" data-density="comfortable" data-font="elegant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Как читать графики движения: разбор типовых задач кинематики</title>
+<meta name="description" content="Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами." />
+<link rel="canonical" href="https://tutor.podlevskikh.com/blog/kinematics-grafiki/" />
+<meta property="og:title" content="Как читать графики движения — кинематика по шагам" />
+<meta property="og:description" content="Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tutor.podlevskikh.com/blog/kinematics-grafiki/" />
+<meta property="og:image" content="https://tutor.podlevskikh.com/headshot.jpg" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Как читать графики движения: разбор типовых задач кинематики",
+  "author": {
+    "@type": "Person",
+    "name": "Vladimir Podlevskikh",
+    "url": "https://tutor.podlevskikh.com/"
+  },
+  "datePublished": "2026-06-14",
+  "inLanguage": "ru",
+  "publisher": {
+    "@type": "Person",
+    "name": "Vladimir Podlevskikh"
+  },
+  "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/kinematics-grafiki/",
+  "about": [
+    "Kinematics",
+    "Physics graphs",
+    "ЕГЭ физика"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://tutor.podlevskikh.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://tutor.podlevskikh.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Графики движения"
+    }
+  ]
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23f6f3ec'/%3E%3Crect x='3' y='3' width='58' height='58' rx='6' fill='none' stroke='%239a7724' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='28' font-weight='600' fill='%239a7724' text-anchor='middle'%3EVP%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+<link rel="stylesheet" href="/assets/content.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">VP</span>
+      <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/#method">Method</a>
+      <a href="/#results">Results</a>
+      <a href="/#pricing">Packages</a>
+      <a href="/blog/">Blog</a>
+    </nav>
+    <a class="btn btn-primary btn-sm nav-cta" data-cta="book" href="/#book">Free diagnostic →</a>
+  </div>
+</header>
+
+<div class="wrap crumbs reveal"><a href="/">Home</a><span>›</span><a href="/blog/">Blog</a><span>›</span><span style="color:var(--ink-soft)">Графики движения</span></div>
+
+<!-- ===================== ARTICLE ===================== -->
+<article class="section">
+  <div class="wrap article-grid">
+    <div class="prose reveal">
+      <p class="eyebrow">Кинематика · разбор задач</p>
+      <h1 style="font-size:clamp(30px,4.4vw,calc(46px*var(--display-scale)));max-width:22ch;">Как читать графики движения: разбор типовых задач</h1>
+      <p class="lede" style="margin-top:18px;">Графики движения пугают многих, хотя на них держится всего два правила. Если их понять, задачи на <code>x(t)</code>, <code>v(t)</code> и <code>a(t)</code> из «угадайки» превращаются в механику. Разберём оба правила и пройдём типовые ловушки ЕГЭ, ОГЭ и IB/AP.</p>
+
+      <h2 id="dva-pravila">Два правила, которые решают всё</h2>
+      <p>Между тремя графиками — координатой, скоростью и ускорением — есть ровно две связи. Запомнив их, вы переходите от любого графика к соседнему без формул:</p>
+      <div class="formula">наклон графика = производная<br/>площадь под графиком = приращение<small>наклон x(t) даёт v · наклон v(t) даёт a · площадь под v(t) даёт перемещение · площадь под a(t) даёт изменение скорости</small></div>
+      <p>То есть: <strong>идёте вниз по «лестнице» <code>x → v → a</code> — берёте наклон</strong> (касательную). <strong>Идёте вверх <code>a → v → x</code> — берёте площадь</strong>. Всё остальное — следствия.</p>
+
+      <h2 id="naklon">Правило наклона: x(t) → v(t)</h2>
+      <p>Скорость в момент времени — это наклон касательной к графику координаты. Отсюда сразу читаются качественные вещи, которые любят спрашивать:</p>
+      <ul>
+        <li>График <code>x(t)</code> — прямая → скорость постоянна (равномерное движение).</li>
+        <li>Прямая идёт вниз → скорость отрицательна (тело движется назад), но это <em>не</em> значит «замедляется».</li>
+        <li>Горизонтальный участок <code>x(t)</code> → тело стоит (v = 0).</li>
+        <li>Парабола <code>x(t)</code> → скорость меняется линейно → постоянное ускорение.</li>
+      </ul>
+      <div class="callout">
+        <span class="ico">⚠️</span>
+        <p><b>Ловушка №1.</b> «Высоко на графике <code>x(t)</code>» не значит «быстро». Высота — это координата, а скорость — это <em>наклон</em>. Тело может быть далеко от начала и при этом стоять.</p>
+      </div>
+
+      <h2 id="ploschad">Правило площади: v(t) → перемещение</h2>
+      <p>Перемещение за интервал — это площадь под графиком скорости. Знак учитывается: площадь ниже оси (отрицательная скорость) вычитается. Это даёт второй пучок типовых задач:</p>
+      <ul>
+        <li>Прямоугольник под <code>v(t)</code> (v = const) → перемещение = v · t.</li>
+        <li>Треугольник (разгон из покоя) → перемещение = ½ · v · t — отсюда «½at²».</li>
+        <li>Трапеция → разбейте на прямоугольник и треугольник, сложите площади.</li>
+      </ul>
+      <div class="callout">
+        <span class="ico">⚠️</span>
+        <p><b>Ловушка №2.</b> «Путь» и «перемещение» — разное. Перемещение — это площадь <em>со знаком</em>; путь — сумма модулей площадей. Если тело развернулось, считайте по участкам и не забудьте про знак.</p>
+      </div>
+
+      <h2 id="primer">Разбор: типичная задача ЕГЭ</h2>
+      <blockquote>Тело двигалось равноускоренно из покоя и за 4 с набрало скорость 8 м/с. Найдите перемещение.</blockquote>
+      <p>На графике <code>v(t)</code> это прямая от (0; 0) до (4; 8). Перемещение = площадь треугольника = ½ · основание · высота = ½ · 4 с · 8 м/с = <strong>16 м</strong>. Никакой формулы заучивать не нужно — площадь треугольника и есть «s = ½at²» в переодетом виде (ведь a = 8/4 = 2 м/с²; ½ · 2 · 4² = 16).</p>
+
+      <div class="cta-inline reveal">
+        <div>
+          <h3>Проверьте себя на калькуляторе</h3>
+          <p>Подставьте свои числа в калькулятор равноускоренного движения — он покажет перемещение и скорость с полным решением, чтобы сверить ход.</p>
+        </div>
+        <a class="btn btn-primary btn-lg" href="https://calculators.podlevskikh.com" target="_blank" rel="noopener">Открыть калькулятор →</a>
+      </div>
+
+      <h2 id="itog">Короткий чек-лист</h2>
+      <ul>
+        <li>Нужна скорость из <code>x(t)</code> или ускорение из <code>v(t)</code> → ищите <strong>наклон</strong>.</li>
+        <li>Нужно перемещение из <code>v(t)</code> или Δv из <code>a(t)</code> → ищите <strong>площадь</strong>.</li>
+        <li>Площадь — <strong>со знаком</strong>; для пути берите модули по участкам.</li>
+        <li>Высота точки на графике ≠ скорость. Скорость — это наклон.</li>
+      </ul>
+      <p>Эти же два правила работают и в IB Physics (Topic 2), и в AP Physics 1 — там добавляется только аккуратность с единицами и знаками. Хотите больше нестандартных задач на графики — загляните в <a href="https://olymp.podlevskikh.com" target="_blank" rel="noopener">базу по олимпиадам</a>.</p>
+
+      <hr/>
+      <p style="font-size:15px;color:var(--muted);"><strong>Владимир Подлевских</strong> — физик МГУ, 23 года преподавания. Готовлю к <a href="/ege-physics/">ЕГЭ по физике</a>, <a href="/olympiad-physics/">олимпиадам</a>, <a href="/ib-physics-tutor/">IB</a> и <a href="/ap-physics-tutor/">AP Physics</a>.</p>
+    </div>
+
+    <aside class="article-aside reveal">
+      <div class="toc">
+        <div class="toc-lbl">В статье</div>
+        <ol>
+          <li><a href="#dva-pravila">Два правила</a></li>
+          <li><a href="#naklon">Правило наклона</a></li>
+          <li><a href="#ploschad">Правило площади</a></li>
+          <li><a href="#primer">Разбор задачи</a></li>
+          <li><a href="#itog">Чек-лист</a></li>
+        </ol>
+      </div>
+      <div class="toc">
+        <div class="toc-lbl">Готовитесь к ЕГЭ?</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 14px;">Личный план до экзамена, разбор обеих частей, прогноз балла.</p>
+        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="width:100%;justify-content:center;">Бесплатная диагностика</a>
+      </div>
+    </aside>
+  </div>
+</article>
+
+
+
+
+<footer class="footer band">
+  <div class="wrap" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px 32px;padding-block:56px;">
+    <div>
+      <div class="brand" style="margin-bottom:14px;">
+        <span class="brand-mark">VP</span>
+        <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
+      </div>
+      <p style="color:var(--muted);font-size:14.5px;max-width:42ch;line-height:1.6;">
+        MSU physicist · 23+ years · 350+ students · perfect 200/200 on both US Praxis Physics &amp; Maths.
+        Structured online preparation for IB, AP, SAT, A-Level, IGCSE &amp; ЕГЭ.
+      </p>
+    </div>
+    <div>
+      <div class="toc-lbl" style="margin-bottom:14px;">Программы</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a href="/ib-physics-tutor/" style="color:var(--muted);">IB Physics Tutor</a>
+        <a href="/ap-physics-tutor/" style="color:var(--muted);">AP Physics Tutor</a>
+        <a href="/physics-tutor-online/" style="color:var(--muted);">Репетитор по физике онлайн</a>
+        <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>
+        <a href="/olympiad-physics/" style="color:var(--muted);">Подготовка к олимпиадам</a>
+        <a href="/russian-tutor-abroad/" style="color:var(--muted);">Русскоязычным за рубежом</a>
+      </div>
+    </div>
+    <div>
+      <div class="toc-lbl" style="margin-bottom:14px;">Ресурсы</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a href="/blog/" style="color:var(--muted);">Blog &amp; method articles</a>
+        <a href="https://calculators.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Physics calculators ↗</a>
+        <a href="https://olymp.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Olympiad knowledge base ↗</a>
+        <a data-cta="mainsite" href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>
+      </div>
+      <div class="toc-lbl" style="margin:22px 0 12px;">Связаться</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 Book a free diagnostic</a>
+        <div style="display:flex;gap:14px;margin-top:4px;">
+          <a data-cta="telegram" href="#" style="color:var(--muted);">Telegram</a>
+          <a data-cta="whatsapp" href="#" style="color:var(--muted);">WhatsApp</a>
+          <a data-cta="email" data-subject="Tutoring enquiry" href="#" style="color:var(--muted);">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="loc" style="grid-column:1/-1;">© <span data-year>2026</span> Vladimir Podlevskikh · Онлайн по всему миру · Ереван, Армения (GMT+4) · Last updated: <time datetime="2026-06">June 2026</time></div>
+  </div>
+</footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>

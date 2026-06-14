@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light" data-accent="gold" data-density="comfortable" data-font="elegant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Второй закон Ньютона: типовые задачи и частые ошибки</title>
+<meta name="description" content="Второй закон Ньютона на практике: как правильно расставлять силы, выбирать оси и решать задачи с наклонной плоскостью, связанными телами и трением. Разбор типовых ошибок для ЕГЭ, A-Level, AP." />
+<link rel="canonical" href="https://tutor.podlevskikh.com/blog/newton-zakony-zadachi/" />
+<meta property="og:title" content="Второй закон Ньютона — типовые задачи и ошибки" />
+<meta property="og:description" content="Второй закон Ньютона на практике: как правильно расставлять силы, выбирать оси и решать задачи с наклонной плоскостью, связанными телами и трением. Разбор типовых ошибок для ЕГЭ, A-Level, AP." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tutor.podlevskikh.com/blog/newton-zakony-zadachi/" />
+<meta property="og:image" content="https://tutor.podlevskikh.com/headshot.jpg" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Второй закон Ньютона: типовые задачи и частые ошибки",
+  "author": {
+    "@type": "Person",
+    "name": "Vladimir Podlevskikh",
+    "url": "https://tutor.podlevskikh.com/"
+  },
+  "datePublished": "2026-06-14",
+  "inLanguage": "ru",
+  "publisher": {
+    "@type": "Person",
+    "name": "Vladimir Podlevskikh"
+  },
+  "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/newton-zakony-zadachi/",
+  "about": [
+    "Newton's laws",
+    "Dynamics",
+    "Physics problem solving"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://tutor.podlevskikh.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://tutor.podlevskikh.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Законы Ньютона"
+    }
+  ]
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23f6f3ec'/%3E%3Crect x='3' y='3' width='58' height='58' rx='6' fill='none' stroke='%239a7724' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='28' font-weight='600' fill='%239a7724' text-anchor='middle'%3EVP%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+<link rel="stylesheet" href="/assets/content.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">VP</span>
+      <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/#method">Method</a>
+      <a href="/#results">Results</a>
+      <a href="/#pricing">Packages</a>
+      <a href="/blog/">Blog</a>
+    </nav>
+    <a class="btn btn-primary btn-sm nav-cta" data-cta="book" href="/#book">Free diagnostic →</a>
+  </div>
+</header>
+
+<div class="wrap crumbs reveal"><a href="/">Home</a><span>›</span><a href="/blog/">Blog</a><span>›</span><span style="color:var(--ink-soft)">Законы Ньютона</span></div>
+
+<!-- ===================== ARTICLE ===================== -->
+<article class="section">
+  <div class="wrap article-grid">
+    <div class="prose reveal">
+      <p class="eyebrow">Динамика · разбор задач</p>
+      <h1 style="font-size:clamp(30px,4.4vw,calc(46px*var(--display-scale)));max-width:24ch;">Второй закон Ньютона: типовые задачи и частые ошибки</h1>
+      <p class="lede" style="margin-top:18px;">Почти вся динамика в школе и на экзамене — это один закон <code>F = ma</code>, применённый аккуратно. «Аккуратно» — ключевое слово: 80% потерянных баллов идут не от незнания физики, а от трёх механических ошибок при расстановке сил и осей. Разберём правильный алгоритм и эти ошибки.</p>
+
+      <h2 id="algoritm">Алгоритм, который работает всегда</h2>
+      <p>Любая задача на второй закон Ньютона решается одной и той же последовательностью. Если делать её каждый раз — задачи перестают быть «разными»:</p>
+      <ul>
+        <li><strong>1. Тело и силы.</strong> Выберите одно тело. Нарисуйте все силы, <em>действующие на него</em> (не им!): тяжесть, нормальная реакция, натяжение, трение, внешняя сила.</li>
+        <li><strong>2. Оси.</strong> Выберите систему координат. Удобно направить одну ось вдоль ускорения — тогда поперечная проекция ускорения равна нулю.</li>
+        <li><strong>3. Проекции.</strong> Запишите <code>F = ma</code> в проекциях на каждую ось отдельно.</li>
+        <li><strong>4. Решение.</strong> Получится система; решите её относительно искомого.</li>
+      </ul>
+      <div class="formula">ΣF<sub>x</sub> = ma<sub>x</sub>&nbsp;&nbsp;и&nbsp;&nbsp;ΣF<sub>y</sub> = ma<sub>y</sub><small>второй закон Ньютона — всегда в проекциях, ось за осью</small></div>
+
+      <h2 id="oshibki">Три ошибки, которые стоят баллов</h2>
+      <div class="callout">
+        <span class="ico">⚠️</span>
+        <p><b>Ошибка №1: лишние силы.</b> На тело не действует «сила движения» или «сила инерции» (в инерциальной системе). Рисуйте только реальные взаимодействия с другими телами. Если не можете назвать, <em>что</em> создаёт силу — её нет.</p>
+      </div>
+      <div class="callout">
+        <span class="ico">⚠️</span>
+        <p><b>Ошибка №2: неудобные оси на наклонной плоскости.</b> На наклонной ось X направляйте <em>вдоль склона</em>, а Y — перпендикулярно. Тогда сила тяжести раскладывается на <code>mg·sinα</code> (вдоль) и <code>mg·cosα</code> (поперёк), а ускорение целиком вдоль X. Горизонтально-вертикальные оси здесь усложняют всё вдвое.</p>
+      </div>
+      <div class="callout">
+        <span class="ico">⚠️</span>
+        <p><b>Ошибка №3: знаки и направление трения.</b> Сила трения направлена против <em>относительного</em> движения (или его тенденции), а не «всегда назад». На наклонной при движении вверх трение вниз, при движении вниз — вверх. Знак решает.</p>
+      </div>
+
+      <h2 id="naklonnaya">Разбор: брусок на наклонной плоскости</h2>
+      <blockquote>Брусок скользит без трения по наклонной плоскости с углом α = 30°. Найдите ускорение. (g = 10 м/с²)</blockquote>
+      <p>Силы: тяжесть <code>mg</code> вниз и нормальная реакция <code>N</code> перпендикулярно склону. Ставим ось X вдоль склона (вниз), Y — перпендикулярно. Проекции:</p>
+      <ul>
+        <li>Ось X: <code>mg·sinα = ma</code> → <code>a = g·sinα</code></li>
+        <li>Ось Y: <code>N − mg·cosα = 0</code> (поперёк ускорения нет)</li>
+      </ul>
+      <p>Отсюда <code>a = 10 · sin30° = 10 · 0,5 = </code><strong>5 м/с²</strong>. Заметьте: масса сократилась — для гладкой наклонной ускорение от массы не зависит. Это любимый вывод экзаменаторов.</p>
+
+      <h2 id="svyazannye">Связанные тела: одно правило</h2>
+      <p>Когда тела соединены нитью (через блок, на столе и т. п.), есть приём, который экономит время: <strong>запишите <code>F = ma</code> для каждого тела отдельно</strong>, считая натяжение нити <code>T</code> неизвестным, общим и одинаковым по модулю. Ускорение у связанных тел одно и то же. Получится система из двух уравнений с двумя неизвестными (<code>a</code> и <code>T</code>) — решается в одну строку.</p>
+
+      <div class="cta-inline reveal">
+        <div>
+          <h3>Сверьте численный ответ</h3>
+          <p>Калькуляторы по физике помогут быстро проверить ускорение, силу и реакцию опоры с показанным решением — удобно для самопроверки домашних задач.</p>
+        </div>
+        <a class="btn btn-primary btn-lg" href="https://calculators.podlevskikh.com" target="_blank" rel="noopener">Открыть калькулятор →</a>
+      </div>
+
+      <h2 id="itog">Чек-лист перед сдачей задачи</h2>
+      <ul>
+        <li>Все силы реальные? Каждую можно назвать «со стороны чего»?</li>
+        <li>Оси выбраны вдоль ускорения (на наклонной — вдоль склона)?</li>
+        <li>Записаны проекции на <em>обе</em> оси?</li>
+        <li>Знак трения соответствует направлению движения?</li>
+        <li>В ответе есть единицы, и масса не «повисла» там, где должна сократиться?</li>
+      </ul>
+      <p>Тот же алгоритм работает в A-Level (Mechanics), <a href="/ap-physics-tutor/">AP Physics</a> (там добавляется работа с векторами) и в <a href="/olympiad-physics/">олимпиадных задачах</a>, где наклонные и блоки становятся составными. Сначала — графики? См. <a href="/blog/kinematics-grafiki/">разбор графиков движения</a>.</p>
+
+      <hr/>
+      <p style="font-size:15px;color:var(--muted);"><strong>Владимир Подлевских</strong> — физик МГУ, 23 года преподавания. Готовлю к <a href="/ege-physics/">ЕГЭ</a>, <a href="/olympiad-physics/">олимпиадам</a> и международным экзаменам.</p>
+    </div>
+
+    <aside class="article-aside reveal">
+      <div class="toc">
+        <div class="toc-lbl">В статье</div>
+        <ol>
+          <li><a href="#algoritm">Алгоритм</a></li>
+          <li><a href="#oshibki">Три ошибки</a></li>
+          <li><a href="#naklonnaya">Наклонная плоскость</a></li>
+          <li><a href="#svyazannye">Связанные тела</a></li>
+          <li><a href="#itog">Чек-лист</a></li>
+        </ol>
+      </div>
+      <div class="toc">
+        <div class="toc-lbl">Нужна система?</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 14px;">Личный план, проверяемые домашние и разбор каждой ошибки.</p>
+        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="width:100%;justify-content:center;">Бесплатная диагностика</a>
+      </div>
+    </aside>
+  </div>
+</article>
+
+
+
+
+<footer class="footer band">
+  <div class="wrap" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px 32px;padding-block:56px;">
+    <div>
+      <div class="brand" style="margin-bottom:14px;">
+        <span class="brand-mark">VP</span>
+        <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
+      </div>
+      <p style="color:var(--muted);font-size:14.5px;max-width:42ch;line-height:1.6;">
+        MSU physicist · 23+ years · 350+ students · perfect 200/200 on both US Praxis Physics &amp; Maths.
+        Structured online preparation for IB, AP, SAT, A-Level, IGCSE &amp; ЕГЭ.
+      </p>
+    </div>
+    <div>
+      <div class="toc-lbl" style="margin-bottom:14px;">Программы</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a href="/ib-physics-tutor/" style="color:var(--muted);">IB Physics Tutor</a>
+        <a href="/ap-physics-tutor/" style="color:var(--muted);">AP Physics Tutor</a>
+        <a href="/physics-tutor-online/" style="color:var(--muted);">Репетитор по физике онлайн</a>
+        <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>
+        <a href="/olympiad-physics/" style="color:var(--muted);">Подготовка к олимпиадам</a>
+        <a href="/russian-tutor-abroad/" style="color:var(--muted);">Русскоязычным за рубежом</a>
+      </div>
+    </div>
+    <div>
+      <div class="toc-lbl" style="margin-bottom:14px;">Ресурсы</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a href="/blog/" style="color:var(--muted);">Blog &amp; method articles</a>
+        <a href="https://calculators.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Physics calculators ↗</a>
+        <a href="https://olymp.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Olympiad knowledge base ↗</a>
+        <a data-cta="mainsite" href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>
+      </div>
+      <div class="toc-lbl" style="margin:22px 0 12px;">Связаться</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 Book a free diagnostic</a>
+        <div style="display:flex;gap:14px;margin-top:4px;">
+          <a data-cta="telegram" href="#" style="color:var(--muted);">Telegram</a>
+          <a data-cta="whatsapp" href="#" style="color:var(--muted);">WhatsApp</a>
+          <a data-cta="email" data-subject="Tutoring enquiry" href="#" style="color:var(--muted);">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="loc" style="grid-column:1/-1;">© <span data-year>2026</span> Vladimir Podlevskikh · Онлайн по всему миру · Ереван, Армения (GMT+4) · Last updated: <time datetime="2026-06">June 2026</time></div>
+  </div>
+</footer>
+
+<script src="/assets/site.js"></script>
+</body>
+</html>
