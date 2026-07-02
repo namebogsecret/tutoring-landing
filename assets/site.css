@@ -440,3 +440,32 @@ html[data-font="grotesk"] .book h2 em { font-style: normal; }
   .price-amt { font-size: 30px; }
   .nav-cta { padding: 9px 13px; font-size: 12.5px; }
 }
+
+/* =========================================================================
+   MOBILE HOTFIX 2026-07-02 — mobile-only overrides, desktop untouched.
+   ========================================================================= */
+@media (max-width: 767.98px) {
+  /* P0: both footer variants set grid-template-columns inline
+     (homepage repeat(3,1fr); content pages 1.4fr 1fr 1fr). Those inline
+     rules never collapsed on mobile, so the third column (Resources / Book /
+     Telegram) was clipped past the right edge (scrollWidth 527px @ 390vw).
+     !important is required to beat the inline declaration. */
+  .footer > .wrap { grid-template-columns: 1fr !important; }
+  /* P2: on scroll the translucent, blurred sticky nav left a "ghost" band
+     bleeding over the Telegram/WhatsApp CTAs. Make the mobile nav opaque. */
+  .nav {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--bg);
+  }
+  /* P0 (residual): the final-CTA button label is non-wrapping (.btn is
+     white-space:nowrap). Long RU labels ("📅 Выбрать время в Calendly")
+     forced the single-column grid track wider than the viewport (ege 405px).
+     Let the CTA button wrap on mobile so nothing pushes past the edge. */
+  .book-card .btn { white-space: normal; min-width: 0; }
+  /* P0 (residual): wide comparison tables (.spec-table, e.g. olympiad-physics
+     441px) pushed the page past the viewport. Standard responsive pattern —
+     the table scrolls inside its own box instead of widening the document.
+     Tables that already fit keep width:100% and look unchanged. */
+  .spec-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}

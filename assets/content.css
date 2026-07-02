@@ -171,3 +171,18 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
   .post-row .arrow { display: none; }
   .cta-inline { flex-direction: column; align-items: flex-start; }
 }
+
+/* MOBILE HOTFIX 2026-07-02 — P1: TOC anchors were 19px tall (below the 44px
+   tap-target floor). Make each link a full-width block with vertical padding;
+   nudge the leading number to stay aligned. Desktop layout unchanged. */
+@media (max-width: 767.98px) {
+  .toc a { display: block; padding: 13px 0; line-height: 1.35; }
+  .toc li { margin-top: 4px; }
+  .toc li::before { top: 15px; }
+  /* Grid tracks default to min-width:auto = content min-content, so a wide
+     child (the comparison table on olympiad-physics) inflated the whole
+     column to 413px and overflowed the page. Let the single mobile column
+     shrink so the scrollable .spec-table stays inside it. */
+  .article-grid { grid-template-columns: minmax(0, 1fr); }
+  .article-grid > * { min-width: 0; }
+}
