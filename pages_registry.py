@@ -4,16 +4,32 @@ meta/FAQ/schema here, then run `python3 build.py`."""
 
 # Канонический узел бренд-сущности — один @id + sameAs на всю сеть сайтов (GEO entity graph).
 PERSON_ID = "https://tutor.podlevskikh.com/#vladimir"
-PERSON_SAMEAS = [
+
+# ── ЕДИНЫЙ ИСТОЧНИК ИСТИНЫ для сети podlevskikh.com ───────────────────────
+# Все живые проекты сети (кроме самого tutor — это self, покрыт Person.url).
+# Из этого списка рендерятся И видимый футер «Проекты сети» (net-band в build.py),
+# И машинный Person.sameAs — чтобы видимый контент и разметка не расходились (фикс дрейфа M1).
+# Добавляешь новый сайт в сеть → правишь ТОЛЬКО этот список (+ вручную index.html: главная не проходит через build.py).
+NETWORK_SITES = [
+    {"url": "https://calc.podlevskikh.com/",        "label": "Баллы ЕГЭ/ОГЭ"},
+    {"url": "https://calculators.podlevskikh.com/", "label": "Калькуляторы"},
+    {"url": "https://olymp.podlevskikh.com/",       "label": "Олимпиады физ-мат"},
+    {"url": "https://physics.podlevskikh.com/",     "label": "Физика — теория и практика"},
+    {"url": "https://events.podlevskikh.com/",      "label": "События Еревана"},
+    {"url": "https://ideas.podlevskikh.com/",       "label": "Детские идеи заработка"},
+    {"url": "https://auto.podlevskikh.com/",        "label": "Автоматизация"},
+    {"url": "https://aiact.podlevskikh.com/",       "label": "AI Act — гид по регламенту"},
+    {"url": "https://podlevskikh.com/",             "label": "Главный сайт"},
+]
+# Внешние профили той же сущности (как в аудите: LinkedIn / Preply / Telegram / Profi.ru).
+EXTERNAL_PROFILES = [
     "https://linkedin.com/in/vladimir-podlevskikh",
     "https://preply.in/VLADIMIR6EN2958527510",
-    "https://podlevskikh.com",
-    "https://calculators.podlevskikh.com/",
-    "https://calc.podlevskikh.com/",
-    "https://olymp.podlevskikh.com/",
-    "https://events.podlevskikh.com/",
     "https://t.me/VladimirPodlevskikh",
+    "https://profi.ru/profile/PodlevskihVN/",
 ]
+# sameAs = внешние профили + вся живая сеть (один набор на всех Person-узлах сети).
+PERSON_SAMEAS = EXTERNAL_PROFILES + [s["url"] for s in NETWORK_SITES]
 PROVIDER = {
     "@type": "Person",
     "@id": PERSON_ID,
