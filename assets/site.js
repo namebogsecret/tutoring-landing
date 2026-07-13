@@ -50,3 +50,21 @@
     document.addEventListener('DOMContentLoaded', function () { wire(); reveal(); });
   } else { wire(); reveal(); }
 })();
+
+/* analytics: неблокирующая */
+window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="//gc.zgo.at/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
+
+/* CTA-события: неблокирующий пиксель, не мешает переходу по ссылке */
+document.addEventListener("click",function(ev){try{
+  var a=ev.target.closest("a"); if(!a||!a.href) return;
+  var href=a.href, name=null;
+  if(/t\.me\/yerevan_afisha_bot/.test(href)) name="telegram-afisha";
+  else if(/t\.me\/podlevskikh_consult_bot/.test(href)) name="telegram-consult";
+  else if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
+  else if(/calendly\.com/.test(href)) name="calendly";
+  else if(/tutor\.podlevskikh\.com/.test(href) && location.host!=="tutor.podlevskikh.com") name="to-tutor";
+  if(!name) return;
+  var p=location.host+"/cta-"+name;
+  var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(p)+"&e=true";
+  if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
+}catch(e){}},true);

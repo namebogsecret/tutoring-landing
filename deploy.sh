@@ -10,7 +10,7 @@ if git diff --cached --quiet; then
   echo "Нечего деплоить — нет изменений."
   exit 0
 fi
-git -c user.email="armenia.mail.vladimir@gmail.com" -c user.name="Vladimir Podlevskikh" \
+git -c user.email="vladimir@podlevskikh.com" -c user.name="Vladimir Podlevskikh" \
   commit -qm "${1:-update landing}"
 git push -q origin gh-pages
 echo "✓ Запушено. Pages пересоберётся за ~1 мин:"
