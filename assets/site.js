@@ -19,12 +19,19 @@
     video_intro:   "https://youtu.be/8dLVHqqmSD8"
   };
 
+  // PayLink checkout URL for the $55 trial lesson (multi-use link).
+  var PAYLINK_TRIAL_URL = "https://payment.paylink.am?id=UjQzR1FCSDZpUTVSWDBlSURQNVFud3loaElrU1JCZ1d1Ky9zT2J4cUNoWWhvT0VZc1M5am1xWGY0OFQyNGp3TENLbXhaSEI4RkFQaEZRWEhrTXg2N0E9PQ";
+
   function wire() {
     document.querySelectorAll('[data-cta]').forEach(function (el) {
       var key = el.getAttribute('data-cta');
       if (key === 'email') {
         var subj = el.getAttribute('data-subject') || 'Tutoring enquiry';
         el.href = 'mailto:' + CONTACT.email + '?subject=' + encodeURIComponent(subj);
+      } else if (key === 'paylink') {
+        el.href = PAYLINK_TRIAL_URL;
+        el.target = '_blank';
+        el.rel = 'noopener';
       } else if (CONTACT[key]) {
         el.href = CONTACT[key];
         if (key !== 'book' && /^https?:/.test(CONTACT[key])) { el.target = '_blank'; el.rel = 'noopener'; }
