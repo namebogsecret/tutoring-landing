@@ -70,8 +70,10 @@ document.addEventListener("click",function(ev){try{
   else if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
   else if(/calendly\.com/.test(href)) name="calendly";
   else if(/tutor\.podlevskikh\.com/.test(href) && location.host!=="tutor.podlevskikh.com") name="to-tutor";
-  if(!name) return;
-  var p=location.host+"/cta-"+name;
+  var path; if(name){path="/cta-"+name;}
+  else if(a.hostname&&a.hostname!==location.hostname&&(a.protocol==="http:"||a.protocol==="https:")){path="/out-"+a.hostname;}
+  else return;
+  var p=location.host+path;
   var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(p)+"&e=true";
   if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
 }catch(e){}},true);
