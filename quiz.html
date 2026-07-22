@@ -909,5 +909,15 @@ SMOKE-TEST — three result states and how to trigger them manually:
     Q6→"Not much happening"(1), Q7→"Significant — three or more"(1), Q8→"Yes, disappointing"(1)
     → Score: 3+1+1+1+1+1+1+1 = 10 → badge: "Action needed now"
 -->
+
+<!-- RR-SNIPPET: session-replay (клики / время на странице). Неблокирующий: грузится
+     после window.load, ошибки проглатываются, готовность сайта от него не зависит.
+     Вся логика централизована в recorder.js на stats-хосте; запись сессий (rrweb)
+     выключена по умолчанию и решается СЕРВЕРОМ (GET /rr/config). -->
+<script>window.addEventListener("load",function(){try{
+  var s=document.createElement("script");s.async=true;
+  s.src="https://stats.podlevskikh.com/rr/static/recorder.js";s.onerror=function(){};
+  document.body.appendChild(s);
+}catch(e){}});</script>
 </body>
 </html>

@@ -205,6 +205,15 @@ def build_page(p):
 {footer(html_lang)}
 
 <script src="/assets/site.js"></script>
+
+<!-- RR-SNIPPET: session-replay (клики / время на странице). Неблокирующий: грузится
+     после window.load, ошибки проглатываются, готовность страницы от него не зависит.
+     Живёт в общем шаблоне — иначе следующая сборка стирала бы его с каждой страницы. -->
+<script>window.addEventListener("load",function(){{try{{
+  var s=document.createElement("script");s.async=true;
+  s.src="https://stats.podlevskikh.com/rr/static/recorder.js";s.onerror=function(){{}};
+  document.body.appendChild(s);
+}}catch(e){{}}}});</script>
 </body>
 </html>
 """
