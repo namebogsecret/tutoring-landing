@@ -239,7 +239,7 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 
 # Кнопка «Что-то не работает?» — одна копия виджета на stats (правка канона
 # ~/js-error-autofix/widget/ доезжает без пересборки лендинга).
-FB_WIDGET = ('<script src="https://stats.podlevskikh.com/fb/static/feedback-widget.js?v=2"'
+FB_WIDGET = ('<script src="https://stats.podlevskikh.com/fb/static/feedback-widget.js?v=3"'
              ' defer></script>')
 
 
