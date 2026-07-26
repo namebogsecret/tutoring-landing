@@ -175,6 +175,7 @@ def build_page(p):
 <html lang="{html_lang}" data-theme="light" data-accent="gold" data-density="comfortable" data-font="elegant">
 <head>
 <meta charset="UTF-8" />
+{FB_EARLY}
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{p['title']}</title>
 <meta name="description" content="{p['desc']}" />
@@ -214,6 +215,7 @@ def build_page(p):
   s.src="https://stats.podlevskikh.com/rr/static/recorder.js";s.onerror=function(){{}};
   document.body.appendChild(s);
 }}catch(e){{}}}});</script>
+{FB_WIDGET}
 </body>
 </html>
 """
@@ -225,6 +227,21 @@ def build_page(p):
 
 # ── page registry ────────────────────────────────────────────────────────
 from pages_registry import PAGES   # keeps this file small; data lives there
+
+# Перехватчик JS-ошибок (js-error-autofix). Инлайном и ПЕРВЫМ в <head>: лендинг —
+# вход воронки, и «страница не открылась» здесь стоит дороже всего. Сайт на GitHub
+# Pages своего /fb/report не имеет, поэтому отчёт уходит на stats-хост.
+# Plain (non-f) строка: скобки НЕ удваивать, подставляется в f-шаблон как {FB_EARLY}.
+FB_EARLY = r"""<script>window.__fbConfig={base:"https://stats.podlevskikh.com"};window.__fbErrors=[];(function(){function p(e){try{if(window.__fbErrors.length<25)window.__fbErrors.push(e)}catch(x){}}
+window.addEventListener("error",function(ev){var el=ev.target;if(el&&el!==window&&(el.tagName==="IMG"||el.tagName==="SCRIPT"||el.tagName==="LINK")){p({type:"resource",message:el.tagName+" failed: "+String(el.src||el.href||"").slice(0,300)});return}
+p({type:"error",message:String(ev.message||"error").slice(0,500),source:String(ev.filename||"").slice(0,300),line:ev.lineno,col:ev.colno,stack:String((ev.error&&ev.error.stack)||"").slice(0,1500),early:true})},true);
+window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({type:"unhandledrejection",message:String((r&&(r.message||r))||"rejection").slice(0,500),stack:String((r&&r.stack)||"").slice(0,1500),early:true})})})();</script>"""
+
+# Кнопка «Что-то не работает?» — одна копия виджета на stats (правка канона
+# ~/js-error-autofix/widget/ доезжает без пересборки лендинга).
+FB_WIDGET = ('<script src="https://stats.podlevskikh.com/fb/static/feedback-widget.js?v=1"'
+             ' defer></script>')
+
 
 def build_sitemap(urls):
     rows = [('/', '1.0', 'monthly')]
