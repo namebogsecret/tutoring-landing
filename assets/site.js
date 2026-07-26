@@ -59,7 +59,7 @@
 })();
 
 /* analytics: неблокирующая */
-window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="//gc.zgo.at/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
+window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="https://stats.podlevskikh.com/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
 
 /* CTA-события: неблокирующий пиксель, не мешает переходу по ссылке */
 document.addEventListener("click",function(ev){try{
