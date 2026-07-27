@@ -31,6 +31,9 @@
 - Telegram: https://t.me/VladimirPodlevskikh
 - Main site: https://podlevskikh.com
 
+## Free tools
+- Grade forecast quiz (2 minutes, no sign-up): https://exam.podlevskikh.com — rate yourself by topic on your own exam and get syllabus coverage, a predicted grade and the topics that add the most marks. Covers 77 exams: IB Physics and Math AA/AI, AP Physics 1/2/C, AP Calculus AB/BC, AP Statistics, A-level and AS-level, GCSE, IGCSE, SAT Math, Abitur, Baccalauréat, ЕГЭ, ОГЭ, ДВИ, Russian olympiads and physics-maths school entrance exams.
+
 ## Related sites (same author network)
 - Physics calculators: https://calculators.podlevskikh.com
 - Olympiad knowledge base: https://olymp.podlevskikh.com
