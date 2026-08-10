@@ -166,10 +166,13 @@ def build_page(p):
 
     canonical = BASE + p["url"]
     html_lang = p["lang"]
-    favicon = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E"
-               "%3Crect width='64' height='64' rx='8' fill='%23f6f3ec'/%3E%3Crect x='3' y='3' width='58' height='58' rx='6'"
-               " fill='none' stroke='%239a7724' stroke-width='2'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif'"
-               " font-size='28' font-weight='600' fill='%239a7724' text-anchor='middle'%3EVP%3C/text%3E%3C/svg%3E")
+    # Фавиконка — РЕАЛЬНЫМИ файлами, не data:-URI: Яндекс не считает inline-иконку
+    # фавиконкой сайта (диагностика «фавиконка недоступна», письмо Вебмастера 2026-08-10).
+    favicon = """<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />"""
 
     doc = f"""<!DOCTYPE html>
 <html lang="{html_lang}" data-theme="light" data-accent="gold" data-density="comfortable" data-font="elegant">
@@ -187,7 +190,7 @@ def build_page(p):
 <meta property="og:image" content="{BASE}/headshot.jpg" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 {head_extra}
-<link rel="icon" href="{favicon}" />
+{favicon}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
