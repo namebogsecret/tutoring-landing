@@ -19,8 +19,9 @@
     video_intro:   "https://youtu.be/8dLVHqqmSD8"
   };
 
-  // PayLink checkout URL for the $55 trial lesson (multi-use link).
-  var PAYLINK_TRIAL_URL = "https://payment.paylink.am?id=UjQzR1FCSDZpUTVSWDBlSURQNVFud3loaElrU1JCZ1d1Ky9zT2J4cUNoWWhvT0VZc1M5am1xWGY0OFQyNGp3TENLbXhaSEI4RkFQaEZRWEhrTXg2N0E9PQ";
+  // Оплаты на сайте нет (решение Vladimir 2026-08-19): уроки остаются платными,
+  // но цена и оплата обсуждаются лично — сайт только знакомит и записывает.
+  // Старые CTA с data-cta="paylink" ведут в блок записи, а не на checkout.
 
   function wire() {
     document.querySelectorAll('[data-cta]').forEach(function (el) {
@@ -29,9 +30,9 @@
         var subj = el.getAttribute('data-subject') || 'Tutoring enquiry';
         el.href = 'mailto:' + CONTACT.email + '?subject=' + encodeURIComponent(subj);
       } else if (key === 'paylink') {
-        el.href = PAYLINK_TRIAL_URL;
-        el.target = '_blank';
-        el.rel = 'noopener';
+        el.href = CONTACT.book;
+        el.removeAttribute('target');
+        el.removeAttribute('rel');
       } else if (CONTACT[key]) {
         el.href = CONTACT[key];
         if (key !== 'book' && /^https?:/.test(CONTACT[key])) { el.target = '_blank'; el.rel = 'noopener'; }
