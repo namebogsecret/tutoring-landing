@@ -11,14 +11,19 @@ PERSON_ID = "https://tutor.podlevskikh.com/#vladimir"
 # И машинный Person.sameAs — чтобы видимый контент и разметка не расходились (фикс дрейфа M1).
 # Добавляешь новый сайт в сеть → правишь ТОЛЬКО этот список (+ вручную index.html: главная не проходит через build.py).
 NETWORK_SITES = [
+    {"url": "https://physics.podlevskikh.com/",     "label": "Физика — теория и практика"},
     {"url": "https://calc.podlevskikh.com/",        "label": "Баллы ЕГЭ/ОГЭ"},
     {"url": "https://calculators.podlevskikh.com/", "label": "Калькуляторы"},
     {"url": "https://olymp.podlevskikh.com/",       "label": "Олимпиады физ-мат"},
-    {"url": "https://physics.podlevskikh.com/",     "label": "Физика — теория и практика"},
-    {"url": "https://events.podlevskikh.com/",      "label": "События Еревана"},
-    {"url": "https://ideas.podlevskikh.com/",       "label": "Детские идеи заработка"},
-    {"url": "https://auto.podlevskikh.com/",        "label": "Автоматизация"},
-    {"url": "https://aiact.podlevskikh.com/",       "label": "AI Act — гид по регламенту"},
+    {"url": "https://exam.podlevskikh.com/",        "label": "Экспресс-тест по экзаменам"},
+    {"url": "https://graph.podlevskikh.com/",       "label": "Графический калькулятор"},
+    {"url": "https://python.podlevskikh.com/",      "label": "Python Learning Game"},
+    {"url": "https://praxis.podlevskikh.com/",      "label": "Praxis 5266"},
+    {"url": "https://rocket.podlevskikh.com/",      "label": "RocketSim"},
+    {"url": "https://space.podlevskikh.com/",       "label": "Interstellar"},
+    # Не физика/математика: в футере остаются, в sameAs не идут (см. ПЛАН-НАХОДИМОСТЬ §3 п.2).
+    {"url": "https://auto.podlevskikh.com/",        "label": "Автоматизация", "same_as": False},
+    {"url": "https://aiact.podlevskikh.com/",       "label": "AI Act — гид по регламенту", "same_as": False},
     {"url": "https://podlevskikh.com/",             "label": "Главный сайт"},
 ]
 # Внешние профили той же сущности (как в аудите: LinkedIn / Preply / Telegram / Profi.ru).
@@ -29,11 +34,12 @@ EXTERNAL_PROFILES = [
     "https://profi.ru/profile/PodlevskihVN/",
 ]
 # sameAs = внешние профили + вся живая сеть (один набор на всех Person-узлах сети).
-PERSON_SAMEAS = EXTERNAL_PROFILES + [s["url"] for s in NETWORK_SITES]
+PERSON_SAMEAS = EXTERNAL_PROFILES + [s["url"] for s in NETWORK_SITES if s.get("same_as", True)]
 PROVIDER = {
     "@type": "Person",
     "@id": PERSON_ID,
     "name": "Vladimir Podlevskikh",
+    "alternateName": "Владимир Подлевских",
     "url": "https://tutor.podlevskikh.com/",
     "alumniOf": {"@type": "CollegeOrUniversity", "name": "Lomonosov Moscow State University", "alternateName": "MSU"},
     "sameAs": PERSON_SAMEAS,

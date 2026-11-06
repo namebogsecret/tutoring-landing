@@ -219,6 +219,7 @@ def build_page(p):
   document.body.appendChild(s);
 }}catch(e){{}}}});</script>
 {FB_WIDGET}
+  <script defer src="https://stats.podlevskikh.com/a/static/network-footer.js"></script>
 </body>
 </html>
 """
