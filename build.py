@@ -13,7 +13,7 @@ from pages_registry import NETWORK_SITES
 
 BASE = "https://tutor.podlevskikh.com"
 HERE = os.path.dirname(os.path.abspath(__file__))
-TODAY = "2026-06-14"
+TODAY = "2026-11-07"
 
 # ── shared nav ───────────────────────────────────────────────────────────
 def nav():
@@ -52,9 +52,9 @@ def footer(lang):
     progr = "Programmes" if lang == "en" else "Программы"
     res = "Resources" if lang == "en" else "Ресурсы"
     cont = "Get in touch" if lang == "en" else "Связаться"
-    loc = ("Online worldwide · Based in Yerevan, Armenia (GMT+4)"
+    loc = ("Online worldwide (GMT+2/+3)"
            if lang == "en" else
-           "Онлайн по всему миру · Ереван, Армения (GMT+4)")
+           "Онлайн по всему миру (GMT+2/+3)")
     return f"""<footer class="footer band">
   <div class="wrap" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px 32px;padding-block:56px;">
     <div>
@@ -76,6 +76,7 @@ def footer(lang):
         <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>
         <a href="/olympiad-physics/" style="color:var(--muted);">Подготовка к олимпиадам</a>
         <a href="/russian-tutor-abroad/" style="color:var(--muted);">Русскоязычным за рубежом</a>
+        <a href="/exam-prep-online/" style="color:var(--muted);">Подготовка к экзаменам онлайн</a>
       </div>
     </div>
     <div>
@@ -149,6 +150,23 @@ _tag = re.compile(r"<[^>]+>")
 def _strip(s):
     return re.sub(r"\s+", " ", _tag.sub("", s)).replace("&amp;", "&").replace("&nbsp;", " ").strip()
 
+
+# ── блок «страница репетитора» перед подвалом (метрика: /cta-tutor-page) ──
+def tutor_block(lang):
+    if lang == "en":
+        return ("""<section class="section" id="tutor-page-block"><div class="wrap">
+  <div class="cta-inline reveal"><div>
+    <h3>Online exam preparation — the tutor's page</h3>
+    <p>Who teaches, which exams, how lessons run and how to start: straight answers to the questions families ask when choosing a physics and maths tutor.</p>
+  </div><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="/exam-prep-online/">Tutor's page (RU)</a></div>
+</div></section>""")
+    return ("""<section class="section" id="tutor-page-block"><div class="wrap">
+  <div class="cta-inline reveal"><div>
+    <h3>Подготовка к экзаменам онлайн — страница репетитора</h3>
+    <p>Кто преподаёт, к каким экзаменам готовлю, как проходят занятия и с чего начать: прямые ответы на вопросы, которые задают, выбирая репетитора по физике и математике.</p>
+  </div><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="/exam-prep-online/">Страница репетитора</a></div>
+</div></section>""")
+
 # ── page assembly ────────────────────────────────────────────────────────
 def build_page(p):
     body = open(os.path.join(HERE, p["body"]), encoding="utf-8").read()
@@ -206,6 +224,8 @@ def build_page(p):
 
 {body}
 
+{"" if p["url"] == "/exam-prep-online/" else tutor_block(html_lang)}
+
 {footer(html_lang)}
 
 <script src="/assets/site.js"></script>
@@ -261,10 +281,57 @@ def build_sitemap(urls):
            + body + "\n</urlset>\n")
     open(os.path.join(HERE, "sitemap.xml"), "w", encoding="utf-8").write(xml)
 
+
+# ── llms.txt: генерируется отсюда, чтобы не расходиться со страницами ──
+def build_llms():
+    lines = [
+"# Vladimir Podlevskikh — Physics & Maths Tutor (Владимир Подлевских — репетитор по физике и математике)",
+"",
+"> Online one-to-one physics and mathematics exam preparation: IB, AP, SAT, A-Level, IGCSE, ЕГЭ, ОГЭ, ДВИ, olympiads. Taught by a physicist, graduate of the Faculty of Physics of Lomonosov Moscow State University (MSU, 2006): 23 years of private tutoring, 350+ students, perfect 200/200 on both US Praxis Physics (5266) and Praxis Mathematics (5165). Lessons online worldwide (GMT+2/+3) in English and/or Russian.",
+"",
+"## Answers to common questions when choosing a tutor",
+f"- Who teaches: Vladimir Podlevskikh, MSU physicist (2006); WES: equivalent of a US Bachelor's + Master's; 23 years of private tutoring, 350+ students.",
+"- Exams covered: ЕГЭ, ОГЭ, ДВИ, physics-maths olympiads; IB Physics (HL/SL), AP Physics (1, 2, C), SAT, A-Level (AQA, Pearson Edexcel, OCR), Cambridge IGCSE Physics 0625 and Maths 0580.",
+"- Format: online, one-to-one, shared interactive whiteboard; personal plan from the current level to the exam date; checkable homework between lessons.",
+"- Languages: English, Russian or mixed.",
+"- How to start: a free 20-minute diagnostic (level, gaps, realistic plan); the decision to continue stays with the family.",
+"- Example result: Polina M. — 96 on ЕГЭ and 100 on ДВИ, admitted to the Faculty of Mechanics and Mathematics of MSU.",
+"",
+"## Tutor's page (start here)",
+f"- [Подготовка к экзаменам онлайн — страница репетитора]({BASE}/exam-prep-online/): 8 straight answers (Russian) on how to choose a tutor, exams, format, languages, qualification, first step.",
+"",
+"## Programmes (pillar pages)",
+]
+    for p in PAGES:
+        if p["url"].startswith("/blog/") or p["url"] in ("/blog/", "/exam-prep-online/"):
+            continue
+        lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc'].replace(', 20+ призёров', '')}")
+    lines += ["", "## Method blog (worked problems & exam technique)"]
+    for p in PAGES:
+        if p["url"].startswith("/blog/") and p["url"] != "/blog/":
+            lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
+    lines += [
+"",
+"## Contact",
+"- Free 20-minute diagnostic: https://calendly.com/vladimir-podlevskikh/30min",
+"- Email: vladimir@podlevskikh.com",
+"- Telegram: https://t.me/VladimirPodlevskikh",
+"- Main site: https://podlevskikh.com",
+"",
+"## Free tools",
+"- Grade forecast quiz (2 minutes, no sign-up): https://exam.podlevskikh.com — 77 exams incl. IB, AP, A-level, GCSE/IGCSE, SAT, ЕГЭ, ОГЭ, ДВИ.",
+"- Physics calculators: https://calculators.podlevskikh.com",
+"- Olympiad knowledge base: https://olymp.podlevskikh.com",
+"",
+    ]
+    open(os.path.join(HERE, "llms.txt"), "w", encoding="utf-8").write("\n".join(lines))
+
 if __name__ == "__main__":
     built = []
     for p in PAGES:
         built.append(build_page(p))
         print("✓", p["url"])
     build_sitemap(built)
+    build_llms()
+    print("✓ llms.txt")
     print("✓ sitemap.xml (%d urls + home)" % len(built))
