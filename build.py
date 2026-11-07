@@ -6,6 +6,8 @@ build.py — wraps page-body fragments (src/*.html) in shared chrome
 paths. Single source of truth for the content layer's nav/footer/meta.
 
 Run:  python3 build.py        → regenerates every content page + sitemap.xml
+      python3 build.py --only /ege-physics/ /igcse-physics-0625/
+                              → rebuilds only the listed pages, sitemap untouched
 The homepage (index.html) is hand-maintained and NOT touched here.
 """
 import json, os, re, datetime
@@ -16,7 +18,22 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TODAY = "2026-06-14"
 
 # ── shared nav ───────────────────────────────────────────────────────────
-def nav():
+def nav(no_cta=False):
+    if no_cta:
+        # информационные страницы: без кнопки записи и без ссылки на пакеты/цены
+        return """<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">VP</span>
+      <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/#method">Method</a>
+      <a href="/#results">Results</a>
+      <a href="/blog/">Blog</a>
+    </nav>
+  </div>
+</header>"""
     return """<header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="/">
@@ -48,13 +65,34 @@ def net_band():
             'justify-content:center;max-width:860px;margin:0 auto">' + links + '</nav></div>')
 
 # ── shared footer (rich internal + network links on every page) ──────────
-def footer(lang):
+def footer(lang, no_cta=False):
     progr = "Programmes" if lang == "en" else "Программы"
     res = "Resources" if lang == "en" else "Ресурсы"
     cont = "Get in touch" if lang == "en" else "Связаться"
     loc = ("Online worldwide · Based in Yerevan, Armenia (GMT+4)"
            if lang == "en" else
            "Онлайн по всему миру · Ереван, Армения (GMT+4)")
+    if no_cta:
+        loc = ("Online worldwide (GMT+2/+3)" if lang == "en"
+               else "Онлайн по всему миру (GMT+2/+3)")
+        upd = ('<time datetime="2026-11">November 2026</time>' if lang == "en"
+               else '<time datetime="2026-11">ноябрь 2026</time>')
+        upd_lbl = "Last updated" if lang == "en" else "Обновлено"
+    else:
+        upd = '<time datetime="2026-06">June 2026</time>'
+        upd_lbl = "Last updated"
+    contact_html = "" if no_cta else f"""
+      <div class="toc-lbl" style="margin:22px 0 12px;">{cont}</div>
+      <div style="display:grid;gap:9px;font-size:14px;">
+        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 Book a free diagnostic</a>
+        <div style="display:flex;gap:14px;margin-top:4px;">
+          <a data-cta="telegram" href="#" style="color:var(--muted);">Telegram</a>
+          <a data-cta="whatsapp" href="#" style="color:var(--muted);">WhatsApp</a>
+          <a data-cta="email" data-subject="Tutoring enquiry" href="#" style="color:var(--muted);">Email</a>
+        </div>
+      </div>"""
+    mainsite = ('<a href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>' if no_cta else
+                '<a data-cta="mainsite" href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>')
     return f"""<footer class="footer band">
   <div class="wrap" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px 32px;padding-block:56px;">
     <div>
@@ -72,6 +110,7 @@ def footer(lang):
       <div style="display:grid;gap:9px;font-size:14px;">
         <a href="/ib-physics-tutor/" style="color:var(--muted);">IB Physics Tutor</a>
         <a href="/ap-physics-tutor/" style="color:var(--muted);">AP Physics Tutor</a>
+        <a href="/igcse-physics-0625/" style="color:var(--muted);">IGCSE Physics 0625 Tutor</a>
         <a href="/physics-tutor-online/" style="color:var(--muted);">Репетитор по физике онлайн</a>
         <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>
         <a href="/olympiad-physics/" style="color:var(--muted);">Подготовка к олимпиадам</a>
@@ -84,21 +123,12 @@ def footer(lang):
         <a href="/blog/" style="color:var(--muted);">Blog &amp; method articles</a>
         <a href="https://calculators.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Physics calculators ↗</a>
         <a href="https://olymp.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Olympiad knowledge base ↗</a>
-        <a data-cta="mainsite" href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>
-      </div>
-      <div class="toc-lbl" style="margin:22px 0 12px;">{cont}</div>
-      <div style="display:grid;gap:9px;font-size:14px;">
-        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 Book a free diagnostic</a>
-        <div style="display:flex;gap:14px;margin-top:4px;">
-          <a data-cta="telegram" href="#" style="color:var(--muted);">Telegram</a>
-          <a data-cta="whatsapp" href="#" style="color:var(--muted);">WhatsApp</a>
-          <a data-cta="email" data-subject="Tutoring enquiry" href="#" style="color:var(--muted);">Email</a>
-        </div>
-      </div>
+        {mainsite}
+      </div>{contact_html}
     </div>
-    <div class="loc" style="grid-column:1/-1;">© <span data-year>2026</span> Vladimir Podlevskikh · {loc} · Last updated: <time datetime="2026-06">June 2026</time></div>
+    <div class="loc" style="grid-column:1/-1;">© <span data-year>2026</span> Vladimir Podlevskikh · {loc} · {upd_lbl}: {upd}</div>
   </div>
-</footer>""" + net_band()
+</footer>""" + ("" if no_cta else net_band())
 
 # ── visible FAQ + FAQPage JSON-LD from one list ──────────────────────────
 def render_faq(faq, heading):
@@ -166,6 +196,7 @@ def build_page(p):
 
     canonical = BASE + p["url"]
     html_lang = p["lang"]
+    no_cta = bool(p.get("no_cta"))
     # Фавиконка — РЕАЛЬНЫМИ файлами, не data:-URI: Яндекс не считает inline-иконку
     # фавиконкой сайта (диагностика «фавиконка недоступна», письмо Вебмастера 2026-08-10).
     favicon = """<link rel="icon" href="/favicon.ico" sizes="any" />
@@ -200,13 +231,13 @@ def build_page(p):
 </head>
 <body>
 
-{nav()}
+{nav(no_cta)}
 
 {render_crumbs(p['crumbs'])}
 
 {body}
 
-{footer(html_lang)}
+{footer(html_lang, no_cta)}
 
 <script src="/assets/site.js"></script>
 
@@ -247,12 +278,13 @@ FB_WIDGET = ('<script src="https://stats.podlevskikh.com/fb/static/feedback-widg
 
 
 def build_sitemap(urls):
+    lastmods = {p["url"]: p["lastmod"] for p in PAGES if p.get("lastmod")}
     rows = [('/', '1.0', 'monthly')]
     for u in urls:
         pr = '0.9' if u.count('/') <= 2 else '0.7'
         rows.append((u, pr, 'monthly'))
     body = "\n".join(
-        f"  <url>\n    <loc>{BASE}{u}</loc>\n    <lastmod>{TODAY}</lastmod>"
+        f"  <url>\n    <loc>{BASE}{u}</loc>\n    <lastmod>{lastmods.get(u, TODAY)}</lastmod>"
         f"\n    <changefreq>{cf}</changefreq>\n    <priority>{pr}</priority>\n  </url>"
         for u, pr, cf in rows)
     xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -261,6 +293,17 @@ def build_sitemap(urls):
     open(os.path.join(HERE, "sitemap.xml"), "w", encoding="utf-8").write(xml)
 
 if __name__ == "__main__":
+    import sys
+    if "--only" in sys.argv:
+        wanted = sys.argv[sys.argv.index("--only") + 1:]
+        known = {p["url"]: p for p in PAGES}
+        bad = [u for u in wanted if u not in known]
+        if bad or not wanted:
+            sys.exit("--only: unknown or missing page url(s): %s" % (bad or "none given"))
+        for u in wanted:
+            build_page(known[u])
+            print("✓", u)
+        sys.exit(0)
     built = []
     for p in PAGES:
         built.append(build_page(p))

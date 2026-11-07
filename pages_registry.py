@@ -41,13 +41,13 @@ PROVIDER = {
 # Лёгкая ссылка на ту же сущность по @id (для author/provider/instructor на дочерних страницах).
 PERSON_REF = {"@id": PERSON_ID}
 
-def course(name, desc):
+def course(name, desc, lang=("en", "ru")):
     return {
         "@context": "https://schema.org", "@type": "Course", "name": name, "description": desc,
         "provider": PROVIDER,
         "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online",
                               "courseWorkload": "PT1H", "instructor": PROVIDER},
-        "inLanguage": ["en", "ru"],
+        "inLanguage": list(lang),
     }
 
 def service(name, desc, area="Worldwide"):
