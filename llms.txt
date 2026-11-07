@@ -14,7 +14,8 @@
 - [IB Physics Tutor (HL & SL)](https://tutor.podlevskikh.com/ib-physics-tutor/): IB Physics HL and SL, Internal Assessment support, Paper 1/2/3 technique, the 1–7 scale.
 - [AP Physics Tutor (1, 2, C)](https://tutor.podlevskikh.com/ap-physics-tutor/): AP Physics 1, 2 and C (Mechanics and E&M), free-response technique, route to a 5; calculus taught with the physics.
 - [Репетитор по физике онлайн](https://tutor.podlevskikh.com/physics-tutor-online/): online physics tutoring in Russian — ЕГЭ, ОГЭ, ДВИ, olympiads, IB, AP, A-Level.
-- [Подготовка к ЕГЭ по физике](https://tutor.podlevskikh.com/ege-physics/): Russian state exam (ЕГЭ) physics preparation, both parts, marking-scheme-aligned, week-by-week plan, ДВИ track.
+- [Подготовка к ЕГЭ по физике](https://tutor.podlevskikh.com/ege-physics/): Russian state exam (ЕГЭ) physics preparation, both parts, marking-scheme-aligned, week-by-week plan, ДВИ track. Updated November 2026 for the 2027 КИМ specification (26 tasks, 45 primary marks, 235 minutes), in Russian.
+- [Cambridge IGCSE Physics 0625 Tutor](https://tutor.podlevskikh.com/igcse-physics-0625/): Cambridge IGCSE Physics 0625 (syllabus 2026-2028), Core vs Extended, Paper 1-6, AO1-AO3, six syllabus topics; online one-to-one, in English.
 
 ## Segments
 - [Репетитор для русскоязычных за рубежом](https://tutor.podlevskikh.com/russian-tutor-abroad/): physics & maths for Russian-speaking families abroad; help transitioning from a Russian school into an international (IB/AP/A-Level/IGCSE) school, in English, Russian or both.
