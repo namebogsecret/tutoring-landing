@@ -7,7 +7,10 @@ import html as htmllib
 import json
 import os
 import re
+import shutil
 import subprocess
+import sys
+import tempfile
 import unittest
 from html.parser import HTMLParser
 
@@ -26,7 +29,16 @@ FORBIDDEN = [
     r"4\.88", r"\b127\b", r"\b214\b", r"\+30", r"95%", r"20\+", r"100% результат",
     r"Записаться", r"\bBook\b", r"Free diagnostic", r"Бесплатная диагностика",
     r"#book", r"data-cta=", r"Calendly", r"mailto:", r"tel:",
+    r"Лимассол", r"ВКонтакте", r"vk\.com", r"\bVK\b",
+    r"отзыв", r"\breviews\b", r"\bratings?\b", r"aggregateRating",
+    r"#results", r"#pricing", r"\b23\+",
 ]
+
+
+# Маркетплейсы репетиторов: в видимом тексте и ссылках запрещены. В машинном Person.sameAs
+# (JSON-LD, общий граф сущности сети из pages_registry.PERSON_SAMEAS) они пока есть — это
+# отдельное решение, поэтому JSON-LD из этой проверки вырезается.
+FORBIDDEN_VISIBLE = [r"preply", r"profi\.ru"]
 
 
 def read(url):
@@ -67,6 +79,13 @@ class TestForbidden(Base):
                 m = re.search(pat, s, re.I)
                 self.assertIsNone(m, "%s: forbidden %r found near %r" % (
                     u, pat, s[max(0, m.start() - 40):m.end() + 40] if m else ""))
+
+
+    def test_no_marketplaces_outside_jsonld(self):
+        for u, s in self.src.items():
+            vis = re.sub(r'(?s)<script type="application/ld\+json">.*?</script>', " ", s)
+            for pat in FORBIDDEN_VISIBLE:
+                self.assertIsNone(re.search(pat, vis, re.I), "%s: %r" % (u, pat))
 
 
 class TestMeta(Base):
@@ -177,6 +196,85 @@ class TestAnswerFirst(Base):
         lead = self.lead("/igcse-physics-0625/")
         self.assertRegex(lead, r"Podlevskikh|Подлевских")
         self.assertIn("0625", lead)
+
+
+class TestAnswerFirstExtra(Base):
+    def lead_p(self, u):
+        return visible_text(re.search(r'<p class="lead[^"]*">(.*?)</p>', self.src[u], re.S).group(1))
+
+    def test_lead_has_format_ratio_language(self):
+        lead = self.lead_p("/ege-physics/")
+        self.assertRegex(lead, r"онлайн|online")
+        self.assertRegex(lead, r"1:1|один на один")
+        self.assertRegex(lead, r"русск|English|английск|RU/EN")
+        lead = self.lead_p("/igcse-physics-0625/")
+        self.assertRegex(lead, r"(?i)онлайн|online")
+        self.assertRegex(lead, r"1:1|one[- ]to[- ]one")
+        self.assertRegex(lead, r"русск|English|английск|Russian|RU/EN")
+
+
+class TestCaseStudy(Base):
+    def test_igcse_has_no_case(self):
+        self.assertIsNone(re.search(r"Полина|Polina|\b96\b", self.src["/igcse-physics-0625/"]))
+
+    def test_ege_96_only_in_approved_phrase(self):
+        t = self.text["/ege-physics/"]
+        phrase = "Полина М. — 96 ЕГЭ и 100 ДВИ, мехмат МГУ"
+        self.assertIn(phrase, t)
+        stripped = t.replace(phrase, " ")
+        self.assertIsNone(re.search(r"\b96\b", stripped), "96 outside approved phrase")
+        for m in re.finditer(r"\b96\b", t):
+            self.assertNotRegex(t[m.end():m.end() + 40], r"(?i)физик")
+
+    def test_task_counts_whitelist(self):
+        t = self.text["/ege-physics/"]
+        t = t.replace("20 заданий", " ")  # подтверждённая формулировка
+        self.assertIsNone(re.search(r"\b(2[0-5]|27|28|29|30) заданий", t))
+
+
+class TestChrome(Base):
+    def test_footer_years_and_nav(self):
+        for u, s in self.src.items():
+            foot = re.search(r"<footer.*?</footer>", s, re.S).group(0)
+            self.assertRegex(foot, r"23 года|23 years")
+            self.assertNotRegex(foot, r"23\+")
+            nav = re.search(r'<nav class="nav-links">.*?</nav>', s, re.S).group(0)
+            self.assertNotRegex(nav, r"#results|#pricing|#book|Results|Packages")
+
+    def test_footer_date_from_lastmod(self):
+        for u, s in self.src.items():
+            self.assertIn('<time datetime="%s">' % LASTMOD[:7], s)
+
+
+class TestToc(Base):
+    def test_toc_anchors_have_ids(self):
+        for u, s in self.src.items():
+            toc = re.search(r'<aside.*?</aside>', s, re.S)
+            self.assertIsNotNone(toc, u)
+            ids = set(re.findall(r'\bid="([^"]+)"', s))
+            hrefs = re.findall(r'href="#([^"]+)"', toc.group(0))
+            self.assertTrue(hrefs, u)
+            for h in hrefs:
+                self.assertIn(h, ids, "%s: TOC href #%s has no id" % (u, h))
+
+
+class TestFreshness(unittest.TestCase):
+    def test_committed_html_matches_build(self):
+        tmp = tempfile.mkdtemp()
+        try:
+            dst = os.path.join(tmp, "tree")
+            shutil.copytree(ROOT, dst, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            r = subprocess.run([sys.executable, "build.py", "--only"] + list(PAGES), cwd=dst,
+                               capture_output=True, text=True, timeout=120)
+            if r.returncode != 0:
+                self.skipTest("build failed in tmp copy: %s" % r.stderr[-200:])
+            for u in PAGES:
+                rel = os.path.join(u.strip("/"), "index.html")
+                with open(os.path.join(ROOT, rel), encoding="utf-8") as a, \
+                        open(os.path.join(dst, rel), encoding="utf-8") as b:
+                    self.assertEqual(a.read(), b.read(), "%s stale: rebuild with --only" % u)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 class TestFacts(Base):

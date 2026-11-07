@@ -29,7 +29,6 @@ def nav(no_cta=False):
     </a>
     <nav class="nav-links">
       <a href="/#method">Method</a>
-      <a href="/#results">Results</a>
       <a href="/blog/">Blog</a>
     </nav>
   </div>
@@ -65,7 +64,7 @@ def net_band():
             'justify-content:center;max-width:860px;margin:0 auto">' + links + '</nav></div>')
 
 # ── shared footer (rich internal + network links on every page) ──────────
-def footer(lang, no_cta=False):
+def footer(lang, no_cta=False, lastmod=None):
     progr = "Programmes" if lang == "en" else "Программы"
     res = "Resources" if lang == "en" else "Ресурсы"
     cont = "Get in touch" if lang == "en" else "Связаться"
@@ -75,12 +74,26 @@ def footer(lang, no_cta=False):
     if no_cta:
         loc = ("Online worldwide (GMT+2/+3)" if lang == "en"
                else "Онлайн по всему миру (GMT+2/+3)")
-        upd = ('<time datetime="2026-11">November 2026</time>' if lang == "en"
-               else '<time datetime="2026-11">ноябрь 2026</time>')
+        ym = (lastmod or TODAY)[:7]
+        yy, mm = int(ym[:4]), int(ym[5:7])
+        mon_en = ["January", "February", "March", "April", "May", "June", "July", "August",
+                  "September", "October", "November", "December"][mm - 1]
+        mon_ru = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август",
+                  "сентябрь", "октябрь", "ноябрь", "декабрь"][mm - 1]
+        upd = (f'<time datetime="{ym}">{mon_en} {yy}</time>' if lang == "en"
+               else f'<time datetime="{ym}">{mon_ru} {yy}</time>')
         upd_lbl = "Last updated" if lang == "en" else "Обновлено"
     else:
         upd = '<time datetime="2026-06">June 2026</time>'
         upd_lbl = "Last updated"
+    if no_cta:
+        about = ("MSU physicist · 23 years · 350+ students · perfect 200/200 on both US Praxis Physics &amp; Maths.\n        "
+                 "Structured online preparation for IB, AP, SAT, A-Level, IGCSE &amp; ЕГЭ." if lang == "en" else
+                 "Физик МГУ · 23 года · 350+ учеников · 200/200 на обоих экзаменах US Praxis (физика и математика).\n        "
+                 "Структурированная онлайн-подготовка к IB, AP, SAT, A-Level, IGCSE и ЕГЭ.")
+    else:
+        about = ("MSU physicist · 23+ years · 350+ students · perfect 200/200 on both US Praxis Physics &amp; Maths.\n        "
+                 "Structured online preparation for IB, AP, SAT, A-Level, IGCSE &amp; ЕГЭ.")
     contact_html = "" if no_cta else f"""
       <div class="toc-lbl" style="margin:22px 0 12px;">{cont}</div>
       <div style="display:grid;gap:9px;font-size:14px;">
@@ -101,8 +114,7 @@ def footer(lang, no_cta=False):
         <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
       </div>
       <p style="color:var(--muted);font-size:14.5px;max-width:42ch;line-height:1.6;">
-        MSU physicist · 23+ years · 350+ students · perfect 200/200 on both US Praxis Physics &amp; Maths.
-        Structured online preparation for IB, AP, SAT, A-Level, IGCSE &amp; ЕГЭ.
+        {about}
       </p>
     </div>
     <div>
@@ -237,7 +249,7 @@ def build_page(p):
 
 {body}
 
-{footer(html_lang, no_cta)}
+{footer(html_lang, no_cta, p.get("lastmod"))}
 
 <script src="/assets/site.js"></script>
 
@@ -294,6 +306,9 @@ def build_sitemap(urls):
 
 if __name__ == "__main__":
     import sys
+    # ВНИМАНИЕ: network-footer.js вписан в готовые HTML вручную (его нет в шаблоне).
+    # Полная сборка (без --only) его срежет — собирать только `--only <url>...`,
+    # пока скрипт не перенесён в шаблон.
     if "--only" in sys.argv:
         wanted = sys.argv[sys.argv.index("--only") + 1:]
         known = {p["url"]: p for p in PAGES}
