@@ -12,7 +12,6 @@ SRC=$(pwd)
 python3 build.py
 [ -z "$(git status --porcelain)" ] || { echo "✗ build.py изменил файлы — закоммить пересборку"; git status --short; exit 1; }
 for t in tests/test_*.py; do python3 "$t" >/dev/null || { echo "✗ тест $t"; exit 1; }; done
-python3 -m unittest discover -s tests -q
 
 SHA=$(git rev-parse --short HEAD)
 WT=$(mktemp -d)
