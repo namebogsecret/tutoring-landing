@@ -186,3 +186,9 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
   .article-grid { grid-template-columns: minmax(0, 1fr); }
   .article-grid > * { min-width: 0; }
 }
+
+/* узкие экраны: длинные подписи больших кнопок («Бесплатная диагностика, 20 минут») переносятся,
+   а не распирают страницу по ширине (на 390px было +16px горизонтального скролла) */
+@media (max-width: 480px) {
+  .btn-lg { white-space: normal; text-align: center; }
+}
