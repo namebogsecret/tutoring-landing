@@ -66,10 +66,10 @@ window.addEventListener("load",function(){try{window.goatcounter=window.goatcoun
 document.addEventListener("click",function(ev){try{
   var a=ev.target.closest("a"); if(!a||!a.href) return;
   var href=a.href, name=null;
-  if(/t\.me\/yerevan_afisha_bot/.test(href)) name="telegram-afisha";
-  else if(/t\.me\/podlevskikh_consult_bot/.test(href)) name="telegram-consult";
+  if(/t\.me\/podlevskikh_consult_bot/.test(href)) name="telegram-consult";
   else if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
   else if(/calendly\.com/.test(href)) name="calendly";
+  else if(/\/exam-prep-online\/?($|[?#])/.test(href) && a.hostname===location.hostname) name="tutor-page";
   else if(/tutor\.podlevskikh\.com/.test(href) && location.host!=="tutor.podlevskikh.com") name="to-tutor";
   var path; if(name){path="/cta-"+name;}
   else if(a.hostname&&a.hostname!==location.hostname&&(a.protocol==="http:"||a.protocol==="https:")){path="/out-"+a.hostname;}
@@ -78,3 +78,15 @@ document.addEventListener("click",function(ev){try{
   var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(p)+"&e=true";
   if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
 }catch(e){}},true);
+
+/* AI-рефереры: отдельное событие в GoatCounter, когда визит пришёл из ChatGPT / Claude
+   (document.referrer или utm_source). Обычные рефереры GoatCounter пишет сам; это событие
+   даёт готовую строку /ai-ref-<источник> для сводки. Неблокирующе, ошибки глотаются. */
+(function(){try{
+  var src=null, r=document.referrer||"", q=location.search||"";
+  if(/(^|\/\/)(chatgpt\.com|chat\.openai\.com)(\/|$)/.test(r)||/[?&]utm_source=chatgpt\.com/.test(q)) src="chatgpt";
+  else if(/(^|\/\/)claude\.ai(\/|$)/.test(r)||/[?&]utm_source=claude/.test(q)) src="claude";
+  if(!src) return;
+  var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(location.host+"/ai-ref-"+src)+"&e=true";
+  window.addEventListener("load",function(){try{if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}}catch(e){}});
+}catch(e){}})();
