@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Contract tests for the two pillar pages (/ege-physics/, /igcse-physics-0625/).
-Run AFTER building:  python3 build.py --only /ege-physics/ /igcse-physics-0625/
+"""Contract tests for the pillar pages (/ege-physics/, /igcse-physics-0625/, /ap-physics-tutor/, /ib-physics-tutor/).
+Run AFTER building:  python3 build.py --only /ege-physics/ /igcse-physics-0625/ /ap-physics-tutor/ /ib-physics-tutor/
                      python3 -m unittest discover -s tests -v
 """
 import html as htmllib
@@ -16,7 +16,8 @@ from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://tutor.podlevskikh.com"
-PAGES = {"/ege-physics/": "ru", "/igcse-physics-0625/": "en"}
+PAGES = {"/ege-physics/": "ru", "/igcse-physics-0625/": "en",
+         "/ap-physics-tutor/": "en", "/ib-physics-tutor/": "en"}
 LASTMOD = "2026-11-08"
 
 # Запретные слова/паттерны (регистронезависимо, кроме помеченных (?-i:)).
@@ -167,6 +168,10 @@ class TestLinks(Base):
                               "/russian-tutor-abroad/", "/olympiad-physics/", "/blog/"],
             "/igcse-physics-0625/": ["/ege-physics/", "/physics-tutor-online/", "/russian-tutor-abroad/",
                                      "/olympiad-physics/", "/blog/", "/ib-physics-tutor/", "/ap-physics-tutor/"],
+            "/ap-physics-tutor/": ["/ib-physics-tutor/", "/igcse-physics-0625/", "/physics-tutor-online/",
+                                   "/russian-tutor-abroad/", "/olympiad-physics/", "/blog/", "/ege-physics/"],
+            "/ib-physics-tutor/": ["/ap-physics-tutor/", "/igcse-physics-0625/", "/physics-tutor-online/",
+                                   "/russian-tutor-abroad/", "/olympiad-physics/", "/blog/", "/ege-physics/"],
         }
         for u, hrefs in needed.items():
             for h in hrefs:
@@ -198,6 +203,19 @@ class TestAnswerFirst(Base):
         self.assertIn("0625", lead)
 
 
+    def test_ap(self):
+        lead = self.lead("/ap-physics-tutor/")
+        self.assertRegex(lead, r"Podlevskikh|Подлевских")
+        self.assertIn("AP Physics C", lead)
+        self.assertIn("Mechanics", lead)
+
+    def test_ib(self):
+        lead = self.lead("/ib-physics-tutor/")
+        self.assertRegex(lead, r"Podlevskikh|Подлевских")
+        self.assertIn("IB Physics", lead)
+        self.assertIn("SL and HL", lead)
+
+
 class TestAnswerFirstExtra(Base):
     def lead_p(self, u):
         return visible_text(re.search(r'<p class="lead[^"]*">(.*?)</p>', self.src[u], re.S).group(1))
@@ -207,15 +225,17 @@ class TestAnswerFirstExtra(Base):
         self.assertRegex(lead, r"онлайн|online")
         self.assertRegex(lead, r"1:1|один на один")
         self.assertRegex(lead, r"русск|English|английск|RU/EN")
-        lead = self.lead_p("/igcse-physics-0625/")
-        self.assertRegex(lead, r"(?i)онлайн|online")
-        self.assertRegex(lead, r"1:1|one[- ]to[- ]one")
-        self.assertRegex(lead, r"русск|English|английск|Russian|RU/EN")
+        for u in ("/igcse-physics-0625/", "/ap-physics-tutor/", "/ib-physics-tutor/"):
+            lead = self.lead_p(u)
+            self.assertRegex(lead, r"(?i)онлайн|online", u)
+            self.assertRegex(lead, r"1:1|one[- ]to[- ]one", u)
+            self.assertRegex(lead, r"русск|English|английск|Russian|RU/EN", u)
 
 
 class TestCaseStudy(Base):
     def test_igcse_has_no_case(self):
-        self.assertIsNone(re.search(r"Полина|Polina|\b96\b", self.src["/igcse-physics-0625/"]))
+        for u in ("/igcse-physics-0625/", "/ap-physics-tutor/", "/ib-physics-tutor/"):
+            self.assertIsNone(re.search(r"Полина|Polina|\b96\b", self.src[u]), u)
 
     def test_ege_96_only_in_approved_phrase(self):
         t = self.text["/ege-physics/"]
@@ -295,9 +315,42 @@ class TestFacts(Base):
             self.assertIn(needle, t)
         self.assertIn("697209-2026-2028-syllabus.pdf", self.src["/igcse-physics-0625/"])
 
+    def test_ap(self):
+        u = "/ap-physics-tutor/"
+        t = self.text[u]
+        for needle in ("AP Physics C", "Mechanics", "Electricity and Magnetism", "calculus-based",
+                       "42 questions", "85 minutes", "4 questions", "95 minutes", "50%",
+                       "mathematical routines", "translation between representations",
+                       "experimental design and analysis", "qualitative/quantitative translation",
+                       "Kinematics", "Force and Translational Dynamics", "Work, Energy, and Power",
+                       "Linear Momentum", "Torque and Rotational Dynamics",
+                       "Energy and Momentum of Rotating Systems", "Oscillations",
+                       "Gauss's Law", "Electric Potential", "Conductors and Capacitors",
+                       "Electric Circuits", "Magnetic Fields and Electromagnetism",
+                       "Electromagnetic Induction", "20–25%", "15–25%", "May 2027"):
+            self.assertIn(needle, t, needle)
+        for h in ("https://apcentral.collegeboard.org/courses/ap-physics-c-mechanics",
+                  "https://apcentral.collegeboard.org/courses/ap-physics-c-electricity-and-magnetism"):
+            self.assertIn(h, self.src[u])
+
+    def test_ib(self):
+        u = "/ib-physics-tutor/"
+        t = self.text[u]
+        for needle in ("first assessment 2025", "Space, time and motion",
+                       "The particulate nature of matter", "Wave behaviour", "Fields",
+                       "Nuclear and quantum physics", "150 hours", "240 hours",
+                       "Paper 1A", "Paper 1B", "Paper 2", "45 marks", "50 marks", "60 marks",
+                       "90 marks", "36%", "44%", "80%", "20%", "24 marks", "10 hours",
+                       "1 hour 30 minutes", "2 hours 30 minutes", "4 hours 30 minutes",
+                       "25 multiple-choice", "40 multiple-choice",
+                       "research design", "data analysis", "conclusion", "evaluation",
+                       "AO1", "AO2", "AO3", "AO4", "scientific investigation"):
+            self.assertIn(needle, t, needle)
+        self.assertNotRegex(t, r"(?i)\b(grade boundar|band 7|level 7)")
+
     def test_online_location(self):
-        self.assertIn("GMT+2/+3", self.text["/ege-physics/"])
-        self.assertIn("GMT+2/+3", self.text["/igcse-physics-0625/"])
+        for u in PAGES:
+            self.assertIn("GMT+2/+3", self.text[u], u)
 
 
 class TestSitemap(unittest.TestCase):
@@ -332,8 +385,10 @@ class TestNeighboursUntouched(unittest.TestCase):
             files += [f for f in new if f]
         except (OSError, subprocess.SubprocessError):
             self.skipTest("git unavailable")
-        allowed_src = {"src/ege-physics.html", "src/igcse-physics-0625.html"}
-        allowed_idx = {"ege-physics/index.html", "igcse-physics-0625/index.html"}
+        allowed_src = {"src/ege-physics.html", "src/igcse-physics-0625.html",
+                       "src/ap-physics-tutor.html", "src/ib-physics-tutor.html"}
+        allowed_idx = {"ege-physics/index.html", "igcse-physics-0625/index.html",
+                       "ap-physics-tutor/index.html", "ib-physics-tutor/index.html"}
         for f in files:
             if f.startswith("src/") and f.endswith(".html"):
                 self.assertIn(f, allowed_src, f)
