@@ -18,6 +18,10 @@ SAMEAS = {
 REMOVED_SITES = ("events.podlevskikh.com", "ideas.podlevskikh.com", "auto.podlevskikh.com", "aiact.podlevskikh.com")
 STALE = re.compile(r"Yerevan|Ереван|Nyberg|GMT\+4|Лимассол|Limassol|Cyprus|Кипр|I Can|4\.88|\+7 ?\(|"
                    r"ВКонтакте|vk\.com|Armenia|Армени|23\+|aggregateRating|reviewCount")
+# неподтверждённые результаты/отзывы/рейтинг (ФАКТ-ЛИСТ: «Нельзя»): ловим на ВСЕХ отдаваемых страницах
+UNVERIFIED = re.compile(r"призёр|призер|medalist|laureate|Mikhail N|Valeriia|Sonya S|Anetta|Nadya M|1620|2060|"
+                        r"double-digit|десятки баллов|рекомендательн|reference letters|from a Level C|с уровня C|82 ?(→|to|до) ?96|"
+                        r"Бауман|Bauman|Oracle|Amazon|C→A|★★|\+30–60|95%\+", re.I)
 
 
 def pages():
@@ -74,6 +78,8 @@ class T(unittest.TestCase):
             for d in REMOVED_SITES:
                 self.assertNotIn(d, s, f)
             m = STALE.search(s)
+            self.assertIsNone(m, "%s: %r" % (f, m.group(0) if m else ""))
+            m = UNVERIFIED.search(s)
             self.assertIsNone(m, "%s: %r" % (f, m.group(0) if m else ""))
 
 
