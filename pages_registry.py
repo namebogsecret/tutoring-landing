@@ -2,13 +2,14 @@
 """Page registry for the content layer. Edit prose in src/*.html; edit
 meta/FAQ/schema here, then run `python3 build.py`."""
 
-# Канонический узел бренд-сущности — один @id + sameAs на всю сеть сайтов (GEO entity graph).
+# Канонический узел бренд-сущности — один @id на всю сеть сайтов (GEO entity graph).
 PERSON_ID = "https://tutor.podlevskikh.com/#vladimir"
 
 # ── ЕДИНЫЙ ИСТОЧНИК ИСТИНЫ для сети podlevskikh.com ───────────────────────
-# Все живые проекты сети (кроме самого tutor — это self, покрыт Person.url).
-# Из этого списка рендерятся И видимый футер «Проекты сети» (net-band в build.py),
-# И машинный Person.sameAs — чтобы видимый контент и разметка не расходились (фикс дрейфа M1).
+# Живые проекты сети (кроме самого tutor — это self, покрыт Person.url).
+# Из этого списка рендерится видимый футер «Проекты сети» (net-band в build.py).
+# В Person.sameAs они НЕ входят: сайт-проект — не этот человек. Машинно связь выражена
+# через Person.subjectOf -> WebSite (creator/author = {"@id": PERSON_ID}).
 # Добавляешь новый сайт в сеть → правишь ТОЛЬКО этот список (+ вручную index.html: главная не проходит через build.py).
 NETWORK_SITES = [
     {"url": "https://physics.podlevskikh.com/",     "label": "Физика — теория и практика"},
@@ -21,20 +22,25 @@ NETWORK_SITES = [
     {"url": "https://praxis.podlevskikh.com/",      "label": "Praxis 5266"},
     {"url": "https://rocket.podlevskikh.com/",      "label": "RocketSim"},
     {"url": "https://space.podlevskikh.com/",       "label": "Interstellar"},
-    # Не физика/математика: в футере остаются, в sameAs не идут (см. ПЛАН-НАХОДИМОСТЬ §3 п.2).
-    {"url": "https://auto.podlevskikh.com/",        "label": "Автоматизация", "same_as": False},
-    {"url": "https://aiact.podlevskikh.com/",       "label": "AI Act — гид по регламенту", "same_as": False},
     {"url": "https://podlevskikh.com/",             "label": "Главный сайт"},
 ]
-# Внешние профили той же сущности (как в аудите: LinkedIn / Preply / Telegram / Profi.ru).
+# Внешние профили, являющиеся самим человеком (LinkedIn / Preply / Telegram / Profi.ru /
+# Lessonface / Superprof; последние два подтверждены владельцем 08.11.2026).
 EXTERNAL_PROFILES = [
     "https://linkedin.com/in/vladimir-podlevskikh",
     "https://preply.in/VLADIMIR6EN2958527510",
     "https://t.me/VladimirPodlevskikh",
     "https://profi.ru/profile/PodlevskihVN/",
+    "https://www.lessonface.com/node/133512",
+    "https://www.superprof.com/mathematics-msu-superprof-super-tutor-for-gcse-igcse-level-sat.html",
 ]
-# sameAs = внешние профили + вся живая сеть (один набор на всех Person-узлах сети).
-PERSON_SAMEAS = EXTERNAL_PROFILES + [s["url"] for s in NETWORK_SITES if s.get("same_as", True)]
+PERSON_SAMEAS = list(EXTERNAL_PROFILES)
+# Собственные проекты — отдельным свойством: WebSite-узлы, автор — тот же @id.
+PERSON_SUBJECT_OF = [
+    {"@type": "WebSite", "url": s["url"], "name": s["label"],
+     "creator": {"@id": "https://tutor.podlevskikh.com/#vladimir"}}
+    for s in NETWORK_SITES
+]
 PROVIDER = {
     "@type": "Person",
     "@id": PERSON_ID,
@@ -43,17 +49,18 @@ PROVIDER = {
     "url": "https://tutor.podlevskikh.com/",
     "alumniOf": {"@type": "CollegeOrUniversity", "name": "Lomonosov Moscow State University", "alternateName": "MSU"},
     "sameAs": PERSON_SAMEAS,
+    "subjectOf": PERSON_SUBJECT_OF,
 }
 # Лёгкая ссылка на ту же сущность по @id (для author/provider/instructor на дочерних страницах).
 PERSON_REF = {"@id": PERSON_ID}
 
-def course(name, desc):
+def course(name, desc, lang=("en", "ru")):
     return {
         "@context": "https://schema.org", "@type": "Course", "name": name, "description": desc,
         "provider": PROVIDER,
         "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online",
-                              "courseWorkload": "PT1H", "instructor": PROVIDER},
-        "inLanguage": ["en", "ru"],
+                              "courseWorkload": "PT1H", "instructor": PERSON_REF},
+        "inLanguage": list(lang),
     }
 
 def service(name, desc, area="Worldwide"):
@@ -69,7 +76,7 @@ PAGES = [
 {
   "url": "/ib-physics-tutor/", "lang": "en", "body": "src/ib-physics-tutor.html",
   "title": "IB Physics Tutor (HL & SL) Online — MSU Physicist, 200/200 Praxis",
-  "desc": "Online IB Physics HL & SL tutor. MSU physicist, 23+ years, 350+ students. Paper 1/2/3 technique, IA support and the jump on the 1–7 scale. Free 20-min diagnostic.",
+  "desc": "Online IB Physics HL & SL tutor. MSU physicist, 23 years of private tutoring, 350+ students. Paper 1/2/3 technique, IA support and the jump on the 1–7 scale. Free 20-min diagnostic.",
   "og_title": "IB Physics Tutor (HL/SL) Online — Vladimir Podlevskikh",
   "crumbs": [("Home", "/"), ("IB Physics Tutor", None)],
   "jsonld": [course("IB Physics HL & SL — online exam preparation",
@@ -85,7 +92,7 @@ PAGES = [
     ("How quickly can an IB Physics grade improve?",
      "It depends on the starting point and time to the exam, but most students who follow the weekly plan move at least one band on the 1–7 scale. The fastest gains come from Paper-1 (multiple-choice) timing, the IA, and command-term discipline on Paper 2."),
     ("Which time zones do you cover?",
-     "Based in Yerevan (GMT+4), which works cleanly for IB families across the Gulf, Europe, the UK, Africa and most of Asia. Lessons are online 1:1 over Zoom with a shared whiteboard, in English."),
+     "Available worldwide (GMT+2/+3), which works cleanly for IB families across the Gulf, Europe, the UK, Africa and most of Asia. Lessons are online 1:1 over Zoom with a shared whiteboard, in English."),
   ],
 },
 
@@ -140,24 +147,52 @@ PAGES = [
 # ═══════════════ PILLAR 4 — Подготовка к ЕГЭ по физике (RU) ═══════════════
 {
   "url": "/ege-physics/", "lang": "ru", "body": "src/ege-physics.html",
-  "title": "Подготовка к ЕГЭ по физике онлайн — физик МГУ, план до экзамена",
-  "desc": "Подготовка к ЕГЭ по физике онлайн с физиком МГУ. Разбор всех типов заданий первой и второй части, план по неделям до экзамена, банк задач, прогноз балла. Бесплатная диагностика.",
-  "og_title": "Подготовка к ЕГЭ по физике онлайн — Владимир Подлевских",
+  "no_cta": True, "lastmod": "2026-11-08",
+  "title": "ЕГЭ по физике 2027: структура КИМ и подготовка онлайн 1:1",
+  "desc": "Подготовка к ЕГЭ по физике 2027 онлайн, 1:1: структура КИМ (26 заданий, 45 баллов, 235 минут), вторая часть и критерии, ДВИ. Физик МГУ, Praxis 200/200.",
+  "og_title": "Подготовка к ЕГЭ по физике 2027 онлайн — Владимир Подлевских",
   "crumbs": [("Главная", "/"), ("Подготовка к ЕГЭ по физике", None)],
-  "jsonld": [course("Подготовка к ЕГЭ по физике (онлайн)",
-                    "Онлайн-подготовка к ЕГЭ по физике: разбор всех типов заданий, план по неделям до экзамена, тренировка второй части и оформление, прогноз балла.")],
+  "jsonld": [course("Подготовка к ЕГЭ по физике (онлайн, 1:1)",
+                    "Онлайн-подготовка к ЕГЭ по физике по спецификации КИМ ЕГЭ 2027: 26 заданий, две части, 45 первичных баллов; разбор типов заданий, тренировка развёрнутых решений по критериям, варианты в условиях экзамена.",
+                    lang=("ru",))],
   "faq_heading": "Подготовка к ЕГЭ по физике — частые вопросы",
   "faq": [
-    ("За сколько до экзамена начинать подготовку к ЕГЭ по физике?",
-     "Оптимально — с начала 11 класса (полный цикл с запасом на повторение). Но и интенсив за 4–6 месяцев даёт результат: в этом случае начинаем с самых «дорогих» по баллам тем и второй части, а первую часть закрываем параллельно тренировкой на скорость и точность."),
-    ("Как устроена вторая часть и почему на ней теряют баллы?",
-     "Вторая часть — задачи с развёрнутым решением, где эксперт оценивает не только ответ, но и оформление: дано, физические законы, рисунок, обоснование. Чаще всего баллы теряют не на физике, а на оформлении и логике. Мы отрабатываем решения строго по критериям проверки ФИПИ."),
-    ("Сколько стоит подготовка к ЕГЭ по физике?",
-     "Standard — $390/мес (одно занятие в неделю + личный план), Intensive — $680/мес (два занятия в неделю с проверкой домашних работ). Разовое занятие — $90/60 мин, самостоятельный план — от $49. Точную программу подбираем на бесплатной диагностике."),
-    ("Готовите ли вы одновременно к ЕГЭ и ДВИ?",
-     "Да. ДВИ МГУ и внутренние экзамены вузов требуют более глубокого уровня, чем ЕГЭ, — это отдельный трек поверх ЕГЭ-программы. Пример: ученица сдала ЕГЭ на 96 и ДВИ на 100 — поступление на мехмат."),
-    ("Что входит в подготовку, кроме занятий?",
-     "Личный план по неделям до даты экзамена, авторский банк задач по каждой теме, проверяемые домашние задания, трекер прогресса и ежемесячный отчёт для родителей с текущим прогнозом балла."),
+    ("Когда начинать подготовку к ЕГЭ по физике?",
+     "Оптимально — с начала 11 класса: тогда хватает времени на весь курс, повторение и тренировочные варианты. Если времени меньше, начинаем с тех тем, которые дают больше всего баллов, и со второй части, а первую часть закрываем параллельно. Что реально успеть к вашей дате, видно после входной диагностики."),
+    ("Что такое вторая часть и почему на ней теряют баллы?",
+     "Вторая часть — шесть заданий с развёрнутым ответом (№21–26), в сумме 17 баллов из 45. Их проверяют эксперты предметных комиссий по критериям, поэтому оценивается не только ответ, но и полнота решения: названные законы, обоснование, ход рассуждений. Чаще всего баллы теряются на оформлении и логике, а не на незнании физики."),
+    ("Можно ли готовиться к ЕГЭ и ДВИ одновременно?",
+     "Да. ДВИ и вступительные испытания вузов устроены иначе, чем ЕГЭ, и обычно требуют более глубокого уровня, поэтому это отдельный трек поверх программы ЕГЭ. Оба формата закладываются в общий план с начала подготовки."),
+    ("Можно ли начать с нуля или после другой программы?",
+     "Можно, но объём работы будет больше, и это нужно учесть в плане. Если ребёнок учился по международной программе или в зарубежной школе, сначала сверяем темы курса с кодификатором ЕГЭ и закрываем расхождения. Входная диагностика показывает, с чего начинать."),
+    ("Как проходят занятия и на каком языке?",
+     "Занятия идут онлайн, один на один, по всему миру (GMT+2/+3). Язык занятий — русский или английский, как удобнее ученику. После занятий — домашние задачи с проверкой, а перед экзаменом — полные варианты на 235 минут."),
+  ],
+},
+
+# ═══════════════ PILLAR 5 — Cambridge IGCSE Physics 0625 (EN) ═══════════════
+{
+  "url": "/igcse-physics-0625/", "lang": "en", "body": "src/igcse-physics-0625.html",
+  "no_cta": True, "lastmod": "2026-11-08",
+  "title": "Cambridge IGCSE Physics 0625 Tutor Online — Core and Extended",
+  "desc": "Online one-to-one Cambridge IGCSE Physics 0625 tutor: Core vs Extended, Paper 1-6, AO1-AO3 and the six syllabus topics. MSU physicist, Praxis 200/200.",
+  "og_title": "IGCSE Physics 0625 Tutor Online — Vladimir Podlevskikh",
+  "crumbs": [("Home", "/"), ("IGCSE Physics 0625", None)],
+  "jsonld": [course("Cambridge IGCSE Physics 0625 — online one-to-one tutoring",
+                    "One-to-one online preparation for Cambridge IGCSE Physics (0625), syllabus 2026-2028: six topics, Core and Extended tiers, Paper 1-6 technique, practical skills and timed papers.",
+                    lang=("en",))],
+  "faq_heading": "IGCSE Physics 0625 — common questions",
+  "faq": [
+    ("Should my child enter Core or Extended?",
+     "Core leads to grades C to G and Extended to grades A* to G. As a guide from the syllabus, Core suits candidates expecting a D or below and Extended suits those expecting a C or higher. A diagnostic across the six topics helps to decide, and the final entry is made together with the school."),
+    ("What is the difference between Paper 5 and Paper 6?",
+     "Both are worth 20% of the grade and assess the experimental skills in section 4 of the syllabus. Paper 5 is the Practical Test (1 hour 15 minutes, 40 marks) and Paper 6 is the Alternative to Practical (1 hour, 40 marks). A candidate sits one of them, and preparation is adjusted to whichever paper the school has chosen."),
+    ("How are the marks split between knowledge and problem solving?",
+     "The assessment objectives are AO1 knowledge with understanding (50%), AO2 handling information and problem solving (30%) and AO3 experimental skills and investigations (20%). Half of the marks therefore reward applying physics to data and problems, which is why lessons use exam-style questions throughout."),
+    ("How does IGCSE Physics differ from the Russian school course?",
+     "The main differences are in format and expectations: IGCSE combines multiple-choice and theory papers, treats practical skills as a separate 20% of the grade, and orders and weights topics differently from the Russian programme. A student with a strong Russian maths and physics base usually has an advantage, and a diagnostic shows which topics are already covered."),
+    ("How are the lessons run, and in which language?",
+     "Lessons are online, one to one, in English or Russian, worldwide (GMT+2/+3). They follow the six syllabus topics, with exam-style practice, regular work on Paper 5 or Paper 6 skills and timed papers before the exam series."),
   ],
 },
 
@@ -173,11 +208,11 @@ PAGES = [
   "faq_heading": "Русскоязычным семьям за рубежом — частые вопросы",
   "faq": [
     ("Ребёнок перешёл из российской школы в международную — поможете адаптироваться?",
-     "Это мой ключевой профиль. Я сам преподаю физику на английском в международной школе и одновременно носитель русской физической школы. Помогаю перейти с российской программы на IB/AP/A-Level: закрыть терминологические разрывы, перестроиться на формат экзамена и критерии, не теряя сильную математическую базу."),
+     "Это мой ключевой профиль. Я выпускник физического факультета МГУ и веду занятия на русском и английском. Помогаю перейти с российской программы на IB/AP/A-Level: закрыть терминологические разрывы, перестроиться на формат экзамена и критерии, не теряя сильную математическую базу."),
     ("На каком языке идут занятия?",
      "Как удобно ребёнку: можно полностью на английском (тогда заодно подтягиваем академический английский по предмету), полностью на русском, или смешанно — объясняю сложное на русском, термины и оформление закрепляем на английском. Это снимает языковой барьер в первый год за рубежом."),
     ("Как быть с разными часовыми поясами?",
-     "Я в Ереване (GMT+4), и это удобная точка для семей в Европе, Великобритании, Персидском заливе, Африке и большей части Азии. Время занятий подбираем под ваш пояс; всё онлайн 1:1 в Zoom."),
+     "Занятия идут онлайн по всему миру (GMT+2/+3), и это удобно для семей в Европе, Великобритании, Персидском заливе, Африке и большей части Азии. Время занятий подбираем под ваш пояс; всё онлайн 1:1 в Zoom."),
     ("Как происходит оплата из-за рубежа?",
      "В USD или EUR через Payoneer или защищённую ссылку на карту — удобно из любой страны. Способ подтверждаем на консультации до первого занятия."),
     ("Можно совмещать школьную программу за рубежом и подготовку к российским экзаменам?",
@@ -189,7 +224,7 @@ PAGES = [
 {
   "url": "/olympiad-physics/", "lang": "ru", "body": "src/olympiad-physics.html",
   "title": "Подготовка к олимпиадам по физике и математике — онлайн",
-  "desc": "Подготовка к олимпиадам по физике и математике онлайн: Всероссийская олимпиада, перечневые олимпиады, Physics Olympiad. Физик МГУ, 20+ призёров. Нестандартные задачи и техника решения.",
+  "desc": "Подготовка к олимпиадам по физике и математике онлайн: Всероссийская олимпиада, перечневые олимпиады, Physics Olympiad. Физик МГУ, 23 года частного преподавания. Нестандартные задачи и техника решения.",
   "og_title": "Подготовка к олимпиадам по физике и математике — Владимир Подлевских",
   "crumbs": [("Главная", "/"), ("Подготовка к олимпиадам", None)],
   "jsonld": [course("Подготовка к олимпиадам по физике и математике",
@@ -197,7 +232,7 @@ PAGES = [
   "faq_heading": "Подготовка к олимпиадам — частые вопросы",
   "faq": [
     ("К каким олимпиадам вы готовите?",
-     "Всероссийская олимпиада школьников (ВсОШ) по физике и математике, перечневые олимпиады (Физтех, «Покори Воробьёвы горы», Росатом, ОММО и др.), а также международные форматы — Physics Olympiad / IPhO-стиль. За 20+ лет — более 20 призёров и победителей."),
+     "Всероссийская олимпиада школьников (ВсОШ) по физике и математике, перечневые олимпиады (Физтех, «Покори Воробьёвы горы», Росатом, ОММО и др.), а также международные форматы — Physics Olympiad / IPhO-стиль. Опыт частного преподавания — 23 года."),
     ("Чем подготовка к олимпиаде отличается от подготовки к ЕГЭ?",
      "ЕГЭ проверяет надёжность на типовых задачах, олимпиада — способность к нестандартному ходу и глубину модели. Это разные навыки: на олимпиаде нужны нетабличные методы, оценки порядка величины, красивые приёмы и умение довести длинное решение. Поэтому олимпиадный трек строится отдельно, поверх прочной школьной базы."),
     ("С какого возраста и уровня имеет смысл начинать?",
@@ -238,7 +273,7 @@ PAGES = [
     "headline": "Как читать графики движения: разбор типовых задач кинематики",
     "author": PROVIDER,
     "datePublished": "2026-05-12", "dateModified": "2026-05-12", "inLanguage": "ru",
-    "publisher": PROVIDER,
+    "publisher": PERSON_REF,
     "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/kinematics-grafiki/",
     "about": ["Kinematics", "Physics graphs", "ЕГЭ физика"],
   }],
@@ -256,7 +291,7 @@ PAGES = [
     "headline": "Второй закон Ньютона: типовые задачи и частые ошибки",
     "author": PROVIDER,
     "datePublished": "2026-05-26", "dateModified": "2026-05-26", "inLanguage": "ru",
-    "publisher": PROVIDER,
+    "publisher": PERSON_REF,
     "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/newton-zakony-zadachi/",
     "about": ["Newton's laws", "Dynamics", "Physics problem solving"],
   }],
@@ -274,7 +309,7 @@ PAGES = [
     "headline": "IB Physics Paper 2: how to structure long-answer questions",
     "author": PROVIDER,
     "datePublished": "2026-06-09", "dateModified": "2026-06-09", "inLanguage": "en",
-    "publisher": PROVIDER,
+    "publisher": PERSON_REF,
     "mainEntityOfPage": "https://tutor.podlevskikh.com/blog/ib-physics-paper-2/",
     "about": ["IB Physics", "Exam technique", "Command terms"],
   }],

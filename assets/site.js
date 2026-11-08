@@ -66,8 +66,7 @@ window.addEventListener("load",function(){try{window.goatcounter=window.goatcoun
 document.addEventListener("click",function(ev){try{
   var a=ev.target.closest("a"); if(!a||!a.href) return;
   var href=a.href, name=null;
-  if(/t\.me\/yerevan_afisha_bot/.test(href)) name="telegram-afisha";
-  else if(/t\.me\/podlevskikh_consult_bot/.test(href)) name="telegram-consult";
+  if(/t\.me\/podlevskikh_consult_bot/.test(href)) name="telegram-consult";
   else if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
   else if(/calendly\.com/.test(href)) name="calendly";
   else if(/\/exam-prep-online\/?($|[?#])/.test(href) && a.hostname===location.hostname) name="tutor-page";

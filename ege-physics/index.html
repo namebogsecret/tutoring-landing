@@ -7,11 +7,11 @@ window.addEventListener("error",function(ev){var el=ev.target;if(el&&el!==window
 p({type:"error",message:String(ev.message||"error").slice(0,500),source:String(ev.filename||"").slice(0,300),line:ev.lineno,col:ev.colno,stack:String((ev.error&&ev.error.stack)||"").slice(0,1500),early:true})},true);
 window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({type:"unhandledrejection",message:String((r&&(r.message||r))||"rejection").slice(0,500),stack:String((r&&r.stack)||"").slice(0,1500),early:true})})})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Подготовка к ЕГЭ по физике онлайн — физик МГУ, план до экзамена</title>
-<meta name="description" content="Подготовка к ЕГЭ по физике онлайн с физиком МГУ. Разбор всех типов заданий первой и второй части, план по неделям до экзамена, банк задач, прогноз балла. Бесплатная диагностика." />
+<title>ЕГЭ по физике 2027: структура КИМ и подготовка онлайн 1:1</title>
+<meta name="description" content="Подготовка к ЕГЭ по физике 2027 онлайн, 1:1: структура КИМ (26 заданий, 45 баллов, 235 минут), вторая часть и критерии, ДВИ. Физик МГУ, Praxis 200/200." />
 <link rel="canonical" href="https://tutor.podlevskikh.com/ege-physics/" />
-<meta property="og:title" content="Подготовка к ЕГЭ по физике онлайн — Владимир Подлевских" />
-<meta property="og:description" content="Подготовка к ЕГЭ по физике онлайн с физиком МГУ. Разбор всех типов заданий первой и второй части, план по неделям до экзамена, банк задач, прогноз балла. Бесплатная диагностика." />
+<meta property="og:title" content="Подготовка к ЕГЭ по физике 2027 онлайн — Владимир Подлевских" />
+<meta property="og:description" content="Подготовка к ЕГЭ по физике 2027 онлайн, 1:1: структура КИМ (26 заданий, 45 баллов, 235 минут), вторая часть и критерии, ДВИ. Физик МГУ, Praxis 200/200." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://tutor.podlevskikh.com/ege-physics/" />
 <meta property="og:image" content="https://tutor.podlevskikh.com/headshot.jpg" />
@@ -20,8 +20,8 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 {
   "@context": "https://schema.org",
   "@type": "Course",
-  "name": "Подготовка к ЕГЭ по физике (онлайн)",
-  "description": "Онлайн-подготовка к ЕГЭ по физике: разбор всех типов заданий, план по неделям до экзамена, тренировка второй части и оформление, прогноз балла.",
+  "name": "Подготовка к ЕГЭ по физике (онлайн, 1:1)",
+  "description": "Онлайн-подготовка к ЕГЭ по физике по спецификации КИМ ЕГЭ 2027: 26 заданий, две части, 45 первичных баллов; разбор типов заданий, тренировка развёрнутых решений по критериям, варианты в условиях экзамена.",
   "provider": {
     "@type": "Person",
     "@id": "https://tutor.podlevskikh.com/#vladimir",
@@ -38,17 +38,98 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
       "https://preply.in/VLADIMIR6EN2958527510",
       "https://t.me/VladimirPodlevskikh",
       "https://profi.ru/profile/PodlevskihVN/",
-      "https://physics.podlevskikh.com/",
-      "https://calc.podlevskikh.com/",
-      "https://calculators.podlevskikh.com/",
-      "https://olymp.podlevskikh.com/",
-      "https://exam.podlevskikh.com/",
-      "https://graph.podlevskikh.com/",
-      "https://python.podlevskikh.com/",
-      "https://praxis.podlevskikh.com/",
-      "https://rocket.podlevskikh.com/",
-      "https://space.podlevskikh.com/",
-      "https://podlevskikh.com/"
+      "https://www.lessonface.com/node/133512",
+      "https://www.superprof.com/mathematics-msu-superprof-super-tutor-for-gcse-igcse-level-sat.html"
+    ],
+    "subjectOf": [
+      {
+        "@type": "WebSite",
+        "url": "https://physics.podlevskikh.com/",
+        "name": "Физика — теория и практика",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://calc.podlevskikh.com/",
+        "name": "Баллы ЕГЭ/ОГЭ",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://calculators.podlevskikh.com/",
+        "name": "Калькуляторы",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://olymp.podlevskikh.com/",
+        "name": "Олимпиады физ-мат",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://exam.podlevskikh.com/",
+        "name": "Экспресс-тест по экзаменам",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://graph.podlevskikh.com/",
+        "name": "Графический калькулятор",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://python.podlevskikh.com/",
+        "name": "Python Learning Game",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://praxis.podlevskikh.com/",
+        "name": "Praxis 5266",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://rocket.podlevskikh.com/",
+        "name": "RocketSim",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://space.podlevskikh.com/",
+        "name": "Interstellar",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://podlevskikh.com/",
+        "name": "Главный сайт",
+        "creator": {
+          "@id": "https://tutor.podlevskikh.com/#vladimir"
+        }
+      }
     ]
   },
   "hasCourseInstance": {
@@ -56,37 +137,10 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
     "courseMode": "online",
     "courseWorkload": "PT1H",
     "instructor": {
-      "@type": "Person",
-      "@id": "https://tutor.podlevskikh.com/#vladimir",
-      "name": "Vladimir Podlevskikh",
-      "alternateName": "Владимир Подлевских",
-      "url": "https://tutor.podlevskikh.com/",
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "Lomonosov Moscow State University",
-        "alternateName": "MSU"
-      },
-      "sameAs": [
-        "https://linkedin.com/in/vladimir-podlevskikh",
-        "https://preply.in/VLADIMIR6EN2958527510",
-        "https://t.me/VladimirPodlevskikh",
-        "https://profi.ru/profile/PodlevskihVN/",
-        "https://physics.podlevskikh.com/",
-        "https://calc.podlevskikh.com/",
-        "https://calculators.podlevskikh.com/",
-        "https://olymp.podlevskikh.com/",
-        "https://exam.podlevskikh.com/",
-        "https://graph.podlevskikh.com/",
-        "https://python.podlevskikh.com/",
-        "https://praxis.podlevskikh.com/",
-        "https://rocket.podlevskikh.com/",
-        "https://space.podlevskikh.com/",
-        "https://podlevskikh.com/"
-      ]
+      "@id": "https://tutor.podlevskikh.com/#vladimir"
     }
   },
   "inLanguage": [
-    "en",
     "ru"
   ]
 }
@@ -98,42 +152,42 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "За сколько до экзамена начинать подготовку к ЕГЭ по физике?",
+      "name": "Когда начинать подготовку к ЕГЭ по физике?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Оптимально — с начала 11 класса (полный цикл с запасом на повторение). Но и интенсив за 4–6 месяцев даёт результат: в этом случае начинаем с самых «дорогих» по баллам тем и второй части, а первую часть закрываем параллельно тренировкой на скорость и точность."
+        "text": "Оптимально — с начала 11 класса: тогда хватает времени на весь курс, повторение и тренировочные варианты. Если времени меньше, начинаем с тех тем, которые дают больше всего баллов, и со второй части, а первую часть закрываем параллельно. Что реально успеть к вашей дате, видно после входной диагностики."
       }
     },
     {
       "@type": "Question",
-      "name": "Как устроена вторая часть и почему на ней теряют баллы?",
+      "name": "Что такое вторая часть и почему на ней теряют баллы?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Вторая часть — задачи с развёрнутым решением, где эксперт оценивает не только ответ, но и оформление: дано, физические законы, рисунок, обоснование. Чаще всего баллы теряют не на физике, а на оформлении и логике. Мы отрабатываем решения строго по критериям проверки ФИПИ."
+        "text": "Вторая часть — шесть заданий с развёрнутым ответом (№21–26), в сумме 17 баллов из 45. Их проверяют эксперты предметных комиссий по критериям, поэтому оценивается не только ответ, но и полнота решения: названные законы, обоснование, ход рассуждений. Чаще всего баллы теряются на оформлении и логике, а не на незнании физики."
       }
     },
     {
       "@type": "Question",
-      "name": "Сколько стоит подготовка к ЕГЭ по физике?",
+      "name": "Можно ли готовиться к ЕГЭ и ДВИ одновременно?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Standard — $390/мес (одно занятие в неделю + личный план), Intensive — $680/мес (два занятия в неделю с проверкой домашних работ). Разовое занятие — $90/60 мин, самостоятельный план — от $49. Точную программу подбираем на бесплатной диагностике."
+        "text": "Да. ДВИ и вступительные испытания вузов устроены иначе, чем ЕГЭ, и обычно требуют более глубокого уровня, поэтому это отдельный трек поверх программы ЕГЭ. Оба формата закладываются в общий план с начала подготовки."
       }
     },
     {
       "@type": "Question",
-      "name": "Готовите ли вы одновременно к ЕГЭ и ДВИ?",
+      "name": "Можно ли начать с нуля или после другой программы?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Да. ДВИ МГУ и внутренние экзамены вузов требуют более глубокого уровня, чем ЕГЭ, — это отдельный трек поверх ЕГЭ-программы. Пример: ученица сдала ЕГЭ на 96 и ДВИ на 100 — поступление на мехмат."
+        "text": "Можно, но объём работы будет больше, и это нужно учесть в плане. Если ребёнок учился по международной программе или в зарубежной школе, сначала сверяем темы курса с кодификатором ЕГЭ и закрываем расхождения. Входная диагностика показывает, с чего начинать."
       }
     },
     {
       "@type": "Question",
-      "name": "Что входит в подготовку, кроме занятий?",
+      "name": "Как проходят занятия и на каком языке?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Личный план по неделям до даты экзамена, авторский банк задач по каждой теме, проверяемые домашние задания, трекер прогресса и ежемесячный отчёт для родителей с текущим прогнозом балла."
+        "text": "Занятия идут онлайн, один на один, по всему миру (GMT+2/+3). Язык занятий — русский или английский, как удобнее ученику. После занятий — домашние задачи с проверкой, а перед экзаменом — полные варианты на 235 минут."
       }
     }
   ]
@@ -180,11 +234,8 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
     </a>
     <nav class="nav-links">
       <a href="/#method">Method</a>
-      <a href="/#results">Results</a>
-      <a href="/#pricing">Packages</a>
       <a href="/blog/">Blog</a>
     </nav>
-    <a class="btn btn-primary btn-sm nav-cta" data-cta="book" href="/#book">Free diagnostic →</a>
   </div>
 </header>
 
@@ -193,30 +244,26 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 <!-- ===================== SUBHERO ===================== -->
 <section class="subhero section" id="top">
   <div class="wrap">
-    <p class="eyebrow reveal">ЕГЭ по физике</p>
-    <h1 class="reveal">Подготовка к ЕГЭ по физике онлайн — <em>с планом до экзамена</em>.</h1>
-    <p class="lead reveal">Индивидуальная подготовка к ЕГЭ по физике с физиком МГУ: разбор всех типов заданий первой и второй части, тренировка оформления по критериям ФИПИ, банк задач и прогноз балла по неделям до экзамена.</p>
-    <div class="subhero-actions reveal">
-      <a class="btn btn-primary btn-lg" data-cta="calendly" href="#">Бесплатная диагностика, 20 минут</a>
-      <a class="btn btn-ghost btn-lg" data-cta="video_physics" href="#">▶&nbsp; Посмотреть пробный урок</a>
-    </div>
+    <p class="eyebrow reveal">ЕГЭ по физике · КИМ 2027</p>
+    <h1 class="reveal">Подготовка к ЕГЭ по физике онлайн — <em>по структуре КИМ 2027</em>.</h1>
+    <p class="lead reveal">Vladimir Podlevskikh (Владимир Подлевских) — физик, выпускник физического факультета МГУ, Praxis Physics 200/200 — готовит к ЕГЭ по физике по спецификации КИМ ЕГЭ 2027. Занятия проходят онлайн, один на один, на русском или английском языке.</p>
     <div class="subhero-meta reveal">
-      <div><b>+30–60</b><span>баллов за год (типично)</span></div>
-      <div><b>2 части</b><span>тест и развёрнутые задачи</span></div>
-      <div><b>ДВИ</b><span>отдельный трек поверх ЕГЭ</span></div>
-      <div><b>23 года</b><span>опыт · 350+ учеников</span></div>
+      <div><b>26 заданий</b><span>две части, 45 первичных баллов</span></div>
+      <div><b>3 ч 55 мин</b><span>235 минут на работу</span></div>
+      <div><b>1:1 онлайн</b><span>по всему миру (GMT+2/+3)</span></div>
+      <div><b>23 года</b><span>частного преподавания · 350+ учеников</span></div>
     </div>
   </div>
 </section>
 
 <div class="cred-strip">
   <div class="wrap">
-    <span class="lbl">Разбираем</span>
-    <span class="cred-chip"><b>Механику</b></span>
-    <span class="cred-chip"><b>МКТ и термодинамику</b></span>
-    <span class="cred-chip"><b>Электродинамику</b></span>
-    <span class="cred-chip"><b>Оптику и квантовую</b></span>
-    <span class="cred-chip"><b>Вторую часть</b> с оформлением</span>
+    <span class="lbl">Разделы КИМ</span>
+    <span class="cred-chip"><b>Механика</b></span>
+    <span class="cred-chip"><b>МКТ и термодинамика</b></span>
+    <span class="cred-chip"><b>Электродинамика</b></span>
+    <span class="cred-chip"><b>Квантовая физика</b></span>
+    <span class="cred-chip"><b>Развёрнутые ответы</b> 21–26</span>
   </div>
 </div>
 
@@ -224,70 +271,107 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 <section class="section">
   <div class="wrap article-grid">
     <div class="prose reveal">
-      <p class="lede">ЕГЭ по физике редко «не сдают из-за незнания физики». Чаще баллы теряются на скорости в первой части и на оформлении во второй — там, где эксперт снимает за пропущенный закон, отсутствие рисунка или необоснованный переход. Это ровно те места, которые быстрее всего поддаются тренировке.</p>
+      <p class="lede">ЕГЭ по физике часто «не сдают из-за незнания физики». Чаще баллы теряются на скорости и точности в первой части и на оформлении во второй: эксперт оценивает развёрнутое решение по критериям, и пропущенный закон, отсутствие обоснования или необъяснённый переход стоят баллов. Это самые тренируемые места экзамена.</p>
 
-      <h2 id="struktura">Из чего состоит экзамен</h2>
-      <p>ЕГЭ по физике делится на две части. <strong>Первая</strong> — задания с кратким ответом по всем разделам: механика, МКТ и термодинамика, электродинамика, оптика, квантовая и ядерная физика. Здесь решают скорость и точность. <strong>Вторая</strong> — задачи с развёрнутым решением, где оценивается логика и оформление: дано, физические законы, рисунок, обоснование, ответ с единицами.</p>
+      <h2 id="struktura">Структура КИМ ЕГЭ 2027</h2>
+      <p>Цифры ниже взяты из спецификации КИМ ЕГЭ 2027 по физике, опубликованной ФИПИ (ссылка в конце страницы). Всего в работе <strong>26 заданий</strong> в двух частях, максимум — <strong>45 первичных баллов</strong>.</p>
+      <ul>
+        <li><strong>Часть 1</strong> — 20 заданий с кратким ответом: 11 из них — ответ в виде числа или двух чисел, 9 — установление соответствия и множественный выбор. Максимум за часть — 28 первичных баллов (62%). Ряд заданий (в спецификации это №5, 6, 9, 10, 14, 15, 17, 18) оценивается в 2 балла, причём 1 балл ставится при одной допущенной ошибке.</li>
+        <li><strong>Часть 2</strong> — 6 заданий с развёрнутым ответом (№21–26), максимум — 17 первичных баллов (38%).</li>
+      </ul>
+      <p>Баллы за задания второй части распределены так: №21 — 3 балла, №22 — 2, №23 — 2, №24 — 3, №25 — 3, №26 — 4 балла; в сумме 17.</p>
+      <p>Содержание работы по разделам курса (число заданий в варианте): механика — 8–10, МКТ и термодинамика — 6–8, электродинамика — 7–10, квантовая физика — 2. По уровню сложности в работе 17 заданий базового уровня (22 балла), 6 повышенного (13 баллов) и 3 высокого (10 баллов).</p>
+      <p>На выполнение работы отводится <strong>3 часа 55 минут (235 минут)</strong>. Разрешены непрограммируемый калькулятор (с функциями sin, cos, tg) и линейка. Шкала перевода первичных баллов в стобалльную меняется от года к году, поэтому на этой странице её нет: актуальную шкалу публикуют официальные источники.</p>
 
       <div class="callout">
         <span class="ico">✍️</span>
-        <p><b>Вторую часть теряют на оформлении, а не на физике.</b> Мы решаем строго по критериям ФИПИ: каждый шаг, который приносит балл, проговариваем и закрепляем — так «правильно решил, но недополучил баллы» исчезает.</p>
+        <p><b>Развёрнутые ответы проверяют эксперты предметных комиссий по критериям.</b> Вторая часть даёт 17 баллов из 45, и во многом они зависят не от «знания формулы», а от полноты и обоснованности записи решения. Поэтому на занятиях мы решаем задачи второй части так, как их будут оценивать: каждый шаг, приносящий балл, назван и записан.</p>
       </div>
 
-      <h2 id="kogda">Когда начинать</h2>
-      <p>Оптимально — с начала 11 класса: полный цикл с запасом на повторение и пробники. Но и интенсив за 4–6 месяцев даёт результат — в этом случае начинаем с самых «дорогих» по баллам тем и второй части, а первую закрываем параллельно тренировкой на скорость. На <a href="/#book">бесплатной диагностике</a> я честно скажу, что реально успеть к вашей дате.</p>
-
-      <h2 id="plan">Как идёт подготовка</h2>
+      <h2 id="teryayut">Где теряют баллы</h2>
       <ul>
-        <li><strong>Диагностика.</strong> Находим текущий уровень и темы, дающие наибольший прирост баллов.</li>
-        <li><strong>Личный план.</strong> Карта по неделям до экзамена, взвешенная по реальному весу заданий в ЕГЭ.</li>
-        <li><strong>Занятия и домашние.</strong> Уроки 1:1, проверяемые домашние задания, авторский банк задач по каждой теме.</li>
-        <li><strong>Пробники.</strong> Полные варианты в условиях экзамена, разбор ошибок, прогноз балла для родителей.</li>
+        <li><strong>Обоснование и оформление во второй части.</strong> Ответ может быть верным, а балл потерян: не названы законы и приближения, нет пояснения выбора системы отсчёта или осей, не выписана исходная формула, а сразу получен числовой результат. Критерии оценивания для заданий 21–26 различаются, и их полезно знать до экзамена, а не после.</li>
+        <li><strong>Невнимательность в кратких ответах.</strong> Неверные единицы, округление раньше времени, неполный множественный выбор. В заданиях на 2 балла одна ошибка стоит ровно одного балла, и это легко потерять на спешке.</li>
+        <li><strong>Время.</strong> 235 минут на 26 заданий нужно распределить заранее: сколько уходит на первую часть и сколько остаётся на шесть развёрнутых задач. Без тренировки полными вариантами это распределение не появляется само.</li>
+        <li><strong>Пробелы в «узких» разделах.</strong> Квантовая физика даёт всего 2 задания, а механика — 8–10; плотный план строится с учётом этого веса, но ни один раздел не оставляется совсем.</li>
       </ul>
 
-      <div class="cta-inline reveal">
-        <div>
-          <h3>Не знаете, на какой балл реально выйти?</h3>
-          <p>Диагностика отвечает именно на это: текущий уровень, цель и честный маршрут к ней — за 20 минут. Продолжать после неё не обязательно.</p>
-        </div>
-        <a class="btn btn-primary btn-lg" data-cta="calendly" href="#">Записаться</a>
-      </div>
+      <h2 id="chast1">Как работаем с первой частью</h2>
+      <p>В первой части 20 заданий, и главное здесь скорость и аккуратность, а не новые знания. Задания с ответом в виде числа тренируются на привычке проверять размерность и порядок величины до того, как ответ записан. Задания на установление соответствия и множественный выбор требуют иного навыка: прочитать условие целиком, проверить каждое утверждение отдельно и не доверять первому впечатлению. Для этих заданий мы разбираем типовые «ловушки» по каждому разделу курса и тренируем решение подборками задач на время, чтобы к экзамену скорость была привычной.</p>
 
-      <h2 id="dvi">ЕГЭ и ДВИ одновременно</h2>
-      <p>ДВИ МГУ и внутренние экзамены вузов требуют более глубокого уровня, чем ЕГЭ, — это отдельный трек поверх основной программы. Пример: ученица сдала ЕГЭ на 96 и ДВИ на 100 и поступила на мехмат. Если цель — топовый вуз, мы сразу закладываем оба формата в план.</p>
+      <h2 id="chast2">Как работаем со второй частью</h2>
+      <p>Для заданий 21–26 мы сначала читаем критерии оценивания и только потом решаем: что именно должно быть записано, чтобы эксперт поставил полный балл, и за какие пропуски балл снижается. Затем ученик пишет решение сам, а мы вместе проверяем его так, как проверял бы эксперт: названы ли законы, обоснована ли применимость модели, выполнены ли преобразования, получен ли числовой ответ с единицами. Этот цикл «решил, проверил по критериям, исправил запись» повторяется для каждого типа задания второй части, пока оформление не станет привычкой.</p>
 
-      <h2 id="rezultaty">Результаты</h2>
-      <blockquote>Типичный прирост — десятки баллов за год при соблюдении плана. Полина М. — 96 ЕГЭ и 100 ДВИ, мехмат МГУ. Рейтинг 4.88★ из 127 проверенных отзывов.</blockquote>
-      <p>Прогноз балла — карта при условии выполнения плана, а не обещание. Оплата в USD/EUR через Payoneer или карту — удобно и из-за рубежа.</p>
+      <h2 id="kogda">Когда начинать</h2>
+      <p>Оптимально — с начала 11 класса: полный цикл с запасом на повторение и тренировочные варианты. Но и интенсив за несколько месяцев имеет смысл: тогда мы начинаем с тех тем, которые дают больше всего баллов, и со второй части, а первую часть закрываем параллельно тренировкой на скорость и точность. Какой объём реально успеть к вашей дате, видно после входной диагностики.</p>
+
+      <h2 id="plan">Как идёт работа</h2>
+      <ul>
+        <li><strong>Диагностика.</strong> Решаем срез заданий обеих частей и смотрим, где именно теряются баллы: тема, тип задания или оформление.</li>
+        <li><strong>Личный план.</strong> Карта тем по неделям до даты экзамена с учётом веса разделов в КИМ 2027.</li>
+        <li><strong>Разбор типов заданий.</strong> Занятия один на один, затем домашние задачи с проверкой и разбором ошибок; для второй части — решения по критериям оценивания.</li>
+        <li><strong>Варианты в условиях экзамена.</strong> Полные работы на 235 минут с калькулятором и линейкой, разбор потерянных баллов и корректировка плана. Баллов я не обещаю: результат зависит от стартового уровня, времени и регулярности работы ученика.</li>
+      </ul>
+
+      <h2 id="dvi">ЕГЭ и ДВИ вместе</h2>
+      <p>Вступительные испытания вузов, в том числе ДВИ МГУ, устроены иначе, чем ЕГЭ: другой формат и обычно более глубокий уровень. Поэтому ДВИ — отдельный трек, который строится поверх программы ЕГЭ, а не вместо неё. Если цель — поступление с дополнительными испытаниями, оба формата закладываются в план с самого начала.</p>
+
+      <h2 id="keis">ЕГЭ и ДВИ: пример поступления</h2>
+      <blockquote>Полина М. — 96 ЕГЭ и 100 ДВИ, мехмат МГУ.</blockquote>
+      <p>Это один пример, а не прогноз и не обещание: результат каждого ученика определяется его стартовой точкой и работой.</p>
+
+      <h2 id="mezhdunarodnaya">Если ребёнок учится по международной программе</h2>
+      <p>Часть семей готовит ребёнка к российскому ЕГЭ, пока он учится за рубежом по международной программе. Тогда занятия по ЕГЭ идут параллельно с курсом школы. Для такого случая у меня есть отдельная страница про Cambridge IGCSE Physics: <a href="/igcse-physics-0625/">IGCSE Physics 0625</a>. Если ребёнок перешёл из российской школы в международную или наоборот, смотрите <a href="/russian-tutor-abroad/">страницу для русскоязычных семей за рубежом</a>. Курс IB Physics описан <a href="/ib-physics-tutor/">отдельно</a>.</p>
+
+      <h2 id="istochniki">Источники</h2>
+      <p>Числа на этой странице проверены по спецификации контрольных измерительных материалов ЕГЭ 2027 по физике (ФИПИ): <a href="https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/fi_11_2027.zip" target="_blank" rel="noopener">архив с демоверсией, спецификацией и кодификатором</a> (файл «ФИ-11 ЕГЭ 2027 СПЕЦ.pdf»). Спецификацию могут уточнить, поэтому перед экзаменом сверяйтесь с актуальной версией на сайте ФИПИ.</p>
     </div>
 
     <aside class="article-aside reveal">
       <div class="toc">
         <div class="toc-lbl">На этой странице</div>
         <ol>
-          <li><a href="#struktura">Структура ЕГЭ</a></li>
+          <li><a href="#struktura">Структура КИМ 2027</a></li>
+          <li><a href="#teryayut">Где теряют баллы</a></li>
+          <li><a href="#chast1">Первая часть</a></li>
+          <li><a href="#chast2">Вторая часть</a></li>
           <li><a href="#kogda">Когда начинать</a></li>
-          <li><a href="#plan">Как идёт подготовка</a></li>
+          <li><a href="#plan">Как идёт работа</a></li>
           <li><a href="#dvi">ЕГЭ и ДВИ</a></li>
-          <li><a href="#rezultaty">Результаты</a></li>
+          <li><a href="#keis">ЕГЭ и ДВИ: пример поступления</a></li>
+          <li><a href="#mezhdunarodnaya">Международная программа</a></li>
           <li><a href="#faq">Вопросы</a></li>
         </ol>
       </div>
       <div class="toc">
-        <div class="toc-lbl">Пакеты</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 14px;">Standard $390/мес · Intensive $680/мес · разовое $90/60 мин.</p>
-        <a class="btn btn-ghost btn-sm" href="/#pricing" style="width:100%;justify-content:center;">Все пакеты</a>
+        <div class="toc-lbl">Формат занятий</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0;">Онлайн, один на один. Язык: русский или английский. Онлайн по всему миру (GMT+2/+3).</p>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- ===================== NETWORK BAND ===================== -->
+<!-- ===================== RELATED ===================== -->
 <section class="section band">
   <div class="wrap">
-    <p class="eyebrow reveal">Бесплатные ресурсы</p>
+    <p class="eyebrow reveal">Читайте также</p>
     <h2 class="section-title reveal">Что помогает готовиться к ЕГЭ</h2>
     <div class="network-grid reveal">
+      <a class="net-card" href="/physics-tutor-online/">
+        <div class="host">/physics-tutor-online</div>
+        <h3>Репетитор по физике онлайн</h3>
+        <p>Общий формат занятий и программы: ЕГЭ, ОГЭ, ДВИ, олимпиады, международные курсы.</p>
+      </a>
+      <a class="net-card" href="/olympiad-physics/">
+        <div class="host">/olympiad-physics</div>
+        <h3>Подготовка к олимпиадам</h3>
+        <p>Олимпиадная физика: уровень глубже ЕГЭ, соседний трек для сильных учеников.</p>
+      </a>
+      <a class="net-card" href="/igcse-physics-0625/">
+        <div class="host">/igcse-physics-0625</div>
+        <h3>Cambridge IGCSE Physics 0625</h3>
+        <p>Если ребёнок учится по международной программе: Core, Extended, Paper 1–6 (на английском).</p>
+      </a>
       <a class="net-card" href="/blog/kinematics-grafiki/">
         <div class="host">/blog</div>
         <h3>Графики движения</h3>
@@ -296,12 +380,12 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
       <a class="net-card" href="/blog/newton-zakony-zadachi/">
         <div class="host">/blog</div>
         <h3>Второй закон Ньютона</h3>
-        <p>Силы, оси, наклонная плоскость и связанные тела — частые ошибки во второй части.</p>
+        <p>Силы, оси, наклонная плоскость и связанные тела: частые ошибки в развёрнутых решениях.</p>
       </a>
-      <a class="net-card" href="https://calculators.podlevskikh.com" target="_blank" rel="noopener">
-        <div class="host">calculators.podlevskikh.com</div>
-        <h3>Калькуляторы по физике</h3>
-        <p>Проверяйте ответы задач с показанным решением — кинематика, энергия, цепи.</p>
+      <a class="net-card" href="/russian-tutor-abroad/">
+        <div class="host">/russian-tutor-abroad</div>
+        <h3>Русскоязычным за рубежом</h3>
+        <p>Переход между российской и международной школой, язык занятий, часовые пояса.</p>
       </a>
     </div>
   </div>
@@ -313,44 +397,25 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
     <h2 class="section-title reveal">Подготовка к ЕГЭ по физике — частые вопросы</h2>
     <div class="faq-list reveal">
       <details class="faq-item" open>
-        <summary class="faq-q">За сколько до экзамена начинать подготовку к ЕГЭ по физике? <span class="plus">+</span></summary>
-        <div class="faq-a">Оптимально — с начала 11 класса (полный цикл с запасом на повторение). Но и интенсив за 4–6 месяцев даёт результат: в этом случае начинаем с самых «дорогих» по баллам тем и второй части, а первую часть закрываем параллельно тренировкой на скорость и точность.</div>
+        <summary class="faq-q">Когда начинать подготовку к ЕГЭ по физике? <span class="plus">+</span></summary>
+        <div class="faq-a">Оптимально — с начала 11 класса: тогда хватает времени на весь курс, повторение и тренировочные варианты. Если времени меньше, начинаем с тех тем, которые дают больше всего баллов, и со второй части, а первую часть закрываем параллельно. Что реально успеть к вашей дате, видно после входной диагностики.</div>
       </details>
       <details class="faq-item">
-        <summary class="faq-q">Как устроена вторая часть и почему на ней теряют баллы? <span class="plus">+</span></summary>
-        <div class="faq-a">Вторая часть — задачи с развёрнутым решением, где эксперт оценивает не только ответ, но и оформление: дано, физические законы, рисунок, обоснование. Чаще всего баллы теряют не на физике, а на оформлении и логике. Мы отрабатываем решения строго по критериям проверки ФИПИ.</div>
+        <summary class="faq-q">Что такое вторая часть и почему на ней теряют баллы? <span class="plus">+</span></summary>
+        <div class="faq-a">Вторая часть — шесть заданий с развёрнутым ответом (№21–26), в сумме 17 баллов из 45. Их проверяют эксперты предметных комиссий по критериям, поэтому оценивается не только ответ, но и полнота решения: названные законы, обоснование, ход рассуждений. Чаще всего баллы теряются на оформлении и логике, а не на незнании физики.</div>
       </details>
       <details class="faq-item">
-        <summary class="faq-q">Сколько стоит подготовка к ЕГЭ по физике? <span class="plus">+</span></summary>
-        <div class="faq-a">Standard — $390/мес (одно занятие в неделю + личный план), Intensive — $680/мес (два занятия в неделю с проверкой домашних работ). Разовое занятие — $90/60 мин, самостоятельный план — от $49. Точную программу подбираем на бесплатной диагностике.</div>
+        <summary class="faq-q">Можно ли готовиться к ЕГЭ и ДВИ одновременно? <span class="plus">+</span></summary>
+        <div class="faq-a">Да. ДВИ и вступительные испытания вузов устроены иначе, чем ЕГЭ, и обычно требуют более глубокого уровня, поэтому это отдельный трек поверх программы ЕГЭ. Оба формата закладываются в общий план с начала подготовки.</div>
       </details>
       <details class="faq-item">
-        <summary class="faq-q">Готовите ли вы одновременно к ЕГЭ и ДВИ? <span class="plus">+</span></summary>
-        <div class="faq-a">Да. ДВИ МГУ и внутренние экзамены вузов требуют более глубокого уровня, чем ЕГЭ, — это отдельный трек поверх ЕГЭ-программы. Пример: ученица сдала ЕГЭ на 96 и ДВИ на 100 — поступление на мехмат.</div>
+        <summary class="faq-q">Можно ли начать с нуля или после другой программы? <span class="plus">+</span></summary>
+        <div class="faq-a">Можно, но объём работы будет больше, и это нужно учесть в плане. Если ребёнок учился по международной программе или в зарубежной школе, сначала сверяем темы курса с кодификатором ЕГЭ и закрываем расхождения. Входная диагностика показывает, с чего начинать.</div>
       </details>
       <details class="faq-item">
-        <summary class="faq-q">Что входит в подготовку, кроме занятий? <span class="plus">+</span></summary>
-        <div class="faq-a">Личный план по неделям до даты экзамена, авторский банк задач по каждой теме, проверяемые домашние задания, трекер прогресса и ежемесячный отчёт для родителей с текущим прогнозом балла.</div>
+        <summary class="faq-q">Как проходят занятия и на каком языке? <span class="plus">+</span></summary>
+        <div class="faq-a">Занятия идут онлайн, один на один, по всему миру (GMT+2/+3). Язык занятий — русский или английский, как удобнее ученику. После занятий — домашние задачи с проверкой, а перед экзаменом — полные варианты на 235 минут.</div>
       </details>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== FINAL CTA ===================== -->
-<section class="book section" id="book">
-  <div class="wrap book-inner">
-    <div>
-      <p class="eyebrow reveal">Бесплатная диагностика</p>
-      <h2 class="reveal">Скажите дату ЕГЭ и цель. Я составлю <em>честный план до экзамена.</em></h2>
-      <p class="lead reveal">20 минут: текущий уровень, целевой балл, сроки — и маршрут, который реально пройти.</p>
-    </div>
-    <div class="book-card reveal">
-      <div class="row"><a class="btn btn-primary btn-lg" data-cta="calendly" href="#" style="flex:1;justify-content:center;">📅&nbsp; Выбрать время в Calendly</a></div>
-      <div class="row">
-        <a class="btn btn-ghost" data-cta="telegram" href="#" style="flex:1;justify-content:center;">Telegram</a>
-        <a class="btn btn-ghost" data-cta="whatsapp" href="#" style="flex:1;justify-content:center;">WhatsApp</a>
-      </div>
-      <p class="fine">Или напишите на <a data-cta="email" data-subject="Подготовка к ЕГЭ по физике" href="#">vladimir@podlevskikh.com</a><br/>Оплата в USD/EUR через Payoneer или карту. Начать можно с одного занятия.</p>
     </div>
   </div>
 </section>
@@ -371,8 +436,8 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
         <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
       </div>
       <p style="color:var(--muted);font-size:14.5px;max-width:42ch;line-height:1.6;">
-        MSU physicist · 23+ years · 350+ students · perfect 200/200 on both US Praxis Physics &amp; Maths.
-        Structured online preparation for IB, AP, SAT, A-Level, IGCSE &amp; ЕГЭ.
+        Физик МГУ · 23 года частного преподавания · 350+ учеников · 200/200 на обоих экзаменах US Praxis (физика и математика).
+        Структурированная онлайн-подготовка к IB, AP, SAT, A-Level, IGCSE и ЕГЭ.
       </p>
     </div>
     <div>
@@ -380,6 +445,7 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
       <div style="display:grid;gap:9px;font-size:14px;">
         <a href="/ib-physics-tutor/" style="color:var(--muted);">IB Physics Tutor</a>
         <a href="/ap-physics-tutor/" style="color:var(--muted);">AP Physics Tutor</a>
+        <a href="/igcse-physics-0625/" style="color:var(--muted);">IGCSE Physics 0625 Tutor</a>
         <a href="/physics-tutor-online/" style="color:var(--muted);">Репетитор по физике онлайн</a>
         <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>
         <a href="/olympiad-physics/" style="color:var(--muted);">Подготовка к олимпиадам</a>
@@ -393,21 +459,12 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
         <a href="/blog/" style="color:var(--muted);">Blog &amp; method articles</a>
         <a href="https://calculators.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Physics calculators ↗</a>
         <a href="https://olymp.podlevskikh.com" target="_blank" rel="noopener" style="color:var(--muted);">Olympiad knowledge base ↗</a>
-        <a data-cta="mainsite" href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>
-      </div>
-      <div class="toc-lbl" style="margin:22px 0 12px;">Связаться</div>
-      <div style="display:grid;gap:9px;font-size:14px;">
-        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 Book a free diagnostic</a>
-        <div style="display:flex;gap:14px;margin-top:4px;">
-          <a data-cta="telegram" href="#" style="color:var(--muted);">Telegram</a>
-          <a data-cta="whatsapp" href="#" style="color:var(--muted);">WhatsApp</a>
-          <a data-cta="email" data-subject="Tutoring enquiry" href="#" style="color:var(--muted);">Email</a>
-        </div>
+        <a href="https://podlevskikh.com" style="color:var(--muted);">podlevskikh.com ↗</a>
       </div>
     </div>
-    <div class="loc" style="grid-column:1/-1;">© <span data-year>2026</span> Vladimir Podlevskikh · Онлайн по всему миру (GMT+2/+3) · Last updated: <time datetime="2026-06">June 2026</time></div>
+    <div class="loc" style="grid-column:1/-1;">© <span data-year>2026</span> Vladimir Podlevskikh · Онлайн по всему миру (GMT+2/+3) · Обновлено: <time datetime="2026-11">ноябрь 2026</time></div>
   </div>
-</footer><div class="net-band" style="background:#1C2536;border-top:1px solid rgba(255,255,255,.1);padding:36px 16px 28px;text-align:center;font-family:'Manrope',-apple-system,Segoe UI,Roboto,sans-serif"><div style="font-weight:700;color:#A9B0C0;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px">Проекты сети</div><nav style="display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:center;max-width:860px;margin:0 auto"><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://physics.podlevskikh.com/">Физика — теория и практика</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://calc.podlevskikh.com/">Баллы ЕГЭ/ОГЭ</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://calculators.podlevskikh.com/">Калькуляторы</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://olymp.podlevskikh.com/">Олимпиады физ-мат</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://exam.podlevskikh.com/">Экспресс-тест по экзаменам</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://graph.podlevskikh.com/">Графический калькулятор</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://python.podlevskikh.com/">Python Learning Game</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://praxis.podlevskikh.com/">Praxis 5266</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://rocket.podlevskikh.com/">RocketSim</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://space.podlevskikh.com/">Interstellar</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://auto.podlevskikh.com/">Автоматизация</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://aiact.podlevskikh.com/">AI Act — гид по регламенту</a><a style="color:#D9B477;text-decoration:none;font-size:14.5px;white-space:nowrap;font-weight:500" href="https://podlevskikh.com/">Главный сайт</a></nav></div>
+</footer>
 
 <script src="/assets/site.js"></script>
 

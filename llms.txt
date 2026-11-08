@@ -14,12 +14,15 @@
 - [Подготовка к экзаменам онлайн — страница репетитора](https://tutor.podlevskikh.com/exam-prep-online/): 8 straight answers (Russian) on how to choose a tutor, exams, format, languages, qualification, first step.
 
 ## Programmes (pillar pages)
-- [IB Physics Tutor (HL & SL) Online — MSU Physicist, 200/200 Praxis](https://tutor.podlevskikh.com/ib-physics-tutor/): Online IB Physics HL & SL tutor. MSU physicist, 23+ years, 350+ students. Paper 1/2/3 technique, IA support and the jump on the 1–7 scale. Free 20-min diagnostic.
+- [IB Physics Tutor (HL & SL) Online — MSU Physicist, 200/200 Praxis](https://tutor.podlevskikh.com/ib-physics-tutor/): Online IB Physics HL & SL tutor. MSU physicist, 23 years of private tutoring, 350+ students. Paper 1/2/3 technique, IA support and the jump on the 1–7 scale. Free 20-min diagnostic.
 - [AP Physics Tutor Online — Physics 1, 2 & C (Mechanics, E&M)](https://tutor.podlevskikh.com/ap-physics-tutor/): Online AP Physics tutor for Physics 1, 2 and C. MSU physicist, perfect 200/200 US Praxis Physics. FRQ technique and a clear route to the 5. Free 20-min diagnostic.
 - [Репетитор по физике онлайн — физик МГУ, 23 года, 350+ учеников](https://tutor.podlevskikh.com/physics-tutor-online/): Репетитор по физике онлайн: физик МГУ, 23 года опыта, 350+ учеников. Подготовка к ЕГЭ, ОГЭ, ДВИ, олимпиадам, IB, AP, A-Level. Структурный план к экзамену. Бесплатная диагностика.
-- [Подготовка к ЕГЭ по физике онлайн — физик МГУ, план до экзамена](https://tutor.podlevskikh.com/ege-physics/): Подготовка к ЕГЭ по физике онлайн с физиком МГУ. Разбор всех типов заданий первой и второй части, план по неделям до экзамена, банк задач, прогноз балла. Бесплатная диагностика.
+- [ЕГЭ по физике 2027: структура КИМ и подготовка онлайн 1:1](https://tutor.podlevskikh.com/ege-physics/): Подготовка к ЕГЭ по физике 2027 онлайн, 1:1: структура КИМ (26 заданий, 45 баллов, 235 минут), вторая часть и критерии, ДВИ. Физик МГУ, Praxis 200/200.
+- [Cambridge IGCSE Physics 0625 Tutor Online — Core and Extended](https://tutor.podlevskikh.com/igcse-physics-0625/): Online one-to-one Cambridge IGCSE Physics 0625 tutor: Core vs Extended, Paper 1-6, AO1-AO3 and the six syllabus topics. MSU physicist, Praxis 200/200.
+
+## Segments
 - [Репетитор по физике и математике для русскоязычных за рубежом](https://tutor.podlevskikh.com/russian-tutor-abroad/): Репетитор по физике и математике для русскоязычных семей за границей. Поможет ребёнку в международной школе: IB, AP, A-Level, IGCSE — на русском и английском. Любой часовой пояс, оплата в USD/EUR.
-- [Подготовка к олимпиадам по физике и математике — онлайн](https://tutor.podlevskikh.com/olympiad-physics/): Подготовка к олимпиадам по физике и математике онлайн: Всероссийская олимпиада, перечневые олимпиады, Physics Olympiad. Физик МГУ. Нестандартные задачи и техника решения.
+- [Подготовка к олимпиадам по физике и математике — онлайн](https://tutor.podlevskikh.com/olympiad-physics/): Подготовка к олимпиадам по физике и математике онлайн: Всероссийская олимпиада, перечневые олимпиады, Physics Olympiad. Физик МГУ, 23 года частного преподавания. Нестандартные задачи и техника решения.
 
 ## Method blog (worked problems & exam technique)
 - [Как читать графики движения: разбор типовых задач кинематики](https://tutor.podlevskikh.com/blog/kinematics-grafiki/): Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами.
