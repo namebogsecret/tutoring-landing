@@ -134,12 +134,12 @@ class TestJsonLd(Base):
         for u, s in self.src.items():
             faq = [b for b in jsonld_blocks(s) if b.get("@type") == "FAQPage"][0]
             names = [q["name"] for q in faq["mainEntity"]]
-            self.assertEqual(len(names), 5, u)
+            self.assertGreaterEqual(len(names), 5, u)  # контракт: ≥5 (12.11 добавлены ответы под ИИ-запросы)
             vis = re.findall(r'<summary class="faq-q">(.*?)<span class="plus">', s, re.S)
             vis = [re.sub(r"\s+", " ", htmllib.unescape(v)).strip() for v in vis]
             self.assertEqual(vis, names, u)
             answers = re.findall(r'<div class="faq-a">(.*?)</div>', s, re.S)
-            self.assertEqual(len(answers), 5, u)
+            self.assertEqual(len(answers), len(names), u)
             for q, a in zip(faq["mainEntity"], answers):
                 self.assertEqual(q["acceptedAnswer"]["text"], visible_text(a))
 
