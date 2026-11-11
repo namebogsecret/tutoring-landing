@@ -202,7 +202,7 @@ def tutor_block(lang):
 
 # ── page assembly ────────────────────────────────────────────────────────
 def build_page(p):
-    body = open(os.path.join(HERE, p["body"]), encoding="utf-8").read()
+    body = p["body_html"] if "body_html" in p else open(os.path.join(HERE, p["body"]), encoding="utf-8").read()
     faq_html = render_faq(p.get("faq"), p.get("faq_heading", "Questions families ask"))
     body = body.replace("{{FAQ}}", faq_html)
 
@@ -285,6 +285,8 @@ def build_page(p):
 
 # ── page registry ────────────────────────────────────────────────────────
 from pages_registry import PAGES   # keeps this file small; data lives there
+from answer_pages import answer_pages
+PAGES = PAGES + answer_pages()      # страницы-ответы под запросы ИИ-замера (/answers/…)
 
 # Перехватчик JS-ошибок (js-error-autofix). Инлайном и ПЕРВЫМ в <head>: лендинг —
 # вход воронки, и «страница не открылась» здесь стоит дороже всего. Сайт на GitHub
@@ -339,12 +341,16 @@ f"- [Подготовка к экзаменам онлайн — страниц�
 ]
     segments = ("/russian-tutor-abroad/", "/olympiad-physics/")
     for p in PAGES:
-        if p["url"].startswith("/blog/") or p["url"] in ("/blog/", "/exam-prep-online/") or p["url"] in segments:
+        if p["url"].startswith(("/blog/", "/answers/")) or p["url"] in ("/blog/", "/exam-prep-online/") or p["url"] in segments:
             continue
         lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
     lines += ["", "## Segments"]
     for p in PAGES:
         if p["url"] in segments:
+            lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
+    lines += ["", "## Short answers to common queries"]
+    for p in PAGES:
+        if p["url"].startswith("/answers/"):
             lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
     lines += ["", "## Method blog (worked problems & exam technique)"]
     for p in PAGES:

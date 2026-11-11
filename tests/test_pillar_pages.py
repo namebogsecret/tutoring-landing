@@ -339,8 +339,11 @@ class TestNeighboursUntouched(unittest.TestCase):
         # страницы из реестра (src/<имя>.html и <url>/index.html) плюс ручные index/hub/404.
         sys.path.insert(0, ROOT)
         from pages_registry import PAGES
+        from answer_pages import answer_pages
         allowed_src = {p["body"] for p in PAGES}
-        allowed_idx = {p["url"].strip("/") + "/index.html" for p in PAGES} | {"index.html", "hub/index.html"}
+        allowed_idx = ({p["url"].strip("/") + "/index.html" for p in PAGES}
+                       | {p["url"].strip("/") + "/index.html" for p in answer_pages()}
+                       | {"index.html", "hub/index.html"})
         for f in files:
             if f.startswith("src/") and f.endswith(".html"):
                 self.assertIn(f, allowed_src, f)
