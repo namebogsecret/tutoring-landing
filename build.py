@@ -213,7 +213,9 @@ def build_page(p):
     if fq:
         head_extra.append(fq)
     head_extra.append(breadcrumb_jsonld(p["crumbs"]))
-    head_extra = "\n".join(head_extra)
+    head_extra = "\n".join(
+        [f'<link rel="alternate" hreflang="{l}" href="{BASE}{u}" />' for l, u in p.get("alternates", [])]
+        + head_extra)
 
     canonical = BASE + p["url"]
     html_lang = p["lang"]
@@ -305,16 +307,19 @@ FB_WIDGET = ('<script src="https://stats.podlevskikh.com/fb/static/feedback-widg
 
 def build_sitemap(urls):
     lastmods = {p["url"]: p["lastmod"] for p in PAGES if p.get("lastmod")}
+    alts = {p["url"]: p["alternates"] for p in PAGES if p.get("alternates")}
     rows = [('/', '1.0', 'monthly')]
     for u in urls:
         pr = '0.9' if u.count('/') <= 2 else '0.7'
         rows.append((u, pr, 'monthly'))
+    def xl(u):
+        return "".join(f'\n    <xhtml:link rel="alternate" hreflang="{l}" href="{BASE}{h}"/>' for l, h in alts.get(u, []))
     body = "\n".join(
         f"  <url>\n    <loc>{BASE}{u}</loc>\n    <lastmod>{lastmods.get(u, TODAY)}</lastmod>"
-        f"\n    <changefreq>{cf}</changefreq>\n    <priority>{pr}</priority>\n  </url>"
+        f"\n    <changefreq>{cf}</changefreq>\n    <priority>{pr}</priority>{xl(u)}\n  </url>"
         for u, pr, cf in rows)
     xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
            + body + "\n</urlset>\n")
     open(os.path.join(HERE, "sitemap.xml"), "w", encoding="utf-8").write(xml)
 

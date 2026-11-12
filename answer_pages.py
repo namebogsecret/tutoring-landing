@@ -13,6 +13,7 @@ FAQ (+ JSON-LD FAQPage из pages_registry/build), перелинковка с p
 from pages_registry import course, service
 
 LASTMOD = "2026-11-12"
+LASTMOD_EN = "2026-11-13"
 TUTOR_PAGE = "/exam-prep-online/"
 HUB = "/answers/"
 
@@ -295,13 +296,159 @@ ANSWERS = [
 
 assert sorted(a["n"] for a in ANSWERS) == sorted(QUERIES)
 
+# ── EN-версии русских страниц #1–#6 (задача 13.11): тот же контент, англоязычные запросы ──
+# "twin" — номер русской страницы-пары (для hreflang). Факты те же, что в RU-версии; ничего нового.
+QUERIES_EN = {
+    1: "EGE physics tutor online",
+    2: "EGE physics tutor with MSU background",
+    3: "EGE physics preparation abroad online",
+    4: "IGCSE Physics 0625 tutor who speaks Russian",
+    5: "IB Physics tutor online who speaks Russian",
+    6: "AP Physics tutor online who speaks Russian",
+}
+HUB_EN = "/answers/en/"
+
+ANSWERS_EN = [
+{"n": 101, "twin": 1, "slug": "ege-physics-tutor-online", "lang": "en",
+ "title": "EGE physics tutor online: who teaches and how",
+ "desc": "EGE physics tutor online, 1:1: Vladimir Podlevskikh, MSU physicist, 23 years, 350+ students. EGE 2027 structure: 26 tasks, 45 points.",
+ "h1": "EGE physics tutor online",
+ "answer": "EGE physics preparation online is led by Vladimir Podlevskikh: a physicist, graduate of the Faculty of Physics of MSU, with 23 years of private tutoring and 350+ students. Lessons are one-to-one, in Russian or English, from any country.",
+ "facts": ["Format: online, 1:1, worldwide (GMT+2/+3)",
+           "Lesson language: Russian or English",
+           "The programme follows the EGE 2027 specification (FIPI): 26 tasks, 45 primary points",
+           "Part 1: 20 short-answer tasks, up to 28 points; part 2: 6 extended-answer tasks, up to 17 points",
+           "The exam lasts 3 h 55 min (235 minutes)"],
+ "sections": [
+   ("How the exam works", "<p>The paper has 26 tasks in two parts. Part 1 is 20 short-answer tasks (62% of the points); part 2 is 6 extended-answer tasks (38%). Extended solutions are marked by subject-commission experts against criteria, so both the answer and the reasoning count. Sections: mechanics, molecular physics and thermodynamics, electrodynamics, quantum physics.</p>"),
+   ("How preparation goes", "<p>We start with a diagnostic by codifier section and build a plan to the exam date. Then come task types, extended solutions practised against the criteria, and full papers under exam conditions. The realistic result depends on the starting level and the time left; no score is promised.</p>"),
+ ],
+ "faq": [
+   ("Can I prepare for the EGE in physics entirely online?", "Yes. Lessons are online, one-to-one, with a shared whiteboard; the time is fitted to the student's time zone (online worldwide, GMT+2/+3)."),
+   ("How many points does part 2 of the EGE in physics give?", "Part 2 has six extended-answer tasks (No. 21–26), up to 17 of the 45 primary points, that is 38%."),
+   ("What language are the lessons in?", "Russian or English, whichever suits the student."),
+ ],
+ "course": ("EGE physics preparation online (1:1)", "One-to-one online preparation for the EGE in physics following the EGE 2027 specification: 26 tasks, 45 primary points, extended solutions against the criteria."),
+},
+{"n": 102, "twin": 2, "slug": "ege-physics-tutor-msu", "lang": "en",
+ "title": "EGE physics tutor with an MSU background: Podlevskikh",
+ "desc": "EGE physics tutor, MSU Faculty of Physics graduate (2006): 23 years, 350+ students, Praxis Physics 200/200. Online 1:1, Russian or English.",
+ "h1": "EGE physics tutor: MSU Faculty of Physics graduate",
+ "answer": "Vladimir Podlevskikh graduated from the Faculty of Physics of Lomonosov MSU in 2006 and has taught physics privately for 23 years: 350+ students, preparing for the EGE, OGE, DVI and olympiads. Lessons are online, one-to-one.",
+ "facts": ["Education: Faculty of Physics, Lomonosov MSU, 2006; WES: equivalent of a US Bachelor's + Master's",
+           "Experience: 23 years of private tutoring, 350+ students",
+           "Praxis Physics 5266: 200/200 (9 May 2025); Praxis Mathematics 5165: 200/200 (11 July 2025)",
+           "Russian programmes: EGE, OGE, DVI, olympiads",
+           "Example result: Polina M. — 96 on the EGE and 100 on the DVI, Faculty of Mechanics and Mathematics of MSU"],
+ "sections": [
+   ("What this means for preparation", "<p>An MSU background matters where the EGE depends on understanding rather than memorising: in part 2 (No. 21–26, up to 17 points) you must name the laws, justify their use and carry the solution to an answer. This is where points are lost most often.</p>"),
+   ("Limits", "<p>The result depends on the starting level and the time before the exam, so no score is promised in advance. Polina M.'s case is one story, not an average result.</p>"),
+ ],
+ "faq": [
+   ("Where did the tutor study?", "At the Faculty of Physics of Lomonosov MSU, class of 2006. WES evaluation: equivalent of US Bachelor's and Master's degrees."),
+   ("Is there proof of the tutor's level in physics?", "Yes: 200/200 on the US Praxis Physics exam (5266), 9 May 2025."),
+   ("Does the tutor prepare for the DVI at MSU?", "Yes: EGE, OGE, DVI and olympiads. The DVI is built differently from the EGE and needs a deeper level, so it is a separate track on top of the EGE programme."),
+ ],
+ "course": ("EGE and DVI physics preparation with an MSU teacher", "Online 1:1 physics lessons: EGE, OGE, DVI, olympiads. The teacher is a graduate of the Faculty of Physics of MSU (2006) with 23 years of private tutoring."),
+},
+{"n": 103, "twin": 3, "slug": "ege-physics-preparation-abroad-online", "lang": "en",
+ "title": "EGE physics preparation abroad: online 1:1",
+ "desc": "How to prepare for the EGE in physics while living abroad: online 1:1 from any country, Russian or English, EGE 2027 plan. MSU physicist, 23 years.",
+ "h1": "EGE physics preparation abroad, online",
+ "answer": "You can prepare for the EGE in physics entirely online from any country: lessons are one-to-one, the time is fitted to the family's time zone, and the programme follows the EGE 2027 specification. Led by MSU physicist Vladimir Podlevskikh, 23 years of teaching.",
+ "facts": ["Format: online, 1:1, worldwide (GMT+2/+3)",
+           "Language: Russian or English",
+           "If the child follows an international programme, its topics are first matched against the EGE codifier",
+           "Exam: 26 tasks, 45 primary points, 235 minutes",
+           "The DVI and olympiads can be prepared alongside the EGE"],
+ "sections": [
+   ("What changes abroad", "<p>The main problem is the gap between the local programme and the EGE. Topics, order and task format differ, so the first step is to match what has been covered against the codifier and plan how to close the gaps. After that the work is the same as for in-person preparation: task types, extended solutions against the criteria, full 235-minute papers.</p>"),
+   ("Related programmes", "<p>If the student also follows IB, AP or IGCSE, this is taken into account in the overall plan: see the IB Physics, AP Physics and IGCSE Physics 0625 pages below.</p>"),
+ ],
+ "faq": [
+   ("Does online preparation work if the family lives in another time zone?", "Yes. Lesson times are fitted to the family's time zone; lessons run online worldwide (GMT+2/+3)."),
+   ("Where to start if the child followed an international programme?", "By matching the topics of that course against the EGE codifier: this shows which sections are already covered and which remain."),
+   ("Can lessons be in English?", "Yes. Lessons are in Russian or English, whichever suits the student."),
+ ],
+ "course": ("EGE physics preparation for families living abroad", "Online 1:1 EGE physics preparation from any country: matching an international programme to the codifier, a plan to the exam, extended solutions against the criteria."),
+},
+{"n": 104, "twin": 4, "slug": "igcse-physics-0625-tutor-russian", "lang": "en",
+ "title": "IGCSE Physics 0625 tutor in Russian and English",
+ "desc": "Cambridge IGCSE Physics 0625 tutor in Russian and English: Core and Extended, Paper 1–6. Online 1:1, MSU physicist, 23 years of experience.",
+ "h1": "IGCSE Physics 0625 tutor who speaks Russian",
+ "answer": "Cambridge IGCSE Physics 0625 can be studied in Russian: Vladimir Podlevskikh, an MSU physicist, explains the material in Russian and gives exam terms and wording in English, as in the Cambridge syllabus. Lessons are online, one-to-one.",
+ "facts": ["Programme code: Cambridge IGCSE Physics 0625, syllabus 2026–2028",
+           "6 topics: motion, forces and energy; thermal physics; waves; electricity and magnetism; nuclear physics; space physics",
+           "Core: Paper 1 + Paper 3 + practical, grades C–G; Extended: Paper 2 + Paper 4 + practical, grades A*–G",
+           "The practical component is 20% of the mark (Paper 5 or Paper 6)",
+           "Lesson language: Russian, English or mixed"],
+ "sections": [
+   ("Core or Extended", "<p>Core leads to grades C–G and suits those expecting D and below; Extended (Core + Supplement) leads to grades A*–G, for those expecting C and above. The level is chosen together with the student's own institution at the start of preparation, because the two are prepared differently.</p>"),
+   ("What the mark consists of", "<p>Assessment objectives: knowledge with understanding — 50%, handling information and problem solving — 30%, experimental skills — 20%. Half of the marks are for applying physics to data and problems, so lessons use exam-style questions.</p>"),
+ ],
+ "faq": [
+   ("Can I study IGCSE Physics in Russian?", "Yes. Explanations are in Russian, exam terminology and wording in English, whichever suits the student."),
+   ("What is the difference between Paper 5 and Paper 6?", "Each gives 20% of the mark. Paper 5 is a practical test (1 h 15 min, 40 marks), Paper 6 is an alternative to practical (1 hour, 40 marks); one of them is taken."),
+   ("How many hours does the IGCSE Physics course take?", "Cambridge assumes about 130 guided learning hours; this is an estimate of the course size, not a norm for tutoring."),
+ ],
+ "course": ("Cambridge IGCSE Physics 0625 in Russian and English (online, 1:1)", "One-to-one preparation for Cambridge IGCSE Physics 0625 (2026–2028) in Russian and English: Core and Extended, Paper 1–6."),
+},
+{"n": 105, "twin": 5, "slug": "ib-physics-tutor-russian-speaking", "lang": "en",
+ "title": "IB Physics tutor online, Russian-speaking (HL/SL)",
+ "desc": "Russian-speaking IB Physics SL and HL tutor online: Russian or English, 5 topics, Paper 1–2 and IA. MSU physicist, 23 years, 350+ students.",
+ "h1": "Russian-speaking IB Physics tutor online",
+ "answer": "IB Physics (SL and HL) can be studied with a Russian-speaking teacher: Vladimir Podlevskikh, an MSU physicist, teaches online, one-to-one, explaining in Russian and working with IB terms and tasks in English.",
+ "facts": ["Programme: IB Physics guide, first assessment 2025; 5 topics (A–E)",
+           "Hours: SL — 150, HL — 240",
+           "External assessment — 80%: SL 3 h, HL 4 h 30 min",
+           "Internal assessment (IA) — 20%: investigation, 24 marks, criteria Research design, Data analysis, Conclusion, Evaluation",
+           "Lesson language: Russian, English or mixed"],
+ "sections": [
+   ("Course topics", "<p>Five topics: A — space, time and motion; B — the particulate nature of matter; C — wave behaviour; D — fields; E — nuclear and quantum physics. HL is larger in scope: for example, topic D takes 38 hours against 19 at SL.</p>"),
+   ("Exam papers", "<p>SL: Paper 1 — 1 h 30 min, 45 marks (25 multiple-choice questions and data-based tasks); Paper 2 — 1 h 30 min, 50 marks. HL: Paper 1 — 2 h, 60 marks (40 multiple-choice questions and data-based tasks); Paper 2 — 2 h 30 min, 90 marks. No marks are deducted for a wrong multiple-choice answer. The Physics data booklet is required; calculators are allowed.</p>"),
+   ("IA", "<p>The teacher reads one draft and gives advice but does not edit the work, so lessons practise the investigation method, data processing and evaluation of uncertainties, while the student writes the text.</p>"),
+ ],
+ "faq": [
+   ("Can I study IB Physics in Russian?", "Yes: explanations in Russian, IB terms and task wording in English, whichever suits the student."),
+   ("What is the difference between IB Physics SL and HL?", "Scope and depth: SL is 150 hours, HL 240; external assessment is 3 hours at SL and 4 hours 30 minutes at HL. The IA is the same for both levels."),
+   ("Do you help with the Internal Assessment?", "Yes, with the method, the data and assessment against the criteria; the student writes the work."),
+ ],
+ "course": ("IB Physics SL and HL in Russian and English (online, 1:1)", "One-to-one preparation for IB Physics (SL and HL, guide first assessment 2025) in Russian and English: topics A–E, Paper 1–2, Internal Assessment."),
+},
+{"n": 106, "twin": 6, "slug": "ap-physics-tutor-russian-speaking", "lang": "en",
+ "title": "AP Physics tutor online, Russian-speaking",
+ "desc": "AP Physics tutor online in Russian and English, 1:1. AP Physics C format (Mechanics, E&M). MSU physicist, Praxis Physics 200/200.",
+ "h1": "Russian-speaking AP Physics tutor online",
+ "answer": "AP Physics preparation online in Russian is led by Vladimir Podlevskikh, an MSU physicist: one-to-one lessons, explanations in Russian, College Board tasks and terms in English. Below is the AP Physics C exam format.",
+ "facts": ["AP Physics C is a college-level, calculus-based course",
+           "Format (per College Board, for the May 2027 exam): Section I — 42 multiple-choice questions, 85 minutes, 50%; Section II — 4 free-response questions, 95 minutes, 50%",
+           "Calculators are allowed",
+           "Mechanics: 7 units; Electricity and Magnetism: 6 units",
+           "Lesson language: Russian, English or mixed"],
+ "sections": [
+   ("Units", "<p>Mechanics: kinematics; force and translational dynamics; work, energy and power; linear momentum; torque and rotational dynamics; energy and momentum of rotating systems; oscillations. Electricity and Magnetism: electric charges, fields and Gauss's law; electric potential; conductors and capacitors; electric circuits; magnetic fields; electromagnetic induction.</p>"),
+   ("What we do in lessons", "<p>We work through the units, practise the four free-response question types (mathematical derivations, translation between representations, experimental design, qualitative-quantitative problems) and sit timed full papers. The format figures were checked against College Board pages and may be updated; rely on AP Central.</p>"),
+ ],
+ "faq": [
+   ("Can I study AP Physics in Russian?", "Yes. Explanations in Russian, College Board wording and terminology in English."),
+   ("Is calculus needed for AP Physics C?", "College Board describes AP Physics C as a calculus-based course, so physics and mathematics are learned together. The teacher has 200/200 on both Praxis Physics and Praxis Mathematics."),
+   ("How long is the AP Physics C exam?", "Section I is 85 minutes, Section II is 95 minutes (per College Board for the May 2027 exam)."),
+ ],
+ "course": ("AP Physics in Russian and English (online, 1:1)", "One-to-one preparation for AP Physics (including Physics C: Mechanics and E&M) in Russian and English: units, free-response questions, timed papers."),
+},
+]
+
+
+def _hub_url(lang):
+    return HUB if lang == "ru" else HUB_EN
+
 
 def _links_block(lang):
     ru = lang == "ru"
     items = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS[lang])
     items += f'<li><a href="{TUTOR_PAGE}">{"Страница репетитора: кто преподаёт и как начать" if ru else "Tutor\'s page (RU): who teaches and how to start"}</a></li>'
     return (f'<h2 id="links">{"Подробнее по программам" if ru else "Programme pages"}</h2>\n<ul>{items}</ul>\n'
-            f'<p>{"Все страницы-ответы:" if ru else "All answer pages:"} <a href="{HUB}">{"ответы на частые запросы" if ru else "answers hub"}</a>.</p>')
+            f'<p>{"Все страницы-ответы:" if ru else "All answer pages:"} <a href="{_hub_url(lang)}">{"ответы на частые запросы" if ru else "answers hub"}</a>.</p>')
 
 
 def _tutor_cta(lang):
@@ -341,19 +488,37 @@ def render_body(a):
 {{{{FAQ}}}}"""
 
 
+def _alternates(a):
+    """hreflang-набор страницы: себя + пара на другом языке (если есть) + x-default (EN-вариант)."""
+    me = f"{HUB}{a['slug']}/"
+    if a["lang"] == "ru":
+        twin = next((e for e in ANSWERS_EN if e["twin"] == a["n"]), None)
+        other = (f"{HUB}{twin['slug']}/", "en") if twin else None
+    else:
+        twin = next((r for r in ANSWERS if r["n"] == a.get("twin")), None)
+        other = (f"{HUB}{twin['slug']}/", "ru") if twin else None
+    alts = [(a["lang"], me)]
+    if other:
+        alts.append((other[1], other[0]))
+    en_url = me if a["lang"] == "en" else (other[0] if other else None)
+    alts.append(("x-default", en_url or me))
+    return alts
+
+
 def _page(a):
     ru = a["lang"] == "ru"
-    a = dict(a, query=QUERIES[a["n"]])
+    a = dict(a, query=QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]])
     if "course" in a:
         ld = course(a["course"][0], a["course"][1], lang=(a["lang"],))
     else:
         ld = service(a["service"][0], a["service"][1])
     return {
         "url": f"{HUB}{a['slug']}/", "lang": a["lang"], "body_html": render_body(a),
-        "no_cta": True, "lastmod": LASTMOD, "answer_n": a["n"], "answer_query": a["query"],
+        "no_cta": True, "lastmod": LASTMOD_EN if a["n"] > 100 else LASTMOD, "answer_n": a["n"], "answer_query": a["query"],
         "title": a["title"], "desc": a["desc"],
         "og_title": a["title"],
-        "crumbs": [("Главная" if ru else "Home", "/"), ("Ответы" if ru else "Answers", HUB), (a["h1"], None)],
+        "crumbs": [("Главная" if ru else "Home", "/"), ("Ответы" if ru else "Answers", _hub_url(a["lang"])), (a["h1"], None)],
+        "alternates": _alternates(a),
         "jsonld": [ld],
         "faq_heading": "Частые вопросы" if ru else "Common questions",
         "faq": a["faq"],
@@ -385,10 +550,44 @@ def _hub():
             "title": "Ответы о репетиторе по физике: ЕГЭ, IB, AP, IGCSE",
             "desc": "Краткие ответы по запросам: репетитор по физике для ЕГЭ, IB, AP Physics и IGCSE 0625 онлайн, на русском и английском. Физик МГУ, 23 года опыта.",
             "crumbs": [("Главная", "/"), ("Ответы", None)],
+            "alternates": [("ru", HUB), ("en", HUB_EN), ("x-default", HUB_EN)],
             "jsonld": [service("Репетитор по физике онлайн: ответы на частые запросы",
                                "Страницы-ответы о подготовке к ЕГЭ, IB, AP и IGCSE онлайн 1:1.")],
             "faq": []}
 
 
+def _hub_en():
+    pages = [a for a in ANSWERS if a["lang"] == "en"] + ANSWERS_EN
+    rows = "".join(
+        f'<li><a href="{HUB}{a["slug"]}/">{QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]]}</a></li>'
+        for a in pages)
+    body = f"""<section class="subhero section" id="top">
+  <div class="wrap">
+    <p class="eyebrow reveal">Answers</p>
+    <h1 class="reveal">Answers about a physics tutor: EGE, IB, AP, IGCSE</h1>
+    <p class="lead reveal">Short answers to the questions families ask when choosing a physics tutor for the EGE, IB, AP and IGCSE: online, one-to-one, in English or Russian. Taught by Vladimir Podlevskikh, an MSU physicist with 23 years of teaching.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="prose reveal" style="max-width:760px">
+      <h2>Questions</h2>
+      <ul>{rows}</ul>
+      <h2>Programmes</h2>
+      <ul>{"".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["en"])}</ul>
+    </div>
+  </div>
+</section>"""
+    return {"url": HUB_EN, "lang": "en", "body_html": body, "no_cta": True, "lastmod": LASTMOD_EN,
+            "title": "Physics tutor answers: EGE, IB, AP, IGCSE",
+            "desc": "Short answers: physics tutor for the EGE, IB, AP Physics and IGCSE 0625 online, in English and Russian. MSU physicist, 23 years of experience.",
+            "crumbs": [("Home", "/"), ("Answers", None)],
+            "alternates": [("ru", HUB), ("en", HUB_EN), ("x-default", HUB_EN)],
+            "jsonld": [service("Online physics tutor: answers to common questions",
+                               "Answer pages on EGE, IB, AP and IGCSE preparation online, one-to-one.")],
+            "faq": []}
+
+
 def answer_pages():
-    return [_hub()] + [_page(a) for a in ANSWERS]
+    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN]

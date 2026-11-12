@@ -16,8 +16,10 @@ import answer_pages as AP                      # noqa: E402
 from test_pillar_pages import FORBIDDEN, FORBIDDEN_VISIBLE, visible_text, jsonld_blocks  # noqa: E402
 
 BASE = "https://tutor.podlevskikh.com"
-URLS = {a["slug"]: "/answers/%s/" % a["slug"] for a in AP.ANSWERS}
+ALL = AP.ANSWERS + AP.ANSWERS_EN
+URLS = {a["slug"]: "/answers/%s/" % a["slug"] for a in ALL}
 HUB = "/answers/"
+HUB_EN = "/answers/en/"
 
 # Дополнительно к FORBIDDEN из pillar-тестов: решение Vladimir 06.11 (школа, Кипр, Лимассол).
 EXTRA_FORBIDDEN = [r"школ", r"\bschools?\b", r"Кипр", r"Cyprus", r"Лимас", r"Limassol", r"работодател", r"employer",
@@ -32,14 +34,14 @@ def read(url):
 class Base(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.src = {u: read(u) for u in list(URLS.values()) + [HUB]}
+        cls.src = {u: read(u) for u in list(URLS.values()) + [HUB, HUB_EN]}
 
 
 class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 11)
+        self.assertEqual(len(set(URLS.values())), 17)  # 11 + 6 EN-пар
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -91,11 +93,14 @@ class TestFacts(Base):
             if "Полина" in t:
                 self.assertRegex(t, r"96 баллов на ЕГЭ и 100 на ДВИ")
                 self.assertNotRegex(t, r"96[^.]{0,30}по физике")
+            if "Polina" in t:
+                self.assertRegex(t, r"96 on the EGE and 100 on the DVI")
+                self.assertNotRegex(t, r"96[^.]{0,30}in physics")
 
 
 class TestMeta(Base):
     def test_single_h1_title_desc_canonical(self):
-        for slug, u in list(URLS.items()) + [("hub", HUB)]:
+        for slug, u in list(URLS.items()) + [("hub", HUB), ("hub-en", HUB_EN)]:
             s = self.src[u]
             self.assertEqual(len(re.findall(r"<h1\b", s)), 1, u)
             title = re.search(r"<title>(.*?)</title>", s, re.S).group(1)
@@ -105,13 +110,13 @@ class TestMeta(Base):
             self.assertIn('<link rel="canonical" href="%s%s"' % (BASE, u), s)
 
     def test_html_lang(self):
-        for a in AP.ANSWERS:
+        for a in ALL:
             self.assertIn('<html lang="%s"' % a["lang"], self.src[URLS[a["slug"]]])
 
 
 class TestAnswerFirst(Base):
     def test_lead_is_direct_answer(self):
-        for a in AP.ANSWERS:
+        for a in ALL:
             s = self.src[URLS[a["slug"]]]
             m = re.search(r'<p class="lead[^"]*">(.*?)</p>', s, re.S)
             self.assertIsNotNone(m, a["slug"])
@@ -122,15 +127,74 @@ class TestAnswerFirst(Base):
             self.assertLess(s.index('class="lead'), s.index("<h2"), a["slug"])
 
     def test_key_facts_block(self):
-        for a in AP.ANSWERS:
+        for a in ALL:
             s = self.src[URLS[a["slug"]]]
             self.assertIn('<h2 id="facts">', s)
             self.assertGreaterEqual(len(a["facts"]), 4, a["slug"])
 
 
+class TestEnglishAndHreflang(Base):
+    def test_en_twins_cover_ru_pages_1_to_6(self):
+        self.assertEqual(sorted(a["twin"] for a in AP.ANSWERS_EN), list(range(1, 7)))
+        self.assertEqual(sorted(AP.QUERIES_EN), list(range(1, 7)))
+        for a in AP.ANSWERS_EN:
+            self.assertEqual(a["lang"], "en")
+            self.assertEqual(len(a["faq"]), len(next(r for r in AP.ANSWERS if r["n"] == a["twin"])["faq"]))
+
+    def test_no_cyrillic_in_visible_en_text(self):
+        for a in AP.ANSWERS_EN:
+            src = self.src[URLS[a["slug"]]]
+            main = src[src.index('<section class="subhero'):src.index('id="tutor-page-block"')]  # без общего nav/футера
+            vis = visible_text(main)
+            # допустимы только «Владимир Подлевских»-подобных вставок нет: EN-страница без кириллицы в видимом тексте,
+            # кроме пометки «(RU)»-ссылок и названий
+            body = re.sub(r"\(RU\)", "", vis)
+            self.assertIsNone(re.search(r"[а-яё]", body, re.I), a["slug"])
+
+    def hreflangs(self, u):
+        return dict(re.findall(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"', self.src[u]))
+
+    def test_pairs_are_reciprocal(self):
+        for a in AP.ANSWERS_EN:
+            en_u = URLS[a["slug"]]
+            ru_slug = next(r["slug"] for r in AP.ANSWERS if r["n"] == a["twin"])
+            ru_u = URLS[ru_slug]
+            for u in (en_u, ru_u):
+                h = self.hreflangs(u)
+                self.assertEqual(h["en"], BASE + en_u, u)
+                self.assertEqual(h["ru"], BASE + ru_u, u)
+                self.assertEqual(h["x-default"], BASE + en_u, u)
+
+    def test_standalone_en_pages_self_and_default(self):
+        for a in AP.ANSWERS:
+            if a["lang"] == "en":
+                h = self.hreflangs(URLS[a["slug"]])
+                self.assertEqual(h, {"en": BASE + URLS[a["slug"]], "x-default": BASE + URLS[a["slug"]]})
+
+    def test_hubs_reciprocal(self):
+        for u in (HUB, HUB_EN):
+            h = self.hreflangs(u)
+            self.assertEqual((h["ru"], h["en"], h["x-default"]), (BASE + HUB, BASE + HUB_EN, BASE + HUB_EN))
+
+    def test_sitemap_has_xhtml_alternates(self):
+        sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
+        self.assertIn('xmlns:xhtml="http://www.w3.org/1999/xhtml"', sm)
+        n_en = sm.count('hreflang="en" href="%s/answers/ege-physics-tutor-online/"' % BASE)
+        self.assertEqual(n_en, 2)  # в блоках RU- и EN-страницы
+
+    def test_llms_lists_en_pages(self):
+        llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
+        for a in AP.ANSWERS_EN:
+            self.assertIn(BASE + URLS[a["slug"]], llms)
+
+    def test_tutor_page_metric_hook_on_en(self):
+        for a in AP.ANSWERS_EN:
+            self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', self.src[URLS[a["slug"]]])
+
+
 class TestJsonLd(Base):
     def test_faqpage_matches_visible(self):
-        for a in AP.ANSWERS:
+        for a in ALL:
             u = URLS[a["slug"]]
             s = self.src[u]
             blocks = jsonld_blocks(s)
@@ -154,7 +218,7 @@ class TestJsonLd(Base):
                 self.assertNotIn(bad, raw, u)
 
     def test_provider_is_person_entity(self):
-        for a in AP.ANSWERS:
+        for a in ALL:
             blocks = jsonld_blocks(self.src[URLS[a["slug"]]])
             main = [b for b in blocks if b.get("@type") in ("Course", "Service")][0]
             self.assertEqual(main["provider"]["@id"], "https://tutor.podlevskikh.com/#vladimir")
@@ -162,16 +226,19 @@ class TestJsonLd(Base):
 
 class TestLinks(Base):
     def test_pillar_and_tutor_links(self):
-        for a in AP.ANSWERS:
+        for a in ALL:
             s = self.src[URLS[a["slug"]]]
+            hub = HUB if a["lang"] == "ru" else HUB_EN
             for h in ("/ege-physics/", "/ib-physics-tutor/", "/ap-physics-tutor/", "/igcse-physics-0625/",
-                      "/exam-prep-online/", HUB):
+                      "/exam-prep-online/", hub):
                 self.assertIn('href="%s"' % h, s, "%s lacks %s" % (a["slug"], h))
             self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', s)
 
     def test_hub_lists_every_page(self):
-        for u in URLS.values():
-            self.assertIn('href="%s"' % u, self.src[HUB])
+        for a in ALL:
+            hub = HUB if a["lang"] == "ru" else HUB_EN
+            if a["lang"] == "ru" or a["n"] > 100 or a["lang"] == "en":
+                self.assertIn('href="%s"' % URLS[a["slug"]], self.src[hub], a["slug"])
 
     def test_internal_links_resolve_and_in_sitemap(self):
         locs = set(re.findall(r"<loc>(.*?)</loc>", open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()))
@@ -196,7 +263,7 @@ class TestBuilder(unittest.TestCase):
     def test_sitemap_and_llms_contain_answers(self):
         sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
         llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
-        for u in list(URLS.values()) + [HUB]:
+        for u in list(URLS.values()) + [HUB, HUB_EN]:
             self.assertIn("<loc>%s%s</loc>" % (BASE, u), sm)
         for u in URLS.values():
             self.assertIn(BASE + u, llms)
