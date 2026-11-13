@@ -75,6 +75,24 @@ class TestForbidden(Base):
             self.assertTrue(any(re.search(p, bad, re.I) for p in FORBIDDEN + EXTRA_FORBIDDEN), bad)
 
 
+UPGRADED = ["repetitor-igcse-fizika-0625-na-russkom", "repetitor-ib-physics-russkoyazychnyj",
+            "ib-physics-hl-tutor-online", "russian-ege-physics-tutor-english-speaking"]
+
+
+class TestUpgraded(Base):
+    """Правки 13.11 из «одна правка на провал»: таблица, свежая дата, FAQPage, прямой ответ."""
+    def test_table_date_faq(self):
+        for slug in UPGRADED:
+            s = self.src["/answers/%s/" % slug]
+            self.assertIn('<table class="spec-table">', s, slug)
+            self.assertRegex(s, r'<time datetime="2026-11-13">', slug)
+            self.assertIn('"dateModified": "2026-11-13"', s, slug)
+            self.assertIn('"@type": "FAQPage"', s, slug)
+            self.assertIn("<lastmod>2026-11-13</lastmod>", open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read())
+            # таблица стоит до FAQ и после lead
+            self.assertLess(s.index('class="lead'), s.index("<table"), slug)
+
+
 class TestFacts(Base):
     def test_numeric_claims_whitelisted(self):
         allowed_years, allowed_students = {"23"}, {"350"}

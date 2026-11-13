@@ -12,6 +12,7 @@ FAQ (+ JSON-LD FAQPage из pages_registry/build), перелинковка с p
 """
 from pages_registry import course, service
 
+BASE_URL = "https://tutor.podlevskikh.com"
 LASTMOD = "2026-11-12"
 LASTMOD_EN = "2026-11-13"
 TUTOR_PAGE = "/exam-prep-online/"
@@ -136,6 +137,8 @@ ANSWERS = [
    ("Чем отличаются Paper 5 и Paper 6?", "Обе работы дают по 20% оценки. Paper 5 — практический тест (1 ч 15 мин, 40 баллов), Paper 6 — альтернатива практике (1 час, 40 баллов); сдаётся одна из них."),
    ("Сколько часов занимает курс IGCSE Physics?", "Cambridge ориентируется примерно на 130 учебных часов; это оценка объёма курса, а не норма занятий с репетитором."),
  ],
+ "updated": "2026-11-13",
+ "table": {'title': 'Core и Extended в IGCSE Physics 0625: сравнение', 'head': ['Уровень', 'Теоретические работы', 'Оценки', 'Практическая часть'], 'rows': [['Core', 'Paper 1 + Paper 3', 'C–G', 'Paper 5 или Paper 6, 20% оценки'], ['Extended', 'Paper 2 + Paper 4', 'A*–G', 'Paper 5 или Paper 6, 20% оценки']]},
  "course": ("Cambridge IGCSE Physics 0625 на русском (онлайн, 1:1)", "Индивидуальная подготовка к Cambridge IGCSE Physics 0625 (2026–2028) на русском и английском: Core и Extended, Paper 1–6."),
 },
 # ── 5 ───────────────────────────────────────────────────────────────────────
@@ -159,6 +162,8 @@ ANSWERS = [
    ("Чем отличаются IB Physics SL и HL?", "Объёмом и глубиной: SL — 150 часов, HL — 240; внешняя оценка SL — 3 часа, HL — 4 часа 30 минут. IA одинаков для обоих уровней."),
    ("Помогаете ли вы с Internal Assessment?", "Да, с методом, данными и оценкой по критериям; саму работу пишет ученик."),
  ],
+ "updated": "2026-11-13",
+ "table": {'title': 'IB Physics SL и HL: сравнение', 'head': ['Параметр', 'SL', 'HL'], 'rows': [['Часы', '150', '240'], ['Внешняя оценка (80%)', '3 ч', '4 ч 30 мин'], ['Paper 1', '1 ч 30 мин, 45 баллов', '2 ч, 60 баллов'], ['Paper 2', '1 ч 30 мин, 50 баллов', '2 ч 30 мин, 90 баллов'], ['Internal assessment', '20%, 24 балла', '20%, 24 балла']]},
  "course": ("IB Physics SL и HL на русском (онлайн, 1:1)", "Индивидуальная подготовка к IB Physics (SL и HL, guide first assessment 2025) на русском и английском: темы A–E, Paper 1–2, Internal Assessment."),
 },
 # ── 6 ───────────────────────────────────────────────────────────────────────
@@ -268,6 +273,8 @@ ANSWERS = [
    ("Is the IA the same for HL and SL?", "Yes: one scientific investigation, 24 marks, 20% of the grade."),
    ("Can you teach HL in Russian?", "Yes: Russian, English or a mix, with IB terminology in English."),
  ],
+ "updated": "2026-11-13",
+ "table": {'title': 'IB Physics HL vs SL: comparison', 'head': ['Parameter', 'SL', 'HL'], 'rows': [['Total hours', '150 (110 of content)', '240 (180 of content)'], ['External assessment (80%)', '3 h', '4 h 30 min'], ['Paper 1', '1 h 30 min, 45 marks', '2 h, 60 marks'], ['Paper 2', '1 h 30 min, 50 marks', '2 h 30 min, 90 marks'], ['Internal assessment', '20%, 24 marks', '20%, 24 marks']]},
  "course": ("IB Physics HL and SL — online tutoring (1:1)", "One-to-one online IB Physics preparation (HL and SL, guide first assessment 2025): topics A–E, Paper 1–2 technique and Internal Assessment."),
 },
 # ── 11 ──────────────────────────────────────────────────────────────────────
@@ -290,6 +297,8 @@ ANSWERS = [
    ("How is the EGE physics paper structured?", "26 tasks in two parts: 20 short-answer tasks (up to 28 marks) and 6 extended-answer tasks (up to 17 marks), 45 primary marks in total, 235 minutes."),
    ("Who marks the extended answers?", "Experts of subject commissions, against published criteria."),
  ],
+ "updated": "2026-11-13",
+ "table": {'title': 'Programme, lesson language and exam format', 'head': ['Programme', 'Lesson language', 'Exam format'], 'rows': [['Russian EGE physics', 'English, Russian or mixed', '26 tasks, 45 primary marks, 235 minutes; the paper is in Russian'], ['IB Physics SL/HL', 'English, Russian or mixed', 'Paper 1 and Paper 2 plus internal assessment (20%)'], ['IGCSE Physics 0625', 'English, Russian or mixed', 'Core: Paper 1 + 3; Extended: Paper 2 + 4; practical Paper 5 or 6'], ['AP Physics C', 'English, Russian or mixed', 'Section I: 42 multiple-choice questions, 85 min; Section II: 4 free-response questions, 95 min']]},
  "course": ("EGE Physics preparation in English (online, 1:1)", "One-to-one online preparation for the Russian EGE in physics in English or Russian: 26 tasks, 45 primary marks, extended solutions by criteria."),
 },
 ]
@@ -459,10 +468,30 @@ def _tutor_cta(lang):
             "Tutor's page (RU)</a></p>")
 
 
+_MONTHS_RU = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
+_MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+
+def _fmt_date(iso, ru):
+    y, m, d = (int(x) for x in iso.split("-"))
+    return f"{d} {_MONTHS_RU[m-1]} {y}" if ru else f"{d} {_MONTHS_EN[m-1]} {y}"
+
+
+def _table_html(a, ru):
+    t = a["table"]
+    head = "".join(f"<th>{c}</th>" for c in t["head"])
+    rows = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in t["rows"])
+    return (f'<h2 id="compare">{t["title"]}</h2>\n<table class="spec-table">\n<thead><tr>{head}</tr></thead>\n'
+            f'<tbody>{rows}</tbody>\n</table>')
+
+
 def render_body(a):
     ru = a["lang"] == "ru"
     facts = "".join(f"<li>{f}</li>" for f in a["facts"])
     secs = "".join(f'<h2>{h}</h2>\n{b}\n' for h, b in a["sections"])
+    tbl = _table_html(a, ru) + "\n      " if a.get("table") else ""
+    upd = (f'    <p class="muted"><time datetime="{a["updated"]}">'
+           f'{"Обновлено" if ru else "Updated"}: {_fmt_date(a["updated"], ru)}</time></p>\n') if a.get("updated") else ""
     who = _RU_WHO if ru else _EN_WHO
     return f"""<main id="main">
 <section class="subhero section" id="top">
@@ -470,7 +499,7 @@ def render_body(a):
     <p class="eyebrow reveal">{"Ответ на запрос" if ru else "Answer"} · {a['query']}</p>
     <h1 class="reveal">{a['h1']}</h1>
     <p class="lead reveal">{a['answer']}</p>
-  </div>
+{upd}  </div>
 </section>
 
 <section class="section">
@@ -478,7 +507,7 @@ def render_body(a):
     <div class="prose reveal" style="max-width:760px">
       <h2 id="facts">{"Коротко" if ru else "Key facts"}</h2>
       <ul>{facts}</ul>
-      {secs}
+{tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
       {_links_block(a['lang'])}
@@ -516,12 +545,14 @@ def _page(a):
         ld = service(a["service"][0], a["service"][1])
     return {
         "url": f"{HUB}{a['slug']}/", "lang": a["lang"], "body_html": render_body(a),
-        "no_cta": True, "lastmod": LASTMOD_EN if a["n"] > 100 else LASTMOD, "answer_n": a["n"], "answer_query": a["query"],
+        "no_cta": True, "lastmod": a.get("updated") or (LASTMOD_EN if a["n"] > 100 else LASTMOD), "answer_n": a["n"], "answer_query": a["query"],
         "title": a["title"], "desc": a["desc"],
         "og_title": a["title"],
         "crumbs": [("Главная" if ru else "Home", "/"), ("Ответы" if ru else "Answers", _hub_url(a["lang"])), (a["h1"], None)],
         "alternates": _alternates(a),
-        "jsonld": [ld],
+        "jsonld": [ld] + ([{"@context": "https://schema.org", "@type": "WebPage", "name": a["title"],
+                            "url": BASE_URL + f"{HUB}{a['slug']}/", "inLanguage": a["lang"],
+                            "dateModified": a["updated"]}] if a.get("updated") else []),
         "faq_heading": "Частые вопросы" if ru else "Common questions",
         "faq": a["faq"],
     }
