@@ -932,5 +932,23 @@ SMOKE-TEST — three result states and how to trigger them manually:
   <!-- Кнопка «Что-то не работает?»: само нажатие отправляет полный отчёт. -->
   <script src="https://stats.podlevskikh.com/fb/static/feedback-widget.js?v=3" defer></script>
   <script defer src="https://stats.podlevskikh.com/a/static/network-footer.js"></script>
+<script>/* analytics: неблокирующая */
+window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="https://stats.podlevskikh.com/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
+</script>
+<script>/* CTA-события: неблокирующий пиксель, не мешает переходу по ссылке */
+document.addEventListener("click",function(ev){try{
+  var a=ev.target.closest("a"); if(!a||!a.href) return;
+  var href=a.href, name=null;
+  if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
+  else if(/wa\.me\//.test(href)) name="whatsapp";
+  else if(/^mailto:/.test(href)) name="email";
+  else if(/calendly\.com/.test(href)) name="calendly";
+  var path; if(name){path="/cta-"+name;}
+  else if(a.hostname&&a.hostname!==location.hostname&&(a.protocol==="http:"||a.protocol==="https:")){path="/out-"+a.hostname;}
+  else return;
+  var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(location.host+path)+"&e=true";
+  if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
+}catch(e){}},true);
+</script>
 </body>
 </html>

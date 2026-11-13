@@ -320,6 +320,9 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 </footer>
 
 <script src="/assets/site.js"></script>
+<script>/* analytics: неблокирующая */
+window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="https://stats.podlevskikh.com/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
+</script>
 
 <!-- RR-SNIPPET: session-replay (клики / время на странице). Неблокирующий: грузится
      после window.load, ошибки проглатываются, готовность страницы от него не зависит.
