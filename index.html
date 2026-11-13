@@ -281,6 +281,17 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 </head>
 <body>
+<!-- RU-мост (аудит 13.11.2026): трафик на главную идёт в основном с русскоязычных сайтов сети
+     (physics/vuzy/calc/olymp: ЕГЭ, ОГЭ) и из RU-браузеров, а главная — англоязычная IB/AP.
+     Русскоязычному посетителю — одна тонкая строка со ссылкой на русскую страницу. Без JS не видна. -->
+<div id="ru-bridge" hidden style="background:#1C2536;color:#E8E2D4;font:500 14px/1.4 'Hanken Grotesk',-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:9px 16px;">
+  По-русски: <a href="/physics-tutor-online/" style="color:#D9B477;text-decoration:underline;">ЕГЭ, ОГЭ, ДВИ, олимпиады — страница репетитора на русском →</a>
+</div>
+<script>(function(){try{
+  var ru=/^ru\b/i.test(navigator.language||"")||(navigator.languages||[]).some(function(l){return /^ru\b/i.test(l)});
+  var fromRu=/[?&](from|utm_source)=(physics|vuzy|calc|olymp|events|exam|python)/.test(location.search)||/\/\/(vuzy|calc|olymp|events)\.podlevskikh\.com/.test(document.referrer||"");
+  if(ru||fromRu){document.getElementById("ru-bridge").hidden=false}
+}catch(e){}})();</script>
 
 <!-- ============================= NAV ============================= -->
 <header class="nav">
