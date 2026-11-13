@@ -468,17 +468,24 @@ def razbor_slug(a):
     return "tutor-answers-" + a["slug"]
 
 
-def _razbor_block(a):
-    """Единый блок «записаться на разбор» (общий компонент StartBlock, variant=razbor, ~/воронка-репетитор).
-    Внутри — статический запасной вариант без JS (та же ссылка с UTM); компонент заменяет его и считает
-    показ razbor-shown-<slug> и клик cta-book-razbor-<slug> в GoatCounter."""
-    ru = a["lang"] == "ru"
-    slug = razbor_slug(a)
+def razbor_block_html(slug, lang, label=None, with_script=True, title=None, lead=None):
+    """Общий блок «записаться на разбор» (StartBlock variant=razbor): внутри — статический запасной вариант
+    без JS (та же ссылка с UTM); компонент заменяет его и считает показ razbor-shown-<slug> и клик
+    cta-book-razbor-<slug> в GoatCounter. title/lead — необязательные data-title/data-lead компонента."""
+    ru = lang == "ru"
     href = (f"{RAZBOR_BOOK_URL}?utm_source=tutor.podlevskikh.com&amp;utm_medium=razbor&amp;utm_campaign={slug}")
-    label = "Записаться на разбор" if ru else "Book a walkthrough"
-    return (f'<div class="razbor" data-start-block data-variant="razbor" data-slug="{slug}" data-lang="{a["lang"]}">'
-            f'<p><a class="btn btn-primary btn-lg" href="{href}" target="_blank" rel="noopener" data-sb-cta data-book>{label} →</a></p></div>\n'
-            '      <script src="/assets/start-block.js" defer></script>')
+    label = label or ("Записаться на разбор" if ru else "Book a walkthrough")
+    extra = "".join(f' data-{k}="{v}"' for k, v in (("title", title), ("lead", lead)) if v)
+    out = (f'<div class="razbor" data-start-block data-variant="razbor" data-slug="{slug}" data-lang="{lang}"{extra}>'
+           f'<p><a class="btn btn-primary btn-lg" href="{href}" target="_blank" rel="noopener" data-sb-cta data-book>{label} →</a></p></div>')
+    if with_script:
+        out += '\n      <script src="/assets/start-block.js" defer></script>'
+    return out
+
+
+def _razbor_block(a):
+    """Блок «записаться на разбор» страницы-ответа: slug = страница-источник."""
+    return razbor_block_html(razbor_slug(a), a["lang"])
 
 
 def _tutor_cta(lang):
