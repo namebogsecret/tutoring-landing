@@ -339,7 +339,7 @@ class TestRazbor(Base):
             self.assertEqual(len(hrefs), 1, a["slug"])
             self.assertEqual(htmllib.unescape(hrefs[0]),
                              "https://calendly.com/vladimir-podlevskikh/30min?utm_source=tutor.podlevskikh.com"
-                             "&utm_medium=razbor&utm_campaign=" + slug)
+                             "&utm_medium=razbor&utm_campaign=" + slug + ("" if a["lang"] == "ru" else "&utm_content=intl"))
             self.assertIn("Записаться на разбор" if a["lang"] == "ru" else "Book a walkthrough", b)
             self.assertRegex(slug, r"^[a-z0-9-]+$")
 
@@ -368,6 +368,12 @@ class TestRazbor(Base):
         src = os.path.expanduser("~/воронка-репетитор/components/start-block/start-block.js")
         if os.path.exists(src) and 'variant === "razbor"' in open(src, encoding="utf-8").read():
             self.assertEqual(mine, open(src, encoding="utf-8").read(), "assets/start-block.js разошёлся с исходником")
+
+    def test_en_country_utm_in_component(self):
+        mine = open(os.path.join(ROOT, "assets", "start-block.js"), encoding="utf-8").read()
+        self.assertIn('"&utm_content=" + country', mine)
+        self.assertIn('"razbor-country-"', mine)
+        self.assertNotIn("cta-book-razbor-country", mine)   # событие среза не должно попадать под счётчик «записей»
 
     def test_site_js_skips_block_links(self):
         js = open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8").read()

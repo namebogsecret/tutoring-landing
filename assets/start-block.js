@@ -8,7 +8,7 @@
  * Или из кода (React и т. п.):  window.StartBlock.mount(element, {slug: "..."})
  *
  * Вариант variant="razbor" («записаться на разбор», страницы-ответы tutor/physics): одна кнопка на запись,
- *   UTM utm_source=<host>&utm_medium=razbor&utm_campaign=<slug>; события cta-book-razbor-<slug> (клик), razbor-shown-<slug> (показ).
+ *   UTM utm_source=<host>&utm_medium=razbor&utm_campaign=<slug> (в en + utm_content=<страна по часовому поясу>, событие razbor-country-<cc>); события cta-book-razbor-<slug> (клик), razbor-shown-<slug> (показ).
  * Вариант variant="lesson" («как это выглядит на занятии»): события cta-to-tutor-lesson-<slug>, cta-to-tutor-lesson-<ege|ib|ap>-<slug>, cta-book-lesson-<slug> (запись), lesson-shown-<slug>.
  * Опции (data-* или объект): slug, lang (ru|en), tutorUrl, title, lead, cta.
  * Метрика (GoatCounter): клик → событие «<host>/cta-to-tutor-start-<slug>», показ → «<host>/start-block-shown-<slug>»
@@ -156,6 +156,27 @@
     return base + sep + "utm_source=" + encodeURIComponent(host) + "&utm_medium=" + (medium || "start-block") + "&utm_campaign=" + encodeURIComponent(slug);
   }
 
+  // Страна для UTM англоязычного блока «разбор»: по часовому поясу браузера (без запросов наружу и без геолокации).
+  var TZ_COUNTRY = {
+    "Europe/London": "gb", "Europe/Dublin": "ie", "Europe/Berlin": "de", "Europe/Paris": "fr", "Europe/Madrid": "es",
+    "Europe/Rome": "it", "Europe/Amsterdam": "nl", "Europe/Zurich": "ch", "Europe/Vienna": "at", "Europe/Brussels": "be",
+    "Europe/Stockholm": "se", "Europe/Oslo": "no", "Europe/Copenhagen": "dk", "Europe/Helsinki": "fi", "Europe/Warsaw": "pl",
+    "Europe/Prague": "cz", "Europe/Lisbon": "pt", "Asia/Dubai": "ae", "Asia/Riyadh": "sa", "Asia/Qatar": "qa", "Asia/Singapore": "sg",
+    "Asia/Hong_Kong": "hk", "Asia/Tokyo": "jp", "Asia/Seoul": "kr", "Asia/Kolkata": "in", "Asia/Calcutta": "in", "Asia/Bangkok": "th",
+    "Asia/Kuala_Lumpur": "my", "Asia/Shanghai": "cn", "America/Toronto": "ca", "America/Vancouver": "ca", "America/Montreal": "ca",
+    "Africa/Johannesburg": "za", "Africa/Cairo": "eg", "Indian/Mauritius": "mu", "Pacific/Auckland": "nz"
+  };
+  function countryFromTz(tz) {
+    if (!tz) return "intl";
+    if (TZ_COUNTRY[tz]) return TZ_COUNTRY[tz];
+    if (tz.indexOf("America/") === 0) return "us";
+    if (tz.indexOf("Australia/") === 0) return "au";
+    return "other";
+  }
+  function detectCountry(win) {
+    try { return countryFromTz(win.Intl.DateTimeFormat().resolvedOptions().timeZone); } catch (e) { return "intl"; }
+  }
+
   function count(win, host, name) {
     try {
       var gc = win.goatcounter;
@@ -171,17 +192,17 @@
     (doc.head || doc.documentElement).appendChild(st);
   }
 
-  function renderRazbor(opts, host, slug) {
+  function renderRazbor(opts, host, slug, country) {
     var tx = RAZBOR[opts.lang] || RAZBOR.ru;
     var hid = "sb-t-razbor-" + slug;
     return '<section class="sb sb--razbor" aria-labelledby="' + hid + '"><h2 class="sb__t" id="' + hid + '">' + esc(opts.title || tx.title) + "</h2>" +
-      '<p class="sb__l">' + esc(opts.lead || tx.lead) + '</p><a class="sb__a" href="' + esc(buildHref(BOOK_URL, host, slug, "razbor")) +
+      '<p class="sb__l">' + esc(opts.lead || tx.lead) + '</p><a class="sb__a" href="' + esc(buildHref(BOOK_URL, host, slug, "razbor") + (country ? "&utm_content=" + country : "")) +
       '" target="_blank" rel="noopener" data-sb-cta data-sb-book data-book>' + esc(opts.cta || tx.book) + " →</a></section>";
   }
 
-  function render(opts, host) {
+  function render(opts, host, country) {
     var slug = cleanSlug(opts.slug);
-    if (opts.variant === "razbor") return renderRazbor(opts, host, slug);
+    if (opts.variant === "razbor") return renderRazbor(opts, host, slug, country);
     var lesson = opts.variant === "lesson";
     var next = opts.variant === "next";
     var pack = lesson ? LESSON : next ? NEXT : TEXTS;
@@ -221,14 +242,18 @@
     var host = (win.location && win.location.host) || "site";
     var slug = cleanSlug(opts.slug);
     injectCss(doc);
-    el.innerHTML = render(opts, host);
+    var country = (opts.variant === "razbor" && opts.lang === "en") ? detectCountry(win) : "";
+    el.innerHTML = render(opts, host, country);
     el.setAttribute("data-sb-mounted", "1");
     var lessonV = opts.variant === "lesson";
     var evPrefix = lessonV ? "cta-to-tutor-lesson-" : opts.variant === "next" ? "cta-to-tutor-next-" : "cta-to-tutor-start-";
     el.addEventListener("click", function (ev) {
       var a = ev.target && ev.target.closest ? ev.target.closest("a[data-sb-cta]") : null;
       if (!a) return;
-      if (opts.variant === "razbor") count(win, host, "cta-book-razbor-" + slug);
+      if (opts.variant === "razbor") {
+        count(win, host, "cta-book-razbor-" + slug);
+        if (country) count(win, host, "razbor-country-" + country);   // срез по странам (без «cta-book» в имени — запись не удваивается)
+      }
       else if (a.hasAttribute("data-sb-book")) count(win, host, "cta-book-lesson-" + slug);
       else if (a.hasAttribute("data-sb-prog")) count(win, host, evPrefix + a.getAttribute("data-sb-prog") + "-" + slug);
       else count(win, host, evPrefix + slug);
@@ -251,7 +276,7 @@
     for (var i = 0; i < list.length; i++) mount(list[i], null, win);
   }
 
-  var api = { mount: mount, autoMount: autoMount, buildHref: buildHref, cleanSlug: cleanSlug, DEFAULTS: DEFAULTS, BOOK_URL: BOOK_URL };
+  var api = { mount: mount, autoMount: autoMount, buildHref: buildHref, countryFromTz: countryFromTz, cleanSlug: cleanSlug, DEFAULTS: DEFAULTS, BOOK_URL: BOOK_URL };
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root && root.document) {
     root.StartBlock = api;

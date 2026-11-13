@@ -473,7 +473,8 @@ def razbor_block_html(slug, lang, label=None, with_script=True, title=None, lead
     без JS (та же ссылка с UTM); компонент заменяет его и считает показ razbor-shown-<slug> и клик
     cta-book-razbor-<slug> в GoatCounter. title/lead — необязательные data-title/data-lead компонента."""
     ru = lang == "ru"
-    href = (f"{RAZBOR_BOOK_URL}?utm_source=tutor.podlevskikh.com&amp;utm_medium=razbor&amp;utm_campaign={slug}")
+    href = (f"{RAZBOR_BOOK_URL}?utm_source=tutor.podlevskikh.com&amp;utm_medium=razbor&amp;utm_campaign={slug}"
+            + ("" if ru else "&amp;utm_content=intl"))   # en: JS подставит страну по часовому поясу, без JS — intl
     label = label or ("Записаться на разбор" if ru else "Book a walkthrough")
     extra = "".join(f' data-{k}="{v}"' for k, v in (("title", title), ("lead", lead)) if v)
     out = (f'<div class="razbor" data-start-block data-variant="razbor" data-slug="{slug}" data-lang="{lang}"{extra}>'
