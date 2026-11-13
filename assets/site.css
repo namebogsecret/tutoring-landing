@@ -202,10 +202,13 @@ html[data-font="grotesk"] .hero h1 em { font-style: normal; }
 .hero-sub b { color: var(--ink); font-weight: 600; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
 .hero-meta {
-  display: flex; flex-wrap: wrap; gap: 0; margin-top: 44px;
+  /* сетка, а не flex-wrap: четыре плитки в ряд; подписи переносятся внутри своей
+     колонки (раньше четвёртая плитка на главной уезжала одна на вторую строку — аудит 13.11) */
+  display: grid; grid-template-columns: repeat(4, minmax(0, auto)); justify-content: start;
+  gap: 0; margin-top: 44px;
   border-top: 1px solid var(--line);
 }
-.hero-meta > div { padding: 18px 26px 0 0; margin-right: 26px; border-right: 1px solid var(--line); }
+.hero-meta > div { padding: 18px 22px 0 0; margin-right: 22px; border-right: 1px solid var(--line); }
 .hero-meta > div:last-child { border-right: 0; }
 .hero-meta b { font-family: var(--font-display); font-size: 24px; font-weight: 600; display: block; }
 .hero-meta span { font-size: 12.5px; color: var(--muted); letter-spacing: .03em; }
@@ -421,7 +424,7 @@ html[data-font="grotesk"] .book h2 em { font-style: normal; }
   .brand-name { font-size: 14px; }
   .hero-flag { font-size: 11.5px; padding: 6px 12px 6px 10px; }
   .cols-2, .cols-3, .cols-4, .method-grid, .pricing-grid, .quote-grid { grid-template-columns: 1fr; }
-  .hero-meta { gap: 0; }
+  .hero-meta { gap: 0; grid-template-columns: 1fr 1fr; }
   .hero-meta > div { flex: 1 1 44%; min-width: 130px; border-right: 0; margin-right: 0; padding: 16px 16px 0 0; }
   .step { border-right: 0; border-bottom: 1px solid var(--line); margin-right: 0; padding: 26px 0; }
   .method-grid { border-top: 0; }
