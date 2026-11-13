@@ -464,7 +464,8 @@ def render_body(a):
     facts = "".join(f"<li>{f}</li>" for f in a["facts"])
     secs = "".join(f'<h2>{h}</h2>\n{b}\n' for h, b in a["sections"])
     who = _RU_WHO if ru else _EN_WHO
-    return f"""<section class="subhero section" id="top">
+    return f"""<main id="main">
+<section class="subhero section" id="top">
   <div class="wrap">
     <p class="eyebrow reveal">{"Ответ на запрос" if ru else "Answer"} · {a['query']}</p>
     <h1 class="reveal">{a['h1']}</h1>
@@ -485,7 +486,8 @@ def render_body(a):
   </div>
 </section>
 
-{{{{FAQ}}}}"""
+{{{{FAQ}}}}
+</main>"""
 
 
 def _alternates(a):
@@ -528,7 +530,8 @@ def _page(a):
 def _hub():
     rows = "".join(
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES[a["n"]]}</a></li>' for a in ANSWERS)
-    body = f"""<section class="subhero section" id="top">
+    body = f"""<main id="main">
+<section class="subhero section" id="top">
   <div class="wrap">
     <p class="eyebrow reveal">Answers · Ответы</p>
     <h1 class="reveal">Ответы на вопросы о репетиторе по физике</h1>
@@ -545,7 +548,8 @@ def _hub():
       <ul>{"".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["ru"])}</ul>
     </div>
   </div>
-</section>"""
+</section>
+</main>"""
     return {"url": HUB, "lang": "ru", "body_html": body, "no_cta": True, "lastmod": LASTMOD,
             "title": "Ответы о репетиторе по физике: ЕГЭ, IB, AP, IGCSE",
             "desc": "Краткие ответы по запросам: репетитор по физике для ЕГЭ, IB, AP Physics и IGCSE 0625 онлайн, на русском и английском. Физик МГУ, 23 года опыта.",
@@ -561,7 +565,8 @@ def _hub_en():
     rows = "".join(
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]]}</a></li>'
         for a in pages)
-    body = f"""<section class="subhero section" id="top">
+    body = f"""<main id="main">
+<section class="subhero section" id="top">
   <div class="wrap">
     <p class="eyebrow reveal">Answers</p>
     <h1 class="reveal">Answers about a physics tutor: EGE, IB, AP, IGCSE</h1>
@@ -578,7 +583,8 @@ def _hub_en():
       <ul>{"".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["en"])}</ul>
     </div>
   </div>
-</section>"""
+</section>
+</main>"""
     return {"url": HUB_EN, "lang": "en", "body_html": body, "no_cta": True, "lastmod": LASTMOD_EN,
             "title": "Physics tutor answers: EGE, IB, AP, IGCSE",
             "desc": "Short answers: physics tutor for the EGE, IB, AP Physics and IGCSE 0625 online, in English and Russian. MSU physicist, 23 years of experience.",
