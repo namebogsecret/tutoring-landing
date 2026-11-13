@@ -18,7 +18,26 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TODAY = "2026-11-07"
 
 # ── shared nav ───────────────────────────────────────────────────────────
-def nav(no_cta=False):
+def nav(no_cta=False, lang="en", has_book=False):
+    if lang == "ru" and not no_cta:
+        # RU-страницы: русские подписи; кнопка ведёт в блок записи ЭТОЙ страницы,
+        # а если его нет — прямо в Calendly (раньше уводила на англоязычную главную).
+        cta = ('<a class="btn btn-primary btn-sm nav-cta" href="#book">Диагностика →</a>' if has_book else
+               '<a class="btn btn-primary btn-sm nav-cta" data-cta="calendly" href="#">Диагностика →</a>')
+        return f"""<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">VP</span>
+      <span class="brand-name"><b>Vladimir Podlevskikh</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/exam-prep-online/">О репетиторе</a>
+      <a href="/answers/">Вопросы и ответы</a>
+      <a href="/blog/">Блог</a>
+    </nav>
+    {cta}
+  </div>
+</header>"""
     if no_cta:
         # информационные страницы: без кнопки записи и без ссылки на пакеты/цены
         return """<header class="nav">
@@ -88,7 +107,7 @@ def footer(lang, no_cta=False, lastmod=None):
     contact_html = "" if no_cta else f"""
       <div class="toc-lbl" style="margin:22px 0 12px;">{cont}</div>
       <div style="display:grid;gap:9px;font-size:14px;">
-        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 Book a free diagnostic</a>
+        <a class="btn btn-primary btn-sm" data-cta="calendly" href="#" style="justify-content:center;">📅 {"Book a free diagnostic" if lang == "en" else "Записаться на диагностику"}</a>
         <div style="display:flex;gap:14px;margin-top:4px;">
           <a data-cta="telegram" href="#" style="color:var(--muted);">Telegram</a>
           <a data-cta="whatsapp" href="#" style="color:var(--muted);">WhatsApp</a>
@@ -254,7 +273,7 @@ def build_page(p):
 </head>
 <body>
 
-{nav(no_cta)}
+{nav(no_cta, html_lang, 'id="book"' in body)}
 
 {render_crumbs(p['crumbs'])}
 
