@@ -460,6 +460,27 @@ def _links_block(lang):
             f'<p>{"Все страницы-ответы:" if ru else "All answer pages:"} <a href="{_hub_url(lang)}">{"ответы на частые запросы" if ru else "answers hub"}</a>.</p>')
 
 
+RAZBOR_BOOK_URL = "https://calendly.com/vladimir-podlevskikh/30min"   # = BOOK_URL в assets/start-block.js
+
+
+def razbor_slug(a):
+    """slug блока «записаться на разбор» = страница-источник (идёт в событие GoatCounter и utm_campaign)."""
+    return "tutor-answers-" + a["slug"]
+
+
+def _razbor_block(a):
+    """Единый блок «записаться на разбор» (общий компонент StartBlock, variant=razbor, ~/воронка-репетитор).
+    Внутри — статический запасной вариант без JS (та же ссылка с UTM); компонент заменяет его и считает
+    показ razbor-shown-<slug> и клик cta-book-razbor-<slug> в GoatCounter."""
+    ru = a["lang"] == "ru"
+    slug = razbor_slug(a)
+    href = (f"{RAZBOR_BOOK_URL}?utm_source=tutor.podlevskikh.com&amp;utm_medium=razbor&amp;utm_campaign={slug}")
+    label = "Записаться на разбор" if ru else "Book a walkthrough"
+    return (f'<div class="razbor" data-start-block data-variant="razbor" data-slug="{slug}" data-lang="{a["lang"]}">'
+            f'<p><a class="btn btn-primary btn-lg" href="{href}" target="_blank" rel="noopener" data-sb-cta data-book>{label} →</a></p></div>\n'
+            '      <script src="/assets/start-block.js" defer></script>')
+
+
 def _tutor_cta(lang):
     if lang == "ru":
         return (f'<p><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="{TUTOR_PAGE}">'
@@ -510,6 +531,7 @@ def render_body(a):
 {tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
+      {_razbor_block(a)}
       {_links_block(a['lang'])}
     </div>
   </div>

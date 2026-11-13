@@ -31,6 +31,17 @@ def read(url):
         return f.read()
 
 
+# Единый блок «записаться на разбор» (задача автопилота 13.11): ЕДИНСТВЕННОЕ разрешённое место записи на
+# страницах-ответах. Запрет «Записаться/Book/Calendly» действует на всю остальную страницу — блок вырезается
+# ровно по своей разметке, а сам проверяется отдельно (TestRazbor).
+RAZBOR_RE = re.compile(r'<div class="razbor" data-start-block data-variant="razbor"[^>]*>.*?</div>\s*'
+                       r'<script src="/assets/start-block\.js" defer></script>', re.S)
+
+
+def strip_razbor(s):
+    return RAZBOR_RE.sub(" ", s, count=1)
+
+
 class Base(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -58,7 +69,7 @@ class TestRegistry(unittest.TestCase):
 class TestForbidden(Base):
     def test_no_forbidden_words(self):
         for u, s in self.src.items():
-            s2 = s.replace('data-cta="tutor-page"', "")
+            s2 = strip_razbor(s).replace('data-cta="tutor-page"', "")
             for pat in FORBIDDEN + EXTRA_FORBIDDEN:
                 m = re.search(pat, s2, re.I)
                 self.assertIsNone(m, "%s: %r near %r" % (u, pat, s2[max(0, m.start() - 40):m.end() + 40] if m else ""))
@@ -310,3 +321,54 @@ class TestBuilder(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)
+
+
+class TestRazbor(Base):
+    """Блок «записаться на разбор»: на каждой странице-ответе ровно один, UTM по странице-источнику."""
+
+    def test_block_on_every_answer_page(self):
+        for a in ALL:
+            s = self.src[URLS[a["slug"]]]
+            blocks = RAZBOR_RE.findall(s)
+            self.assertEqual(len(blocks), 1, a["slug"])
+            b = blocks[0]
+            slug = AP.razbor_slug(a)
+            self.assertIn('data-slug="%s"' % slug, b)
+            self.assertIn('data-lang="%s"' % a["lang"], b)
+            hrefs = re.findall(r'href="([^"]+)"', b)
+            self.assertEqual(len(hrefs), 1, a["slug"])
+            self.assertEqual(htmllib.unescape(hrefs[0]),
+                             "https://calendly.com/vladimir-podlevskikh/30min?utm_source=tutor.podlevskikh.com"
+                             "&utm_medium=razbor&utm_campaign=" + slug)
+            self.assertIn("Записаться на разбор" if a["lang"] == "ru" else "Book a walkthrough", b)
+            self.assertRegex(slug, r"^[a-z0-9-]+$")
+
+    def test_slugs_unique(self):
+        slugs = [AP.razbor_slug(a) for a in ALL]
+        self.assertEqual(len(slugs), len(set(slugs)))
+
+    def test_block_itself_clean(self):
+        bad = [r"школ", r"\bschools?\b", r"Кипр", r"Cyprus", r"Лимас", r"Limassol", r"Nyberg", r"(?-i:\bI Can\b)",
+               r"бесплатн", r"\bfree\b", r"гаранти", r"оплат", r"\$", r"Ереван", r"Yerevan"]
+        for a in ALL:
+            b = RAZBOR_RE.search(self.src[URLS[a["slug"]]]).group(0)
+            for pat in bad:
+                self.assertIsNone(re.search(pat, b, re.I), (a["slug"], pat))
+
+    def test_no_razbor_on_hubs(self):
+        for u in (HUB, HUB_EN):
+            self.assertIsNone(RAZBOR_RE.search(self.src[u]), u)
+
+    def test_component_shipped_and_same_as_source(self):
+        mine = open(os.path.join(ROOT, "assets", "start-block.js"), encoding="utf-8").read()
+        self.assertIn('variant === "razbor"', mine)
+        self.assertIn('"cta-book-razbor-"', mine)
+        self.assertIn('"razbor-shown-"', mine)
+        self.assertIn('"https://calendly.com/vladimir-podlevskikh/30min"', mine)
+        src = os.path.expanduser("~/воронка-репетитор/components/start-block/start-block.js")
+        if os.path.exists(src) and 'variant === "razbor"' in open(src, encoding="utf-8").read():
+            self.assertEqual(mine, open(src, encoding="utf-8").read(), "assets/start-block.js разошёлся с исходником")
+
+    def test_site_js_skips_block_links(self):
+        js = open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8").read()
+        self.assertIn('if(a.hasAttribute("data-sb-cta")) return;', js)   # без дубля cta-calendly в «Записях»
