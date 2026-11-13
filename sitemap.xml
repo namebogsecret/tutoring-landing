@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://tutor.podlevskikh.com/</loc>
     <lastmod>2026-11-07</lastmod>
@@ -83,71 +83,165 @@
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/en/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/en/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/en/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-online/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-online/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-online/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-msu/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-msu/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-msu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-msu/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/podgotovka-ege-fizika-za-rubezhom/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/podgotovka-ege-fizika-za-rubezhom/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ege-physics-preparation-abroad-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ege-physics-preparation-abroad-online/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/repetitor-igcse-fizika-0625-na-russkom/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-igcse-fizika-0625-na-russkom/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/repetitor-ib-physics-russkoyazychnyj/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-ib-physics-russkoyazychnyj/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/repetitor-ap-physics-na-russkom/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-ap-physics-na-russkom/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/vladimir-podlevskikh-physics-tutor/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/vladimir-podlevskikh-physics-tutor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/vladimir-podlevskikh-physics-tutor/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian-speaking/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian-speaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian-speaking/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/ap-physics-1-tutor-online/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ap-physics-1-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-physics-1-tutor-online/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/ib-physics-hl-tutor-online/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-tutor-online/"/>
   </url>
   <url>
     <loc>https://tutor.podlevskikh.com/answers/russian-ege-physics-tutor-english-speaking/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/russian-ege-physics-tutor-english-speaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/russian-ege-physics-tutor-english-speaking/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ege-physics-tutor-online/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ege-physics-tutor-msu/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-msu/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-msu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ege-physics-tutor-msu/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ege-physics-preparation-abroad-online/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ege-physics-preparation-abroad-online/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/podgotovka-ege-fizika-za-rubezhom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ege-physics-preparation-abroad-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-igcse-fizika-0625-na-russkom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-ib-physics-russkoyazychnyj/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-ap-physics-na-russkom/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/"/>
   </url>
 </urlset>

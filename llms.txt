@@ -26,6 +26,7 @@
 
 ## Short answers to common queries
 - [Ответы о репетиторе по физике: ЕГЭ, IB, AP, IGCSE](https://tutor.podlevskikh.com/answers/): Краткие ответы по запросам: репетитор по физике для ЕГЭ, IB, AP Physics и IGCSE 0625 онлайн, на русском и английском. Физик МГУ, 23 года опыта.
+- [Physics tutor answers: EGE, IB, AP, IGCSE](https://tutor.podlevskikh.com/answers/en/): Short answers: physics tutor for the EGE, IB, AP Physics and IGCSE 0625 online, in English and Russian. MSU physicist, 23 years of experience.
 - [Репетитор по физике ЕГЭ онлайн: кто и как готовит](https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-online/): Репетитор по физике для ЕГЭ онлайн, 1:1: Владимир Подлевских, физик МГУ, 23 года, 350+ учеников. Структура КИМ 2027: 26 заданий, 45 баллов.
 - [Репетитор по физике ЕГЭ с опытом МГУ: Подлевских](https://tutor.podlevskikh.com/answers/repetitor-fizika-ege-msu/): Репетитор по физике ЕГЭ, выпускник физфака МГУ (2006): 23 года преподавания, 350+ учеников, Praxis Physics 200/200. Онлайн 1:1, русский или английский.
 - [Подготовка к ЕГЭ по физике за рубежом онлайн](https://tutor.podlevskikh.com/answers/podgotovka-ege-fizika-za-rubezhom/): Как готовиться к ЕГЭ по физике, живя за границей: онлайн 1:1 из любой страны, русский или английский, план по КИМ 2027. Физик МГУ, 23 года опыта.
@@ -37,6 +38,12 @@
 - [AP Physics 1 tutor online: how to choose, who teaches](https://tutor.podlevskikh.com/answers/ap-physics-1-tutor-online/): How to choose an AP Physics 1 tutor online, and who teaches here: MSU physicist, 23 years, 350+ students, Praxis Physics 200/200. 1:1, English or Russian.
 - [IB Physics HL tutor online: format, hours, who teaches](https://tutor.podlevskikh.com/answers/ib-physics-hl-tutor-online/): IB Physics HL tutor online, 1:1: MSU physicist, 23 years, 350+ students. HL facts: 240 hours, Paper 1 (2 h), Paper 2 (2 h 30), IA 20%. English or Russian.
 - [Russian EGE physics tutor, English-speaking, online](https://tutor.podlevskikh.com/answers/russian-ege-physics-tutor-english-speaking/): An English-speaking tutor for the Russian EGE in physics: 26 tasks, 45 primary marks, 235 minutes. MSU physicist, 23 years, online 1:1, English or Russian.
+- [EGE physics tutor online: who teaches and how](https://tutor.podlevskikh.com/answers/ege-physics-tutor-online/): EGE physics tutor online, 1:1: Vladimir Podlevskikh, MSU physicist, 23 years, 350+ students. EGE 2027 structure: 26 tasks, 45 points.
+- [EGE physics tutor with an MSU background: Podlevskikh](https://tutor.podlevskikh.com/answers/ege-physics-tutor-msu/): EGE physics tutor, MSU Faculty of Physics graduate (2006): 23 years, 350+ students, Praxis Physics 200/200. Online 1:1, Russian or English.
+- [EGE physics preparation abroad: online 1:1](https://tutor.podlevskikh.com/answers/ege-physics-preparation-abroad-online/): How to prepare for the EGE in physics while living abroad: online 1:1 from any country, Russian or English, EGE 2027 plan. MSU physicist, 23 years.
+- [IGCSE Physics 0625 tutor in Russian and English](https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/): Cambridge IGCSE Physics 0625 tutor in Russian and English: Core and Extended, Paper 1–6. Online 1:1, MSU physicist, 23 years of experience.
+- [IB Physics tutor online, Russian-speaking (HL/SL)](https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/): Russian-speaking IB Physics SL and HL tutor online: Russian or English, 5 topics, Paper 1–2 and IA. MSU physicist, 23 years, 350+ students.
+- [AP Physics tutor online, Russian-speaking](https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/): AP Physics tutor online in Russian and English, 1:1. AP Physics C format (Mechanics, E&M). MSU physicist, Praxis Physics 200/200.
 
 ## Method blog (worked problems & exam technique)
 - [Как читать графики движения: разбор типовых задач кинематики](https://tutor.podlevskikh.com/blog/kinematics-grafiki/): Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами.
