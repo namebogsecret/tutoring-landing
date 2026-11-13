@@ -284,6 +284,7 @@ def build_page(p):
 {footer(html_lang, no_cta, p.get("lastmod"))}
 
 <script src="/assets/site.js"></script>
+{GC_COUNT}{"" if no_cta else GC_CTA}
 
 <!-- RR-SNIPPET: session-replay (клики / время на странице). Неблокирующий: грузится
      после window.load, ошибки проглатываются, готовность страницы от него не зависит.
@@ -317,6 +318,29 @@ FB_EARLY = r"""<script>window.__fbConfig={base:"https://stats.podlevskikh.com"};
 window.addEventListener("error",function(ev){var el=ev.target;if(el&&el!==window&&(el.tagName==="IMG"||el.tagName==="SCRIPT"||el.tagName==="LINK")){p({type:"resource",message:el.tagName+" failed: "+String(el.src||el.href||"").slice(0,300)});return}
 p({type:"error",message:String(ev.message||"error").slice(0,500),source:String(ev.filename||"").slice(0,300),line:ev.lineno,col:ev.colno,stack:String((ev.error&&ev.error.stack)||"").slice(0,1500),early:true})},true);
 window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({type:"unhandledrejection",message:String((r&&(r.message||r))||"rejection").slice(0,500),stack:String((r&&r.stack)||"").slice(0,1500),early:true})})})();</script>"""
+
+# Счётчик GoatCounter + CTA-события — тот же сниппет, что на главной. До 13.11.2026 его
+# не было ни на одной собранной странице: pillar/answers/blog жили вне статистики
+# (answers — 0 хитов при живом трафике). Plain-строка, скобки не удваивать.
+GC_COUNT = r"""<script>/* analytics: неблокирующая */
+window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="https://stats.podlevskikh.com/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
+</script>"""
+# CTA-события — только на страницах с записью (no_cta-страницы не должны упоминать запись вовсе).
+GC_CTA = r"""<script>/* CTA-события: неблокирующий пиксель, не мешает переходу по ссылке */
+document.addEventListener("click",function(ev){try{
+  var a=ev.target.closest("a"); if(!a||!a.href) return;
+  var href=a.href, name=null;
+  if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
+  else if(/wa\.me\//.test(href)) name="whatsapp";
+  else if(/^mailto:/.test(href)) name="email";
+  else if(/calendly\.com/.test(href)) name="calendly";
+  var path; if(name){path="/cta-"+name;}
+  else if(a.hostname&&a.hostname!==location.hostname&&(a.protocol==="http:"||a.protocol==="https:")){path="/out-"+a.hostname;}
+  else return;
+  var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(location.host+path)+"&e=true";
+  if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
+}catch(e){}},true);
+</script>"""
 
 # Кнопка «Что-то не работает?» — одна копия виджета на stats (правка канона
 # ~/js-error-autofix/widget/ доезжает без пересборки лендинга).
