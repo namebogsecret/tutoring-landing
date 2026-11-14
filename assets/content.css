@@ -195,3 +195,12 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
 @media (max-width: 480px) {
   .btn-lg { white-space: normal; text-align: center; }
 }
+
+/* Секция «Разбор по вашему запросу» (/exam-prep-online/#razbor-zapros) */
+.razbor-zapros { max-width: 860px; }
+.razbor-card { border: 1px solid var(--accent-line, rgba(128,128,128,.3)); border-radius: 14px; padding: 20px 24px; margin-top: calc(var(--stack, 16px) * 1.4); }
+.razbor-card h3 { margin-top: 0; }
+.razbor-q { font-style: italic; }
+.razbor-plan summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+.razbor-plan > ol { margin-top: 12px; }
+.razbor-plan > ol > li > ul { margin-top: 4px; }

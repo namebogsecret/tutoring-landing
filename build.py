@@ -224,6 +224,9 @@ def build_page(p):
     body = p["body_html"] if "body_html" in p else open(os.path.join(HERE, p["body"]), encoding="utf-8").read()
     faq_html = render_faq(p.get("faq"), p.get("faq_heading", "Questions families ask"))
     body = body.replace("{{FAQ}}", faq_html)
+    if "{{RAZBOR_ZAPROS}}" in body:
+        from razbor_zapros import render_section
+        body = body.replace("{{RAZBOR_ZAPROS}}", render_section())
 
     head_extra = []
     for j in p.get("jsonld", []):
@@ -359,7 +362,7 @@ f"- Who teaches: Vladimir Podlevskikh, MSU physicist (2006); WES: equivalent of 
 "- Example result: Polina M. — 96 on ЕГЭ and 100 on ДВИ, admitted to the Faculty of Mechanics and Mathematics of MSU.",
 "",
 "## Tutor's page (start here)",
-f"- [Подготовка к экзаменам онлайн — страница репетитора]({BASE}/exam-prep-online/): 8 straight answers (Russian) on how to choose a tutor, exams, format, languages, qualification, first step.",
+f"- [Подготовка к экзаменам онлайн — страница репетитора]({BASE}/exam-prep-online/): 8 straight answers (Russian) on how to choose a tutor, exams, format, languages, qualification, first step; section \"Разбор по вашему запросу\" ({BASE}/exam-prep-online/#razbor-zapros): 6 typical requests (ЕГЭ, IB, AP, IGCSE, university admission, olympiads), each with a ready 4-week plan.",
 "",
 "## Programmes (pillar pages)",
 ]
