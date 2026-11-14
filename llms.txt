@@ -44,6 +44,7 @@
 - [IGCSE Physics 0625 tutor in Russian and English](https://tutor.podlevskikh.com/answers/igcse-physics-0625-tutor-russian/): Cambridge IGCSE Physics 0625 tutor in Russian and English: Core and Extended, Paper 1–6. Online 1:1, MSU physicist, 23 years of experience.
 - [IB Physics tutor online, Russian-speaking (HL/SL)](https://tutor.podlevskikh.com/answers/ib-physics-tutor-russian-speaking/): Russian-speaking IB Physics SL and HL tutor online: Russian or English, 5 topics, Paper 1–2 and IA. MSU physicist, 23 years, 350+ students.
 - [AP Physics tutor online, Russian-speaking](https://tutor.podlevskikh.com/answers/ap-physics-tutor-russian-speaking/): AP Physics tutor online in Russian and English, 1:1. AP Physics C format (Mechanics, E&M). MSU physicist, Praxis Physics 200/200.
+- [Сравнение программ подготовки по физике: ЕГЭ, IB, AP, IGCSE](https://tutor.podlevskikh.com/compare-exam-programs/): Таблица сравнения ЕГЭ, IB Physics, AP Physics C и IGCSE 0625: формат экзамена, уровни, шкала оценок, версия программы. Только проверенные факты.
 
 ## Method blog (worked problems & exam technique)
 - [Как читать графики движения: разбор типовых задач кинематики](https://tutor.podlevskikh.com/blog/kinematics-grafiki/): Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами.

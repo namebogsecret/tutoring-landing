@@ -368,7 +368,7 @@ f"- [Подготовка к экзаменам онлайн — страниц�
 ]
     segments = ("/russian-tutor-abroad/", "/olympiad-physics/")
     for p in PAGES:
-        if p["url"].startswith(("/blog/", "/answers/")) or p["url"] in ("/blog/", "/exam-prep-online/") or p["url"] in segments:
+        if p["url"].startswith(("/blog/", "/answers/")) or p["url"] in ("/blog/", "/exam-prep-online/", "/compare-exam-programs/") or p["url"] in segments:
             continue
         lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
     lines += ["", "## Segments"]
@@ -377,7 +377,7 @@ f"- [Подготовка к экзаменам онлайн — страниц�
             lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
     lines += ["", "## Short answers to common queries"]
     for p in PAGES:
-        if p["url"].startswith("/answers/"):
+        if p["url"].startswith("/answers/") or p["url"] == "/compare-exam-programs/":
             lines.append(f"- [{p['title']}]({BASE}{p['url']}): {p['desc']}")
     lines += ["", "## Method blog (worked problems & exam technique)"]
     for p in PAGES:

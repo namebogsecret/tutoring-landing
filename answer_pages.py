@@ -607,6 +607,7 @@ def _hub():
       <ul>{rows}</ul>
       <h2>Программы</h2>
       <ul>{"".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["ru"])}</ul>
+      <p><a href="{COMPARE_URL}">Сравнение программ: ЕГЭ, IB, AP, IGCSE</a></p>
     </div>
   </div>
 </section>
@@ -656,5 +657,112 @@ def _hub_en():
             "faq": []}
 
 
+# ── Сравнение программ (задача автопилота 14.11): одна страница-сводка ЕГЭ / IB / AP / IGCSE ──
+# Только факты из ФАКТЫ-ЭКЗАМЕНЫ-2026-11.md и pillar-страниц; что не сверено (шкалы IB 1–7 и AP 1–5, даты
+# экзаменов, вузы) — на страницу не вносится.
+COMPARE_URL = "/compare-exam-programs/"
+COMPARE_LASTMOD = "2026-11-14"
+COMPARE_TITLE = "Сравнение программ подготовки по физике: ЕГЭ, IB, AP, IGCSE"
+COMPARE_DESC = "Таблица сравнения ЕГЭ, IB Physics, AP Physics C и IGCSE 0625: формат экзамена, уровни, шкала оценок, версия программы. Только проверенные факты."
+COMPARE_ANSWER = ("ЕГЭ, IB, AP и IGCSE — четыре разных экзамена по физике: ЕГЭ — единая работа из 26 заданий и 45 первичных баллов, "
+                  "IB Physics делится на уровни SL и HL, AP Physics C — два отдельных курса и экзамена (Mechanics и E&M), "
+                  "Cambridge IGCSE 0625 — уровни Core и Extended. Сводка ниже помогает увидеть различия по формату, уровням и шкале оценок.")
+COMPARE_FAQ = [
+    ("Чем ЕГЭ по физике отличается от IB, AP и IGCSE по формату?",
+     "ЕГЭ — одна работа на 235 минут: 26 заданий, 45 первичных баллов (часть 1 — 20 заданий с кратким ответом, часть 2 — 6 с развёрнутым). "
+     "В IB внешняя оценка — Paper 1 и Paper 2 (80%) плюс внутренняя оценка IA (20%). AP Physics C состоит из Section I (42 вопроса с выбором ответа, 85 минут) и Section II (4 вопроса со свободным ответом, 95 минут). "
+     "В IGCSE 0625 — тест с выбором ответа, теоретическая работа и практическая часть (20%)."),
+    ("Что такое Core и Extended в IGCSE Physics 0625?",
+     "Это два уровня одной программы. Core — Paper 1 и Paper 3 плюс практика, оценки C–G. Extended — Paper 2 и Paper 4 плюс практика, оценки A*–G. "
+     "Core ориентирован на тех, кто ждёт D и ниже, Extended — на тех, кто ждёт C и выше."),
+    ("Чем отличаются IB Physics SL и HL?",
+     "Объёмом и глубиной: SL — 150 часов, HL — 240. Внешняя оценка SL длится 3 часа, HL — 4 часа 30 минут. Internal assessment одинаков для обоих уровней: 20%, 24 балла."),
+    ("Что такое AP Physics C и чем он отличается от остальных программ?",
+     "College Board описывает AP Physics C как курс физики уровня колледжа с использованием математического анализа. Он состоит из двух отдельных курсов и экзаменов — Mechanics и Electricity and Magnetism — с одинаковым форматом."),
+    ("Можно ли готовиться сразу к нескольким программам?",
+     "Да. Если ученик одновременно учится по двум программам, темы сверяются и учитываются в общем плане занятий; подробности — на страницах программ."),
+]
+
+
+def _compare_table():
+    head = ["Параметр", "ЕГЭ по физике", "IB Physics", "AP Physics C", "Cambridge IGCSE 0625"]
+    rows = [
+        ["Кто выпускает программу", "ФИПИ (спецификация КИМ ЕГЭ 2027)", "International Baccalaureate, Diploma Programme", "College Board", "Cambridge International"],
+        ["Формат экзамена",
+         "26 заданий в двух частях, 45 первичных баллов, 235 минут",
+         "Внешняя оценка 80% (Paper 1 и Paper 2) + Internal assessment 20%",
+         "Section I: 42 вопроса с выбором ответа, 85 минут, 50%; Section II: 4 вопроса со свободным ответом, 95 минут, 50%",
+         "Тест с выбором ответа (30%) + теория (50%) + практика Paper 5 или Paper 6 (20%)"],
+        ["Уровни",
+         "Единая работа; задания трёх уровней сложности: базовый 17, повышенный 6, высокий 3",
+         "SL (150 часов) и HL (240 часов)",
+         "Два отдельных курса и экзамена: Mechanics и Electricity and Magnetism",
+         "Core (Paper 1 + 3) и Extended (Paper 2 + 4)"],
+        ["Шкала оценок",
+         "45 первичных баллов; перевод в 100-балльную шкалу меняется ежегодно, здесь не приводится",
+         "Здесь не приводится: см. страницу программы",
+         "Здесь не приводится: см. страницу программы",
+         "Core: C–G; Extended: A*–G"],
+        ["Для кого",
+         "Российский единый государственный экзамен",
+         "Курс IB Diploma, guide first assessment 2025",
+         "Курс уровня колледжа с математическим анализом; для планирующих физические науки или инженерию (по описанию College Board)",
+         "Core — для тех, кто ждёт D и ниже; Extended — для тех, кто ждёт C и выше"],
+        ["Актуальная версия",
+         "КИМ ЕГЭ 2027",
+         "Physics guide, first assessment 2025",
+         "Формат действует с экзамена мая 2027",
+         "Силлабус для экзаменов 2026, 2027 и 2028"],
+    ]
+    th = "".join(f"<th>{c}</th>" for c in head)
+    tr = "".join("<tr>" + f"<th scope=\"row\">{r[0]}</th>" + "".join(f"<td>{c}</td>" for c in r[1:]) + "</tr>" for r in rows)
+    return f'<table class="spec-table">\n<thead><tr>{th}</tr></thead>\n<tbody>{tr}</tbody>\n</table>'
+
+
+def _compare_page():
+    slug = "tutor-compare-exam-programs"
+    pillars = "".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["ru"])
+    body = f"""<main id="main">
+<section class="subhero section" id="top">
+  <div class="wrap">
+    <p class="eyebrow reveal">Сравнение программ</p>
+    <h1 class="reveal">{COMPARE_TITLE}</h1>
+    <p class="lead reveal">{COMPARE_ANSWER}</p>
+    <p class="muted"><time datetime="{COMPARE_LASTMOD}">Обновлено: {_fmt_date(COMPARE_LASTMOD, True)}</time></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="prose reveal" style="max-width:960px">
+      <h2 id="compare">Таблица сравнения</h2>
+      {_compare_table()}
+      <p class="muted">Цифры взяты из спецификации ФИПИ, силлабуса Cambridge, Physics guide IB и страниц College Board; AP — только Physics C. Чего нет в таблице, не сверено: шкалы IB и AP, даты экзаменов и требования вузов смотрите у организаторов экзаменов.</p>
+      <h2 id="links">Подробнее по каждой программе</h2>
+      <ul>{pillars}</ul>
+      <p><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="{TUTOR_PAGE}">Страница репетитора: кто преподаёт и как начать</a></p>
+      <h2 id="who">Кто преподаёт</h2>
+      <p>{_RU_WHO}</p>
+      {razbor_block_html(slug, "ru")}
+      <p>Все страницы-ответы: <a href="{HUB}">ответы на частые запросы</a>.</p>
+    </div>
+  </div>
+</section>
+
+{{{{FAQ}}}}
+</main>"""
+    return {
+        "url": COMPARE_URL, "lang": "ru", "body_html": body, "no_cta": True, "lastmod": COMPARE_LASTMOD,
+        "title": COMPARE_TITLE, "desc": COMPARE_DESC, "og_title": COMPARE_TITLE,
+        "crumbs": [("Главная", "/"), ("Ответы", HUB), ("Сравнение программ", None)],
+        "alternates": [("ru", COMPARE_URL)],
+        "jsonld": [service("Подготовка к экзаменам по физике: ЕГЭ, IB, AP, IGCSE (онлайн, 1:1)",
+                           "Онлайн-подготовка один на один к ЕГЭ, IB Physics, AP Physics C и Cambridge IGCSE Physics 0625; сравнение программ."),
+                   {"@context": "https://schema.org", "@type": "WebPage", "name": COMPARE_TITLE,
+                    "url": BASE_URL + COMPARE_URL, "inLanguage": "ru", "dateModified": COMPARE_LASTMOD}],
+        "faq_heading": "Частые вопросы", "faq": COMPARE_FAQ,
+    }
+
+
 def answer_pages():
-    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN]
+    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN] + [_compare_page()]
