@@ -10,7 +10,7 @@ Run:  python3 build.py        → regenerates every content page + sitemap.xml
                               → rebuilds only the listed pages, sitemap untouched
 The homepage (index.html) is hand-maintained and NOT touched here.
 """
-import json, os, re, datetime
+import json, os, re
 from pages_registry import NETWORK_SITES
 
 BASE = "https://tutor.podlevskikh.com"
@@ -354,7 +354,7 @@ def build_llms():
 "> Online one-to-one physics and mathematics exam preparation: IB, AP, SAT, A-Level, IGCSE, ЕГЭ, ОГЭ, ДВИ, olympiads. Taught by a physicist, graduate of the Faculty of Physics of Lomonosov Moscow State University (MSU, 2006): 23 years of private tutoring, 350+ students, perfect 200/200 on both US Praxis Physics (5266) and Praxis Mathematics (5165). Lessons online worldwide (GMT+2/+3) in English and/or Russian.",
 "",
 "## Answers to common questions when choosing a tutor",
-f"- Who teaches: Vladimir Podlevskikh, MSU physicist (2006); WES: equivalent of a US Bachelor's + Master's; 23 years of private tutoring, 350+ students.",
+"- Who teaches: Vladimir Podlevskikh, MSU physicist (2006); WES: equivalent of a US Bachelor's + Master's; 23 years of private tutoring, 350+ students.",
 "- Exams covered: ЕГЭ, ОГЭ, ДВИ, physics-maths olympiads; IB Physics (HL/SL), AP Physics (1, 2, C), SAT, A-Level (AQA, Pearson Edexcel, OCR), Cambridge IGCSE Physics 0625 and Maths 0580.",
 "- Format: online, one-to-one, shared interactive whiteboard; personal plan from the current level to the exam date; checkable homework between lessons.",
 "- Languages: English, Russian or mixed.",

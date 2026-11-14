@@ -12,7 +12,6 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://tutor.podlevskikh.com"

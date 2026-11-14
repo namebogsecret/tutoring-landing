@@ -3,7 +3,6 @@
 Запуск:  python3 build.py && python3 tests/test_answer_pages.py
 """
 import html as htmllib
-import json
 import os
 import re
 import sys
@@ -310,7 +309,7 @@ class TestBuilder(unittest.TestCase):
         import build
         p = {"url": "/answers/_t/", "lang": "ru", "body_html": "<h1>x</h1>{{FAQ}}", "title": "t", "desc": "d",
              "crumbs": [("a", "/"), ("b", None)], "faq": [("q?", "a.")], "no_cta": True}
-        import tempfile, shutil
+        import shutil
         out = os.path.join(ROOT, "answers", "_t")
         try:
             build.build_page(p)

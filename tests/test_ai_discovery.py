@@ -63,5 +63,10 @@ try:
 except Exception:
     check(False, f"node-проверка: {r.stdout} {r.stderr}")
 
-print("FAIL:\n" + "\n".join(fails) if fails else "OK: все проверки зелёные")
-sys.exit(1 if fails else 0)
+def test_ai_discovery():  # pytest/dev-gate: проверки выше выполняются при импорте
+    assert not fails, "\n".join(fails)
+
+
+if __name__ == "__main__":
+    print("FAIL:\n" + "\n".join(fails) if fails else "OK: все проверки зелёные")
+    sys.exit(1 if fails else 0)

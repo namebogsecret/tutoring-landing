@@ -3,7 +3,7 @@
 """Entity-контракт сайта: единый Person @id, sameAs только из профилей самого человека,
 собственные проекты — в subjectOf, сеть без снятых сайтов, нет устаревших фактов.
 Запуск: python3 tests/test_entity.py (после python3 build.py)."""
-import glob, json, os, re, sys, unittest
+import glob, json, os, re, unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PID = "https://tutor.podlevskikh.com/#vladimir"
