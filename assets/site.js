@@ -65,6 +65,7 @@ window.addEventListener("load",function(){try{window.goatcounter=window.goatcoun
 /* CTA-события: неблокирующий пиксель, не мешает переходу по ссылке */
 document.addEventListener("click",function(ev){try{
   var a=ev.target.closest("a"); if(!a||!a.href) return;
+  if(a.hasAttribute("data-sb-cta")) return; /* блоки StartBlock (напр. «записаться на разбор») считают себя сами — без дубля cta-calendly */
   var href=a.href, name=null;
   if(/t\.me\/podlevskikh_consult_bot/.test(href)) name="telegram-consult";
   else if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
