@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 27)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics
+        self.assertEqual(len(set(URLS.values())), 28)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ по месяцам
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -498,7 +498,7 @@ class TestRazbor(Base):
         self.assertIn('if(a.hasAttribute("data-sb-cta")) return;', js)   # без дубля cta-calendly в «Записях»
 
 
-PHYS_QUERIES = ["AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
+PHYS_QUERIES = ["Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
                 "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare"]
 
 
@@ -510,7 +510,7 @@ class TestPhysPages(Base):
         return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
 
     def test_four_queries_and_pairs(self):
-        self.assertEqual(len(self.PH), 4)
+        self.assertEqual(len(self.PH), 5)
         self.assertEqual(sorted(AP.QUERIES_PHYS.values()), sorted(PHYS_QUERIES))
         for a in self.PH:
             self.assertIn(AP.QUERIES_PHYS[a["n"]], self.src[URLS[a["slug"]]], a["slug"])
@@ -585,3 +585,74 @@ class TestPhysPages(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEgePlanPage(Base):
+    """Страница «Подготовка к ЕГЭ по физике 2027: план по месяцам» (15.11): данные exam-topics, FAQPage, ссылки, метрика."""
+    SLUG = "podgotovka-ege-fizika-2027-plan-po-mesyacam"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.s = cls.src[URLS[cls.SLUG]] if cls.SLUG in URLS else read("/answers/%s/" % cls.SLUG)
+        cls.entry = next(a for a in AP.ANSWERS_PHYS if a["slug"] == cls.SLUG)
+
+    def test_faqpage_jsonld_matches_visible_faq(self):
+        blocks = jsonld_blocks(self.s)
+        faq = next(b for b in blocks if b.get("@type") == "FAQPage")
+        self.assertEqual(len(faq["mainEntity"]), len(self.entry["faq"]))
+        self.assertGreaterEqual(len(faq["mainEntity"]), 3)
+        for q, (qq, aa) in zip(faq["mainEntity"], self.entry["faq"]):
+            self.assertEqual(q["@type"], "Question")
+            self.assertEqual(q["name"], qq)
+            self.assertEqual(q["acceptedAnswer"]["text"], aa)
+            self.assertIn(qq, self.s)
+
+    def test_jsonld_valid_webpage_and_course(self):
+        types = [b.get("@type") for b in jsonld_blocks(self.s)]
+        for t in ("FAQPage", "WebPage", "Course"):
+            self.assertIn(t, types)
+
+    def test_program_link_and_razbor_metric_block(self):
+        self.assertIn('href="/ege-physics/"', self.s)
+        slug = AP.razbor_slug(self.entry)
+        self.assertEqual(slug, "tutor-answers-" + self.SLUG)
+        self.assertIn('data-slug="%s"' % slug, self.s)           # показ/клик razbor-*-<slug> в GoatCounter (доля до записи)
+        self.assertIn("utm_campaign=%s" % slug, self.s)
+
+    def test_plan_months_follow_exam_topics(self):
+        """Все темы кодификатора из exam-topics/ege-physics.json (уровень разделов-детей) встречаются в плане."""
+        path = os.path.expanduser("~/exam-topics/site/data/ege-physics.json")
+        if not os.path.exists(path):
+            self.skipTest("exam-topics недоступен")
+        import json
+        data = json.load(open(path, encoding="utf-8"))
+        plan = " ".join(" ".join(r) for r in AP._EGE_PLAN_TABLE_RU["rows"]).lower().replace("ё", "е")
+        stems = {"Кинематика": "кинематик", "Динамика": "динамик", "Законы сохранения": "законы сохранения",
+                 "Статика и гидростатика": "статика и гидростатика", "Механические колебания и волны": "колебания и волны",
+                 "Основы МКТ": "мкт", "Тепловые явления": "тепловые явления", "Термодинамика": "термодинамик",
+                 "Электростатика": "электростатик", "Постоянный ток": "постоянный ток", "Магнитное поле": "магнитное поле",
+                 "Электромагнитная индукция": "индукция", "ЭМ колебания и волны": "эм колебания", "Оптика": "оптик",
+                 "Фотоэффект, фотоны": "фотоэффект", "Постулаты Бора, спектры": "бора", "Строение ядра, радиоактивность": "радиоактивност",
+                 "Измерения, погрешности, приборы": "погрешност", "Элементы астрофизики": "астрофизик"}
+        names = {c["name"]["ru"] for t in data["topics"] for c in t["children"]}
+        for ru in names:
+            self.assertIn(ru, stems, "новая тема в exam-topics, добавьте в план: " + ru)
+            self.assertIn(stems[ru], plan, ru)
+
+    def test_facts_only_from_spec_no_dates_or_scale(self):
+        text = visible_text(self.s)
+        for must in ("26 заданий", "45", "3 ч 55 мин", "8–10", "6–8", "7–10"):
+            self.assertIn(must, text)
+        self.assertNotRegex(text, r"\b(100-балльн\w+ шкал\w+ равн|тестов(ых|ый) балл\w* за)")
+        self.assertNotRegex(text, r"\d{1,2}\s+(мая|июня)\s+2027")
+
+    def test_months_are_in_order(self):
+        months = [r[0] for r in AP._EGE_PLAN_TABLE_RU["rows"]]
+        self.assertEqual(months, ["Ноябрь", "Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май"])
+
+    def test_in_hub_and_sitemap(self):
+        self.assertIn("/answers/%s/" % self.SLUG, self.src[HUB])
+        sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
+        self.assertIn("/answers/%s/" % self.SLUG, sm)
+        self.assertIn("/answers/%s/" % self.SLUG, open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read())
