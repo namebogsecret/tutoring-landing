@@ -103,6 +103,27 @@ class TestUpgraded(Base):
             self.assertLess(s.index('class="lead'), s.index("<table"), slug)
 
 
+REPROBE_SLUGS = ["repetitor-fizika-ege-online", "repetitor-fizika-ege-msu", "podgotovka-ege-fizika-za-rubezhom",
+                 "repetitor-ap-physics-na-russkom", "vladimir-podlevskikh-physics-tutor",
+                 "igcse-physics-0625-tutor-russian-speaking", "ap-physics-1-tutor-online",
+                 "ege-physics-tutor-online", "ege-physics-tutor-msu", "ege-physics-preparation-abroad-online",
+                 "ap-physics-tutor-russian-speaking"]
+
+
+class TestReprobeTables(Base):
+    """16.11 (замер 15.11, 0/12): таблица на первом экране + дата + FAQPage на страницах #1–#3, #6–#9 и EN-парах."""
+    def test_table_date_faq(self):
+        for slug in REPROBE_SLUGS:
+            s = self.src["/answers/%s/" % slug]
+            self.assertIn('<table class="spec-table">', s, slug)
+            self.assertIn('<time datetime="2026-11-16">', s, slug)
+            self.assertIn('"dateModified": "2026-11-16"', s, slug)
+            self.assertIn('"@type": "FAQPage"', s, slug)
+            self.assertLess(s.index('class="lead'), s.index("<table"), slug)
+            # таблица до «Кто преподаёт» и до разделов-пояснений
+            self.assertLess(s.index("<table"), s.index('id="who"'), slug)
+
+
 class TestFacts(Base):
     def test_numeric_claims_whitelisted(self):
         allowed_years, allowed_students = {"23"}, {"350"}

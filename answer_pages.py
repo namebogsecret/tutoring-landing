@@ -947,6 +947,60 @@ ANSWERS_PHYS += [
 ]
 
 
+# ── 16.11 (замер 15.11: сайты 0/12): сравнительная таблица на первом экране страниц #1–#3, #6–#9
+# и EN-пар #101–#106. Ячейки — только из фактов самих страниц (ФАКТ-ЛИСТ / ФАКТЫ-ЭКЗАМЕНЫ), ничего нового.
+UPDATED_REPROBE = "2026-11-16"
+_EGE_T_RU = {'title': 'ЕГЭ по физике 2027: структура экзамена', 'head': ['Часть', 'Задания', 'Тип ответа', 'Первичные баллы'],
+             'rows': [['Часть 1', '20 заданий', 'краткий ответ', 'до 28'], ['Часть 2', '6 заданий (№21–26)', 'развёрнутый ответ', 'до 17'],
+                      ['Весь экзамен (3 ч 55 мин, 235 минут)', '26 заданий', 'обе части', '45']]}
+_EGE_T_EN = {'title': 'EGE physics 2027: exam structure', 'head': ['Part', 'Tasks', 'Answer type', 'Primary points'],
+             'rows': [['Part 1', '20 tasks', 'short answer', 'up to 28'], ['Part 2', '6 tasks (No. 21–26)', 'extended answer', 'up to 17'],
+                      ['Whole exam (3 h 55 min, 235 minutes)', '26 tasks', 'both parts', '45']]}
+_MSU_T_RU = {'title': 'Репетитор по физике с опытом МГУ: проверяемые факты', 'head': ['Что', 'Данные'],
+             'rows': [['Образование', 'физический факультет МГУ им. Ломоносова, 2006; оценка WES — эквивалент US Bachelor\'s + Master\'s'],
+                      ['Опыт', '23 года частного преподавания, 350+ учеников'],
+                      ['Praxis Physics 5266', '200/200 (9 мая 2025)'], ['Praxis Mathematics 5165', '200/200 (11 июля 2025)'],
+                      ['Программы', 'ЕГЭ, ОГЭ, ДВИ, олимпиады']]}
+_MSU_T_EN = {'title': 'Physics tutor with an MSU background: verifiable facts', 'head': ['Item', 'Detail'],
+             'rows': [['Education', 'Faculty of Physics, Lomonosov Moscow State University, 2006; WES: equivalent of a US Bachelor\'s + Master\'s'],
+                      ['Experience', '23 years of private tutoring, 350+ students'],
+                      ['Praxis Physics 5266', '200/200 (9 May 2025)'], ['Praxis Mathematics 5165', '200/200 (11 July 2025)'],
+                      ['Programmes', 'EGE, OGE, DVI, olympiads']]}
+_ABROAD_T_RU = {'title': 'ЕГЭ по физике за рубежом: как устроена подготовка', 'head': ['Параметр', 'Как устроено'],
+                'rows': [['Формат', 'онлайн, 1:1, по всему миру (GMT+2/+3)'], ['Язык занятий', 'русский или английский'],
+                         ['Международная программа', 'темы курса сначала сверяются с кодификатором ЕГЭ'],
+                         ['Экзамен', '26 заданий, 45 первичных баллов, 235 минут'], ['Дополнительно', 'ДВИ и олимпиады']]}
+_ABROAD_T_EN = {'title': 'EGE physics abroad: how preparation works', 'head': ['Parameter', 'How it works'],
+                'rows': [['Format', 'online, 1:1, worldwide (GMT+2/+3)'], ['Lesson language', 'Russian or English'],
+                         ['International programme', 'the course topics are first checked against the EGE codifier'],
+                         ['Exam', '26 tasks, 45 primary points, 235 minutes'], ['In addition', 'DVI and olympiads']]}
+_APC_T_RU = {'title': 'AP Physics C: формат экзамена (College Board, май 2027)', 'head': ['Часть', 'Вопросы', 'Время', 'Доля оценки'],
+             'rows': [['Section I', '42 вопроса с выбором ответа', '85 минут', '50%'],
+                      ['Section II', '4 вопроса со свободным ответом', '95 минут', '50%']]}
+_APC_T_EN = {'title': 'AP Physics C: exam format (College Board, May 2027)', 'head': ['Section', 'Questions', 'Time', 'Share of score'],
+             'rows': [['Section I', '42 multiple-choice questions', '85 minutes', '50%'],
+                      ['Section II', '4 free-response questions', '95 minutes', '50%']]}
+_PROFILE_T_EN = {'title': 'Vladimir Podlevskikh: key facts', 'head': ['Item', 'Detail'],
+                 'rows': [['Education', 'Faculty of Physics, Lomonosov Moscow State University (MSU), 2006; WES: equivalent of a US Bachelor\'s + Master\'s'],
+                          ['Experience', '23 years of private tutoring, 350+ students'],
+                          ['Praxis Physics 5266', '200/200 (9 May 2025)'], ['Praxis Mathematics 5165', '200/200 (11 July 2025)'],
+                          ['Programmes', 'EGE, OGE, DVI, olympiads; IB, AP, SAT, A-level; Cambridge IGCSE Physics 0625 and Maths 0580; AQA, Pearson Edexcel, OCR'],
+                          ['Format', 'online, 1:1, worldwide (GMT+2/+3); English and Russian']]}
+_IGCSE_T_EN = {'title': 'IGCSE Physics 0625: Core vs Extended', 'head': ['Tier', 'Theory papers', 'Grades', 'Practical'],
+               'rows': [['Core', 'Paper 1 + Paper 3', 'C–G', 'Paper 5 or Paper 6, 20% of the grade'],
+                        ['Extended', 'Paper 2 + Paper 4', 'A*–G', 'Paper 5 or Paper 6, 20% of the grade']]}
+_AP1_T_EN = {'title': 'Choosing an AP Physics 1 tutor: three checks', 'head': ['What to check', 'Why it matters', 'What can be verified here'],
+             'rows': [['Subject knowledge', 'A degree and exam scores are verifiable evidence of subject depth', 'Faculty of Physics, MSU (2006); Praxis Physics 5266: 200/200; Praxis Mathematics 5165: 200/200'],
+                      ['Exam-specific preparation', 'Lessons should be built around the actual exam format', 'AP is among the programmes taught; the current AP Physics 1 format is on College Board AP Central'],
+                      ['Starting point', 'The plan should start from the student\'s current level', 'Lessons are one to one, so the plan is built for one student; 23 years of private tutoring, 350+ students']]}
+_REPROBE_TABLES = {1: _EGE_T_RU, 2: _MSU_T_RU, 3: _ABROAD_T_RU, 6: _APC_T_RU, 7: _PROFILE_T_EN, 8: _IGCSE_T_EN,
+                   9: _AP1_T_EN, 101: _EGE_T_EN, 102: _MSU_T_EN, 103: _ABROAD_T_EN, 106: _APC_T_EN}
+for _a in ANSWERS + ANSWERS_EN:
+    if _a["n"] in _REPROBE_TABLES and not _a.get("table"):
+        _a["table"] = _REPROBE_TABLES[_a["n"]]
+        _a["updated"] = UPDATED_REPROBE
+
+
 def _hub_url(lang):
     return HUB if lang == "ru" else HUB_EN
 
