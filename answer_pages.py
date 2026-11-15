@@ -467,7 +467,8 @@ _EN_WHO_MATH = ("Vladimir Podlevskikh is a physicist, a graduate of the Faculty 
 _IB_URL = "https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/"
 _AP_BC_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-bc"
 _AP_BC_EXAM_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-bc/exam"
-_AP_AB_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-ab"
+_AP_AB_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-ab/exam"
+_IB_UPD_URL = "https://www.ibo.org/university-admission/latest-curriculum-updates/dp-mathematics-analysis-and-approaches-updates/"
 _IGCSE_URL = "https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-igcse-mathematics-0580/"
 
 
@@ -502,12 +503,14 @@ ANSWERS_MATH = [
            "Часы, структура работ и веса — в Mathematics guide и на странице программы на ibo.org (ссылка ниже)"],
  "sections": [
    ("Что здесь не пересказывается", "<p>Число учебных часов, состав и длительность работ, критерии внутренней оценки и процентные веса IB задаёт в официальных документах и со временем обновляет, поэтому эта страница цифр не повторяет. Актуальное описание курсов математики — на странице " + _ext(_IB_URL, "Mathematics в IB Diploma Programme на ibo.org") + ".</p>"),
+   ("Обновление программы IB", "<p>IB объявил обновлённую программу математики DP. Для тех, кто уже учится по текущему курсу AA или AI, действует он; сроки перехода смотрите на " + _ext(_IB_UPD_URL, "странице обновлений IB по математике DP") + ".</p>"),
    ("Как проходит подготовка", "<p>Начинаем с диагностики: какие темы курса уже пройдены уверенно, где пробелы. Затем строим план к экзамену, разбираем типы заданий, тренируем оформление решений (в математике IB оценивается не только ответ, но и обоснование) и проходим пробные работы в формате экзамена. Работаем с тем курсом, по которому ученик уже учится; выбор между AA и AI делается в учебном заведении ученика.</p>"),
    ("Ограничения", "<p>Результат зависит от стартового уровня и времени до экзамена, поэтому балл заранее не обещается.</p>"),
  ],
  "faq": [
    ("Можно ли изучать IB Math AA на русском?", "Да: объяснения идут на русском, а термины, формулировки заданий и запись решений — на английском, как на экзамене. Можно и полностью на английском."),
    ("Чем отличаются курсы AA и AI?", "Это два разных курса математики IB Diploma: analysis and approaches и applications and interpretation. Официальное описание обоих — на странице IB Mathematics на ibo.org; выбор делается в учебном заведении ученика."),
+   ("Меняется ли программа IB по математике?", "IB объявил обновлённую программу математики DP. Кто уже учится по текущему курсу AA или AI, продолжает по нему; сроки перехода — на странице обновлений IB."),
    ("Есть ли у преподавателя подтверждение уровня по математике?", "Да: 200/200 на американском экзамене Praxis Mathematics (5165), 11 июля 2025; также выпускник физического факультета МГУ (2006)."),
  ],
  "updated": "2026-11-15",
@@ -527,7 +530,7 @@ ANSWERS_MATH = [
  "table": _AP_TABLE_RU,
  "sections": [
    ("Юниты AP Calculus BC", "<p>В описании курса — 10 юнитов, по 5–20% от раздела с выбором ответа: 1 — пределы и непрерывность; 2 — дифференцирование: определение и основные свойства; 3 — композитные, неявные и обратные функции; 4 — контекстные приложения производной; 5 — аналитические приложения производной; 6 — интегрирование и накопление изменения; 7 — дифференциальные уравнения; 8 — приложения интегрирования; 9 — параметрические уравнения, полярные координаты и векторные функции; 10 — бесконечные последовательности и ряды. Веса по юнитам смотрите на " + _ext(_AP_BC_URL, "странице курса BC") + ".</p>"),
-   ("Что нужно сверять с College Board", "<p>На страницах курсов College Board указано, что число вопросов с выбором ответа и время будут обновлены, начиная с экзаменов мая 2027 года. Поэтому цифры в таблице — по состоянию на 15.11.2026; актуальный формат смотрите на " + _ext(_AP_BC_EXAM_URL, "странице экзамена BC") + " и " + _ext(_AP_AB_URL, "странице курса AB") + ". Шкалу баллов 1–5 и проходные баллы эта страница не приводит.</p>"),
+   ("Что нужно сверять с College Board", "<p>На страницах курсов College Board указано, что число вопросов с выбором ответа и время будут обновлены, начиная с экзаменов мая 2027 года. Поэтому цифры в таблице — по состоянию на 15.11.2026; актуальный формат смотрите на " + _ext(_AP_BC_EXAM_URL, "странице экзамена BC") + " и " + _ext(_AP_AB_URL, "странице экзамена AB") + ". Шкалу баллов 1–5 и проходные баллы эта страница не приводит.</p>"),
    ("Как проходит подготовка", "<p>Диагностика по юнитам, план к дате экзамена, разбор вопросов со свободным ответом (обоснование и запись решения важны так же, как ответ) и тренировка на времени с учётом разделов без калькулятора. Результат зависит от стартового уровня и времени до экзамена; балл заранее не обещается.</p>"),
  ],
  "faq": [
@@ -581,11 +584,13 @@ ANSWERS_MATH = [
  "sections": [
    ("How to choose a tutor", "<p>Ask three things: what the tutor can show about subject knowledge (degree, exam scores), whether the lessons are built around the actual exam format, and whether the plan starts from the student's current level. A tutor who cannot answer these cannot be compared with another.</p>"),
    ("What this page does not repeat", "<p>Teaching hours, paper structure, internal assessment criteria and weightings are set by the IB in its official documents and change over time, so this page does not repeat them. The current description of the maths courses is on the " + _ext(_IB_URL, "Mathematics page of the IB Diploma Programme at ibo.org") + ".</p>"),
+   ("Update to the IB programme", "<p>The IB has announced an updated DP mathematics programme. Students already following the current AA or AI course continue under it; for the transition timeline see the " + _ext(_IB_UPD_URL, "IB page on DP mathematics updates") + ".</p>"),
    ("How preparation goes", "<p>We start with a diagnostic: which topics of the course are solid and where the gaps are. Then comes a plan to the exam, task types, practice in writing out solutions (in IB mathematics the reasoning is assessed, not only the answer) and timed practice papers. We work with the course the student already follows; choosing between AA and AI is done with the student's own institution. No score is promised: the result depends on the starting level and the time left.</p>"),
  ],
  "faq": [
    ("Do you teach IB Math AA at HL?", "Yes: IB Mathematics: analysis and approaches, online and one to one. HL and SL are both covered."),
    ("Can lessons be in Russian?", "Yes: explanations in Russian, IB terms and task wording in English, or fully in English."),
+   ("Is the IB maths programme changing?", "The IB has announced an updated DP mathematics programme. Students already following the current AA or AI course continue under it; the transition timeline is on the IB updates page."),
    ("Where can I see the official IB maths course description?", "On the Mathematics page of the IB Diploma Programme at ibo.org, which is the source for hours, assessment and course changes."),
  ],
  "updated": "2026-11-15",
@@ -605,7 +610,7 @@ ANSWERS_MATH = [
  "table": _AP_TABLE_EN,
  "sections": [
    ("Units of AP Calculus BC", "<p>The course description lists 10 units, each 5–20% of the multiple-choice section: 1 — limits and continuity; 2 — differentiation: definition and fundamental properties; 3 — differentiation: composite, implicit and inverse functions; 4 — contextual applications of differentiation; 5 — analytical applications of differentiation; 6 — integration and accumulation of change; 7 — differential equations; 8 — applications of integration; 9 — parametric equations, polar coordinates and vector-valued functions; 10 — infinite sequences and series. Exact weightings are on the " + _ext(_AP_BC_URL, "BC course page") + ".</p>"),
-   ("What to check with College Board", "<p>The College Board course pages state that the number of multiple-choice questions and the timing will be updated starting with the May 2027 exams. The table therefore reflects the pages as read on 15 November 2026; for the current format see the " + _ext(_AP_BC_EXAM_URL, "BC exam page") + " and the " + _ext(_AP_AB_URL, "AB course page") + ". Score scales (1–5) and cut-offs are not given here.</p>"),
+   ("What to check with College Board", "<p>The College Board course pages state that the number of multiple-choice questions and the timing will be updated starting with the May 2027 exams. The table therefore reflects the pages as read on 15 November 2026; for the current format see the " + _ext(_AP_BC_EXAM_URL, "BC exam page") + " and the " + _ext(_AP_AB_URL, "AB exam page") + ". Score scales (1–5) and cut-offs are not given here.</p>"),
    ("How preparation goes", "<p>A diagnostic by unit, a plan to the exam date, work on free-response questions (the reasoning and the written solution count as much as the answer) and timed practice that respects the no-calculator parts. The result depends on the starting level and the time left; no score is promised.</p>"),
  ],
  "faq": [

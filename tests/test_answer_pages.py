@@ -408,6 +408,19 @@ class TestMathPages(Base):
             self.assertIsNone(re.search(r"\b(150|240)\b", t), a["slug"])
             self.assertIsNone(re.search(r"\b(Paper [12]|Paper 3)\b.*\d+ (min|мин)", t), a["slug"])
 
+    def test_ib_update_caveat_and_ab_exam_link(self):
+        upd = "https://www.ibo.org/university-admission/latest-curriculum-updates/dp-mathematics-analysis-and-approaches-updates/"
+        for n in (201, 301):
+            a = next(m for m in AP.ANSWERS_MATH if m["n"] == n)
+            s = self.src[URLS[a["slug"]]]
+            self.assertIn('<a href="%s" target="_blank" rel="noopener">' % upd, s, n)
+            t = visible_text(s)
+            self.assertRegex(t, r"обновлённую программу математики DP|updated DP mathematics programme")
+            self.assertIsNone(re.search(r"\b20(2[7-9]|3\d)\b", t), n)   # дат перехода нет
+        for n in (202, 302):
+            a = next(m for m in AP.ANSWERS_MATH if m["n"] == n)
+            self.assertIn('href="https://apcentral.collegeboard.org/courses/ap-calculus-ab/exam"', self.src[URLS[a["slug"]]], n)
+
     def test_ap_format_matches_verified_facts(self):
         for n in (202, 302):
             a = next(m for m in AP.ANSWERS_MATH if m["n"] == n)
