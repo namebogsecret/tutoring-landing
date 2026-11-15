@@ -15,7 +15,7 @@ import answer_pages as AP                      # noqa: E402
 from test_pillar_pages import FORBIDDEN, FORBIDDEN_VISIBLE, visible_text, jsonld_blocks  # noqa: E402
 
 BASE = "https://tutor.podlevskikh.com"
-ALL = AP.ANSWERS + AP.ANSWERS_EN + AP.ANSWERS_MATH
+ALL = AP.ANSWERS + AP.ANSWERS_EN + AP.ANSWERS_MATH + AP.ANSWERS_PHYS
 URLS = {a["slug"]: "/answers/%s/" % a["slug"] for a in ALL}
 HUB = "/answers/"
 HUB_EN = "/answers/en/"
@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 23)  # 11 + 6 EN-пар + 6 математических
+        self.assertEqual(len(set(URLS.values())), 27)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -170,7 +170,7 @@ class TestEnglishAndHreflang(Base):
             self.assertEqual(len(a["faq"]), len(next(r for r in AP.ANSWERS if r["n"] == a["twin"])["faq"]))
 
     def test_no_cyrillic_in_visible_en_text(self):
-        for a in AP.ANSWERS_EN + [m for m in AP.ANSWERS_MATH if m["lang"] == "en"]:
+        for a in AP.ANSWERS_EN + [m for m in AP.ANSWERS_MATH + AP.ANSWERS_PHYS if m["lang"] == "en"]:
             src = self.src[URLS[a["slug"]]]
             main = src[src.index('<section class="subhero'):src.index('id="tutor-page-block"')]  # без общего nav/футера
             vis = visible_text(main)
@@ -212,11 +212,11 @@ class TestEnglishAndHreflang(Base):
 
     def test_llms_lists_en_pages(self):
         llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
-        for a in AP.ANSWERS_EN + AP.ANSWERS_MATH:
+        for a in AP.ANSWERS_EN + AP.ANSWERS_MATH + AP.ANSWERS_PHYS:
             self.assertIn(BASE + URLS[a["slug"]], llms)
 
     def test_tutor_page_metric_hook_on_en(self):
-        for a in AP.ANSWERS_EN + [m for m in AP.ANSWERS_MATH if m["lang"] == "en"]:
+        for a in AP.ANSWERS_EN + [m for m in AP.ANSWERS_MATH + AP.ANSWERS_PHYS if m["lang"] == "en"]:
             self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', self.src[URLS[a["slug"]]])
 
 
@@ -500,3 +500,77 @@ class TestRazbor(Base):
     def test_site_js_skips_block_links(self):
         js = open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8").read()
         self.assertIn('if(a.hasAttribute("data-sb-cta")) return;', js)   # без дубля cta-calendly в «Записях»
+
+
+PHYS_QUERIES = ["AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
+                "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare"]
+
+
+class TestPhysPages(Base):
+    """Четыре страницы AP Physics 1/2/C и IB Physics HL/SL (15.11): запросы, пары, FAQPage, блок разбора с UTM, факты."""
+    PH = AP.ANSWERS_PHYS
+
+    def u(self, n):
+        return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
+
+    def test_four_queries_and_pairs(self):
+        self.assertEqual(len(self.PH), 4)
+        self.assertEqual(sorted(AP.QUERIES_PHYS.values()), sorted(PHYS_QUERIES))
+        for a in self.PH:
+            self.assertIn(AP.QUERIES_PHYS[a["n"]], self.src[URLS[a["slug"]]], a["slug"])
+        for en, ru in ((501, 401), (502, 402)):
+            en_u, ru_u = URLS[next(a["slug"] for a in self.PH if a["n"] == en)], URLS[next(a["slug"] for a in self.PH if a["n"] == ru)]
+            for u in (en_u, ru_u):
+                h = dict(re.findall(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"', self.src[u]))
+                self.assertEqual((h["en"], h["ru"], h["x-default"]), (BASE + en_u, BASE + ru_u, BASE + en_u), u)
+
+    def test_faqpage_jsonld_matches_visible_and_has_5(self):
+        for a in self.PH:
+            s = self.src[URLS[a["slug"]]]
+            faq = [b for b in jsonld_blocks(s) if b.get("@type") == "FAQPage"]
+            self.assertEqual(len(faq), 1, a["slug"])
+            qs = [e["name"] for e in faq[0]["mainEntity"]]
+            self.assertEqual(qs, [q for q, _ in a["faq"]])
+            self.assertGreaterEqual(len(qs), 5)
+            vis = visible_text(s)
+            for q, ans in a["faq"]:
+                self.assertIn(q, vis)
+
+    def test_razbor_block_utm_per_page(self):
+        for a in self.PH:
+            b = RAZBOR_RE.search(self.src[URLS[a["slug"]]]).group(0)
+            self.assertIn("utm_campaign=tutor-answers-" + a["slug"], b)
+            self.assertIn("utm_medium=razbor", b)
+            self.assertIn("utm_source=tutor.podlevskikh.com", b)
+
+    def test_date_table_and_hubs(self):
+        for a in self.PH:
+            s = self.src[URLS[a["slug"]]]
+            self.assertIn('<table class="spec-table">', s)
+            self.assertIn('<time datetime="2026-11-15">', s)
+            self.assertIn('"dateModified": "2026-11-15"', s)
+            hub = self.src[HUB if a["lang"] == "ru" else HUB_EN]
+            self.assertIn('href="%s"' % URLS[a["slug"]], hub)
+
+    def test_ap_facts_verified(self):
+        for n in (401, 501):
+            t = visible_text(self.u(n))
+            for must in ("42", "85", "95"):
+                self.assertIn(must, t)
+            for bad in (r"\b(?:AP )?Physics 1 (?:requires|prerequisite)", r"college credit", r"кредит", r"проходной"):
+                self.assertIsNone(re.search(bad, t, re.I), (n, bad))
+        for n in (401, 501):
+            self.assertIn("apcentral.collegeboard.org/courses/ap-physics-1", self.u(n))
+            self.assertIn("apcentral.collegeboard.org/courses/ap-physics-2", self.u(n))
+
+    def test_ib_facts_match_guide(self):
+        for n in (402, 502):
+            s = self.u(n)
+            t = visible_text(s)
+            for must in ("240", "150", "4 ч 30 мин" if n == 402 else "4 h 30 min", "38", "19", "24"):
+                self.assertIn(must, t, (n, must))
+            self.assertNotRegex(t, r"(?i)границ\w* оценок|grade boundar|band")
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -652,6 +652,179 @@ ANSWERS_MATH = [
 ]
 
 
+# ── AP Physics 1/2/C и IB Physics HL/SL: «чем отличаются, что сдавать, как готовиться» (автопилот 15.11) ──
+# Факты: ФАКТЫ-ЭКЗАМЕНЫ-2026-11.md (AP C и IB — 08.11; AP Physics 1 и 2 — AP Central 15.11, секция в том же файле).
+# Предпосылки, шкалы, даты экзаменов, кредиты вузов, проходные — НЕ подтверждены и не пишутся.
+QUERIES_PHYS = {
+    401: "AP Physics 1, 2 и C: чем отличаются и какой сдавать",
+    402: "IB Physics HL или SL: чем отличаются и как готовиться",
+    501: "AP Physics 1 vs 2 vs C: which exam to take",
+    502: "IB Physics HL vs SL: differences and how to prepare",
+}
+_AP1_URL = "https://apcentral.collegeboard.org/courses/ap-physics-1"
+_AP2_URL = "https://apcentral.collegeboard.org/courses/ap-physics-2"
+_APCM_URL = "https://apcentral.collegeboard.org/courses/ap-physics-c-mechanics"
+_APCEM_URL = "https://apcentral.collegeboard.org/courses/ap-physics-c-electricity-and-magnetism"
+
+_AP_PHYS_TABLE_RU = {'title': 'AP Physics 1, 2, C Mechanics и C E&M: сравнение (по AP Central)',
+ 'head': ['Параметр', 'AP Physics 1', 'AP Physics 2', 'AP Physics C: Mechanics', 'AP Physics C: E&M'],
+ 'rows': [['Тип курса', 'algebra-based, вводный уровень колледжа', 'algebra-based, вводный уровень колледжа', 'calculus-based, уровень колледжа', 'calculus-based, уровень колледжа'],
+          ['Содержание', 'механика и жидкости (8 юнитов)', 'термодинамика, электричество, магнетизм, оптика, волны, современная физика (7 юнитов)', 'механика (7 юнитов)', 'электричество и магнетизм (6 юнитов)'],
+          ['Раздел I', '42 вопроса с выбором ответа, 85 мин, 50%', '42 вопроса, 85 мин, 50%', '42 вопроса, 85 мин, 50%', '42 вопроса, 85 мин, 50%'],
+          ['Раздел II', '4 вопроса со свободным ответом, 95 мин, 50%', '4 вопроса, 95 мин, 50%', '4 вопроса, 95 мин, 50%', '4 вопроса, 95 мин, 50%'],
+          ['Калькулятор', 'разрешён', 'разрешён', 'разрешён', 'разрешён']]}
+_AP_PHYS_TABLE_EN = {'title': 'AP Physics 1, 2, C Mechanics and C E&M compared (per AP Central)',
+ 'head': ['Parameter', 'AP Physics 1', 'AP Physics 2', 'AP Physics C: Mechanics', 'AP Physics C: E&M'],
+ 'rows': [['Course type', 'algebra-based, introductory college level', 'algebra-based, introductory college level', 'calculus-based, college level', 'calculus-based, college level'],
+          ['Content', 'mechanics and fluids (8 units)', 'thermodynamics, electricity, magnetism, optics, waves, modern physics (7 units)', 'mechanics (7 units)', 'electricity and magnetism (6 units)'],
+          ['Section I', '42 multiple-choice questions, 85 min, 50%', '42 questions, 85 min, 50%', '42 questions, 85 min, 50%', '42 questions, 85 min, 50%'],
+          ['Section II', '4 free-response questions, 95 min, 50%', '4 questions, 95 min, 50%', '4 questions, 95 min, 50%', '4 questions, 95 min, 50%'],
+          ['Calculator', 'permitted', 'permitted', 'permitted', 'permitted']]}
+_IB_PHYS_TABLE_RU = {'title': 'IB Physics SL и HL: что отличается (Physics guide, first assessment 2025)',
+ 'head': ['Параметр', 'SL', 'HL'],
+ 'rows': [['Часы всего (из них контент)', '150 (110)', '240 (180)'],
+          ['Внешняя оценка (80%)', '3 ч', '4 ч 30 мин'],
+          ['Paper 1', '1 ч 30 мин, 45 баллов: 25 вопросов с выбором + data-based', '2 ч, 60 баллов: 40 вопросов с выбором + data-based'],
+          ['Paper 2', '1 ч 30 мин, 50 баллов, материал SL', '2 ч 30 мин, 90 баллов, SL + дополнительный HL-материал'],
+          ['Internal assessment', '20%, 24 балла', '20%, 24 балла'],
+          ['A. Space, time and motion', '27 ч', '42 ч'],
+          ['B. The particulate nature of matter', '24 ч', '32 ч'],
+          ['C. Wave behaviour', '17 ч', '29 ч'],
+          ['D. Fields', '19 ч', '38 ч'],
+          ['E. Nuclear and quantum physics', '23 ч', '39 ч']]}
+_IB_PHYS_TABLE_EN = {'title': 'IB Physics SL vs HL: what differs (Physics guide, first assessment 2025)',
+ 'head': ['Parameter', 'SL', 'HL'],
+ 'rows': [['Total hours (of which content)', '150 (110)', '240 (180)'],
+          ['External assessment (80%)', '3 h', '4 h 30 min'],
+          ['Paper 1', '1 h 30 min, 45 marks: 25 multiple-choice + data-based', '2 h, 60 marks: 40 multiple-choice + data-based'],
+          ['Paper 2', '1 h 30 min, 50 marks, SL material', '2 h 30 min, 90 marks, SL + additional HL material'],
+          ['Internal assessment', '20%, 24 marks', '20%, 24 marks'],
+          ['A. Space, time and motion', '27 h', '42 h'],
+          ['B. The particulate nature of matter', '24 h', '32 h'],
+          ['C. Wave behaviour', '17 h', '29 h'],
+          ['D. Fields', '19 h', '38 h'],
+          ['E. Nuclear and quantum physics', '23 h', '39 h']]}
+
+ANSWERS_PHYS = [
+# ── RU: AP Physics 1 / 2 / C ──
+{"n": 401, "slug": "ap-physics-1-2-c-chem-otlichayutsya", "lang": "ru",
+ "title": "AP Physics 1, 2 и C: чем отличаются и какой сдавать",
+ "desc": "AP Physics 1, 2, C Mechanics и C E&M: алгебра или матанализ, юниты, формат экзамена (42 вопроса, 85 мин; 4 свободных, 95 мин), как выбрать и готовиться.",
+ "h1": "AP Physics 1, 2 и C: чем отличаются и какой сдавать",
+ "answer": "AP Physics 1 и 2 — вводные курсы на алгебре (algebra-based): первый про механику и жидкости, второй про тепло, электричество, магнетизм, оптику и современную физику. AP Physics C — курс с матанализом (calculus-based). Формат у всех экзаменов одинаков: 42 вопроса с выбором ответа за 85 минут и 4 вопроса со свободным ответом за 95 минут. Готовит к ним онлайн один на один Владимир Подлевских, физик МГУ.",
+ "facts": ["Источник: College Board AP Central; цифры формата указаны «effective starting with the May 2027 exam»",
+           "AP Physics 1 — 8 юнитов (кинематика, силы, работа и энергия, импульс, вращение, энергия и импульс вращающихся систем, колебания, жидкости)",
+           "AP Physics 2 — 7 юнитов (9–15): термодинамика; электрическая сила, поле и потенциал; цепи; магнетизм и электромагнетизм; геометрическая оптика; волны, звук и физическая оптика; современная физика",
+           "AP Physics C: Mechanics — 7 юнитов, E&M — 6 юнитов; отдельные экзамены",
+           "Section I — 42 вопроса, 85 минут, 50%; Section II — 4 вопроса, 95 минут, 50%; калькуляторы разрешены",
+           "Занятия: онлайн, 1:1, русский, английский или смешанно"],
+ "sections": [
+   ("Чем отличаются курсы", "<p>Главное различие — математика. Курсы Physics 1 и 2 описаны College Board как algebra-based, курсы Physics C — как calculus-based. Названия семи юнитов механики в Physics 1 и в Physics C: Mechanics совпадают (кинематика, силы, работа и энергия, импульс, вращение, энергия и импульс вращающихся систем, колебания); у Physics 1 к ним добавлен юнит про жидкости, а Physics C рассматривает ту же механику с матанализом. Physics 2 продолжает тематически: тепло, электричество, магнетизм, оптика, волны, современная физика. E&M в Physics C — отдельный экзамен по электричеству и магнетизму.</p>"),
+   ("Что сдавать", "<p>Выбор зависит от того, какая математика уже освоена, какие курсы доступны в учебном заведении ученика и что требует программа, куда он поступает. Предпосылки к курсам College Board на страницах курсов не указывает, поэтому решение принимается вместе с учебным заведением и по результатам диагностики. Если нужна механика без матанализа — Physics 1; если электричество, оптика и современная физика без матанализа — Physics 2; если физика с матанализом — Physics C, где Mechanics и E&M выбираются по отдельности.</p>"),
+   ("Как готовиться", "<p>Подготовка строится на формате, одинаковом для всех четырёх экзаменов: раздел с выбором ответа и четыре типа вопросов со свободным ответом (математические выкладки, перевод между представлениями, планирование эксперимента и анализ данных, качественно-количественные задачи). Порядок работы: диагностика по юнитам, план по юнитам с учётом их веса в разделе с выбором ответа, регулярная практика свободных ответов, полные работы по времени и разбор ошибок. Экзамен гибридный: вопросы с выбором ответа проходят в приложении Bluebook, свободные ответы пишутся от руки в бумажном буклете, поэтому оформление решений от руки тренируется отдельно.</p>"),
+   ("Официальные страницы", "<p>Состав юнитов, веса и актуальный формат — на страницах College Board: " + _ext(_AP1_URL, "AP Physics 1") + ", " + _ext(_AP2_URL, "AP Physics 2") + ", " + _ext(_APCM_URL, "AP Physics C: Mechanics") + ", " + _ext(_APCEM_URL, "AP Physics C: E&amp;M") + ". Формат может обновляться, ориентируйтесь на AP Central.</p>"),
+ ],
+ "faq": [
+   ("Чем отличаются AP Physics 1 и AP Physics 2?", "Содержанием: Physics 1 — механика и жидкости (8 юнитов), Physics 2 — термодинамика, электричество, магнетизм, оптика, волны и современная физика (7 юнитов). Оба курса algebra-based."),
+   ("Чем AP Physics C отличается от AP Physics 1?", "Physics C — calculus-based курс уровня колледжа, Physics 1 — algebra-based вводный. Механика в Physics 1 и в Physics C: Mechanics проходит по юнитам с одинаковыми названиями, но с разной математикой."),
+   ("Какой формат экзамена AP Physics?", "Section I — 42 вопроса с выбором ответа, 85 минут, 50% оценки; Section II — 4 вопроса со свободным ответом, 95 минут, 50%. Калькуляторы разрешены. Цифры по данным College Board для экзамена мая 2027."),
+   ("Можно ли готовиться к AP Physics на русском?", "Да. Объяснения идут на русском, формулировки и термины College Board — на английском; можно полностью на английском."),
+   ("Какой курс AP Physics выбрать?", "Зависит от освоенной математики, доступных курсов и требований программы, куда поступает ученик. Разбираем это на диагностике; предпосылки к курсам College Board на своих страницах не указывает."),
+ ],
+ "updated": "2026-11-15",
+ "table": _AP_PHYS_TABLE_RU,
+ "course": ("AP Physics 1, 2 и C на русском и английском (онлайн, 1:1)", "Индивидуальная онлайн-подготовка к AP Physics 1, 2, Physics C: Mechanics и E&M на русском и английском: юниты, вопросы со свободным ответом, работы по времени."),
+},
+# ── RU: IB Physics HL / SL ──
+{"n": 402, "slug": "ib-physics-hl-ili-sl-chto-vybrat", "lang": "ru",
+ "title": "IB Physics HL или SL: чем отличаются и как готовиться",
+ "desc": "IB Physics HL и SL: 240 и 150 часов, Paper 1 и 2, часы по темам A–E, internal assessment 20%. Как выбрать уровень и как готовиться. Физик МГУ, 1:1 онлайн.",
+ "h1": "IB Physics HL или SL: чем отличаются и как готовиться",
+ "answer": "HL и SL — один и тот же курс на разной глубине: на HL 240 часов против 150 на SL, внешняя оценка 4 ч 30 мин против 3 ч, а темы проходятся шире (например, тема D «Fields» — 38 часов на HL и 19 на SL). Internal assessment одинаков: 20% оценки, 24 балла. Готовит к IB Physics онлайн один на один Владимир Подлевских, физик МГУ.",
+ "facts": ["Источник: IB Physics guide, first assessment 2025; 5 тем A–E",
+           "SL: 150 часов (110 контента); HL: 240 часов (180 контента)",
+           "SL: Paper 1 — 1 ч 30 мин, 45 баллов; Paper 2 — 1 ч 30 мин, 50 баллов",
+           "HL: Paper 1 — 2 ч, 60 баллов; Paper 2 — 2 ч 30 мин, 90 баллов",
+           "Internal assessment: 20%, одно исследование, 24 балла, одинаково для SL и HL",
+           "Калькуляторы разрешены, нужен Physics data booklet; за неверный ответ в части с выбором баллы не снимаются"],
+ "sections": [
+   ("Чем отличаются HL и SL", "<p>SL-материал входит и в HL: Paper 2 на HL содержит вопросы по материалу SL и дополнительные вопросы HL. Различается объём и глубина по каждой из пяти тем — подробнее в таблице. Структура Paper 1 тоже общая: часть 1A с выбором ответа и часть 1B с заданиями на данные.</p>"),
+   ("Что выбрать", "<p>Уровень (HL или SL) выбирается вместе с учебным заведением ученика и зависит от остальных предметов диплома и от требований программы, куда он поступает. Если физика нужна как профильный предмет, чаще рассматривают HL, но решение зависит от конкретной программы поступления.</p>"),
+   ("Как готовиться", "<p>Порядок работы: диагностика по темам A–E, план с учётом часов по темам, отработка заданий Paper 1 (с выбором и на данные) и развёрнутых ответов Paper 2, пробные работы по времени, разбор ошибок. Отдельно — работа с Physics data booklet и командными терминами (command terms) гида: от них зависит, как читается вопрос. Internal assessment начинают заранее: учитель читает один черновик и даёт советы, но не редактирует, поэтому на занятиях отрабатываются метод исследования, обработка данных, оценка погрешностей и критерии Research design, Data analysis, Conclusion, Evaluation, а работу пишет сам ученик.</p>"),
+   ("Официальный документ", "<p>Актуальное описание — в Physics guide (first assessment 2025) на ibo.org; сроки и обновления программы проверяйте там же и в учебном заведении ученика.</p>"),
+ ],
+ "faq": [
+   ("Чем отличаются IB Physics HL и SL?", "Объёмом и глубиной: HL — 240 часов и 4 ч 30 мин внешней оценки, SL — 150 часов и 3 ч. Темы те же (A–E), на HL они шире; internal assessment одинаков."),
+   ("Сколько длятся экзамены IB Physics?", "SL: Paper 1 — 1 ч 30 мин, Paper 2 — 1 ч 30 мин. HL: Paper 1 — 2 ч, Paper 2 — 2 ч 30 мин."),
+   ("Как готовиться к IB Physics?", "Диагностика по темам A–E, план по часам тем, практика Paper 1 и Paper 2 в формате экзамена, пробные работы по времени и ранняя работа над internal assessment."),
+   ("Одинаков ли internal assessment на HL и SL?", "Да: одно научное исследование, 24 балла, 20% оценки; учитель читает один черновик и советует, но не редактирует."),
+   ("Можно ли готовиться к IB Physics на русском?", "Да: объяснения на русском, термины и формулировки IB на английском, либо полностью на английском."),
+ ],
+ "updated": "2026-11-15",
+ "table": _IB_PHYS_TABLE_RU,
+ "course": ("IB Physics HL и SL на русском и английском (онлайн, 1:1)", "Индивидуальная онлайн-подготовка к IB Physics HL и SL на русском и английском: темы A–E, Paper 1–2, Internal Assessment."),
+},
+# ── EN: AP Physics 1 / 2 / C ──
+{"n": 501, "twin": 401, "slug": "ap-physics-1-vs-2-vs-c-which-to-take", "lang": "en",
+ "title": "AP Physics 1 vs 2 vs C: differences and which to take",
+ "desc": "AP Physics 1, 2, C Mechanics and C E&M: algebra or calculus, units, exam format (42 questions, 85 min; 4 free-response, 95 min), how to choose and prepare.",
+ "h1": "AP Physics 1 vs 2 vs C: which exam to take",
+ "answer": "AP Physics 1 and 2 are algebra-based introductory courses: Physics 1 covers mechanics and fluids, Physics 2 heat, electricity, magnetism, optics and modern physics. AP Physics C is calculus-based. All the exams share one format: 42 multiple-choice questions in 85 minutes and 4 free-response questions in 95 minutes. Vladimir Podlevskikh, an MSU physicist, prepares students for them online, one to one.",
+ "facts": ["Source: College Board AP Central; the format figures are stated as effective starting with the May 2027 exam",
+           "AP Physics 1 — 8 units (kinematics, force and translational dynamics, work, energy and power, linear momentum, torque and rotational dynamics, energy and momentum of rotating systems, oscillations, fluids)",
+           "AP Physics 2 — 7 units (9–15): thermodynamics; electric force, field and potential; electric circuits; magnetism and electromagnetism; geometric optics; waves, sound and physical optics; modern physics",
+           "AP Physics C: Mechanics — 7 units, E&amp;M — 6 units; separate exams",
+           "Section I — 42 questions, 85 minutes, 50%; Section II — 4 questions, 95 minutes, 50%; calculators permitted",
+           "Lessons: online, 1:1, English, Russian or mixed"],
+ "sections": [
+   ("How the courses differ", "<p>The main difference is the mathematics. College Board describes Physics 1 and 2 as algebra-based and Physics C as calculus-based. The seven mechanics units of Physics 1 and of Physics C: Mechanics have the same titles (kinematics, force and translational dynamics, work, energy and power, linear momentum, torque and rotational dynamics, energy and momentum of rotating systems, oscillations); Physics 1 adds a fluids unit, while Physics C treats the same mechanics with calculus. Physics 2 continues with heat, electricity, magnetism, optics, waves and modern physics. E&amp;M in Physics C is a separate exam on electricity and magnetism.</p>"),
+   ("Which to take", "<p>The choice depends on the mathematics already mastered, the courses available at the student's own institution and the requirements of the programme applied to. College Board does not list prerequisites on the course pages, so the decision is made together with the institution and after a diagnostic. Mechanics without calculus: Physics 1; electricity, optics and modern physics without calculus: Physics 2; physics with calculus: Physics C, where Mechanics and E&amp;M are chosen separately.</p>"),
+   ("How to prepare", "<p>Preparation follows the format, which is the same for all four exams: a multiple-choice section and four free-response question types (mathematical routines, translation between representations, experimental design and analysis, qualitative/quantitative translation). The routine: a diagnostic by unit, a plan weighted by the unit shares of the multiple-choice section, regular free-response practice, timed full papers and error review. The exam is hybrid digital: multiple-choice is taken in the Bluebook app and free-response answers are handwritten in paper booklets, so handwritten solution layout is practised separately.</p>"),
+   ("Official pages", "<p>Units, weights and the current format are on the College Board pages: " + _ext(_AP1_URL, "AP Physics 1") + ", " + _ext(_AP2_URL, "AP Physics 2") + ", " + _ext(_APCM_URL, "AP Physics C: Mechanics") + ", " + _ext(_APCEM_URL, "AP Physics C: E&amp;M") + ". The format can change; rely on AP Central.</p>"),
+ ],
+ "faq": [
+   ("What is the difference between AP Physics 1 and AP Physics 2?", "Content: Physics 1 covers mechanics and fluids (8 units); Physics 2 covers thermodynamics, electricity, magnetism, optics, waves and modern physics (7 units). Both are algebra-based."),
+   ("How does AP Physics C differ from AP Physics 1?", "Physics C is a calculus-based college-level course; Physics 1 is an algebra-based introductory one. Mechanics in Physics 1 and in Physics C: Mechanics runs through units with the same titles but with different mathematics."),
+   ("What is the AP Physics exam format?", "Section I: 42 multiple-choice questions, 85 minutes, 50% of the score; Section II: 4 free-response questions, 95 minutes, 50%. Calculators are permitted. Figures per College Board for the May 2027 exam."),
+   ("Can I prepare for AP Physics in Russian?", "Yes. Explanations in Russian, College Board wording and terms in English; fully in English is possible too."),
+   ("Which AP Physics course should I choose?", "It depends on the mathematics already mastered, the courses available and the requirements of the programme applied to. We sort it out in a diagnostic; College Board does not list prerequisites on its course pages."),
+ ],
+ "updated": "2026-11-15",
+ "table": _AP_PHYS_TABLE_EN,
+ "course": ("AP Physics 1, 2 and C in English and Russian (online, 1:1)", "One-to-one online preparation for AP Physics 1, 2, Physics C: Mechanics and E&M in English and Russian: units, free-response questions, timed papers."),
+},
+# ── EN: IB Physics HL / SL ──
+{"n": 502, "twin": 402, "slug": "ib-physics-hl-vs-sl-which-to-take", "lang": "en",
+ "title": "IB Physics HL vs SL: differences and how to prepare",
+ "desc": "IB Physics HL vs SL: 240 vs 150 hours, Paper 1 and 2, hours per topic A–E, internal assessment 20%. How to choose, how to prepare. MSU physicist, 1:1 online.",
+ "h1": "IB Physics HL vs SL: differences and how to prepare",
+ "answer": "HL and SL are one course at different depth: 240 hours against 150, external assessment 4 h 30 min against 3 h, and wider topics (topic D, Fields, is 38 hours at HL and 19 at SL). The internal assessment is the same: 20% of the grade, 24 marks. Vladimir Podlevskikh, an MSU physicist, prepares students for IB Physics online, one to one.",
+ "facts": ["Source: IB Physics guide, first assessment 2025; five topics A–E",
+           "SL: 150 hours (110 of content); HL: 240 hours (180 of content)",
+           "SL: Paper 1 — 1 h 30 min, 45 marks; Paper 2 — 1 h 30 min, 50 marks",
+           "HL: Paper 1 — 2 h, 60 marks; Paper 2 — 2 h 30 min, 90 marks",
+           "Internal assessment: 20%, one investigation, 24 marks, same for SL and HL",
+           "Calculators allowed; Physics data booklet required; no marks deducted for wrong multiple-choice answers"],
+ "sections": [
+   ("How HL and SL differ", "<p>SL material is part of HL: HL Paper 2 contains the SL material plus additional HL questions. The difference is breadth and depth in each of the five topics, shown in the table. Paper 1 has the same structure at both levels: part 1A with multiple-choice questions and part 1B with data-based questions.</p>"),
+   ("Which to take", "<p>The level (HL or SL) is chosen together with the student's own institution and depends on the other Diploma subjects and the requirements of the programme applied to. Where physics is a core subject for the programme, HL is the usual consideration, but the decision rests on the specific programme.</p>"),
+   ("How to prepare", "<p>The routine: a diagnostic by topics A–E, a plan weighted by the hours per topic, practice of Paper 1 (multiple-choice and data-based) and of the Paper 2 extended answers, timed mock papers and error review. Separately, work with the Physics data booklet and the guide's command terms, which decide how a question is read. The internal assessment starts early: the teacher reads one draft and advises but does not edit, so lessons build the research method, data handling, uncertainty evaluation and the criteria Research design, Data analysis, Conclusion and Evaluation, while the student writes the work.</p>"),
+   ("Official document", "<p>The current description is in the Physics guide (first assessment 2025) on ibo.org; check programme updates and dates there and with the student's institution.</p>"),
+ ],
+ "faq": [
+   ("What is the difference between IB Physics HL and SL?", "Breadth and depth: HL is 240 hours with 4 h 30 min of external assessment, SL is 150 hours with 3 h. The topics (A–E) are the same, wider at HL; the internal assessment is identical."),
+   ("How long are the IB Physics exams?", "SL: Paper 1 is 1 h 30 min, Paper 2 is 1 h 30 min. HL: Paper 1 is 2 h, Paper 2 is 2 h 30 min."),
+   ("How should I prepare for IB Physics?", "A diagnostic by topics A–E, a plan by topic hours, Paper 1 and Paper 2 practice in the exam format, timed mock papers and an early start on the internal assessment."),
+   ("Is the internal assessment the same for HL and SL?", "Yes: one scientific investigation, 24 marks, 20% of the grade; the teacher reads one draft and advises but does not edit."),
+   ("Can I prepare for IB Physics in Russian?", "Yes: explanations in Russian with IB terms and wording in English, or fully in English."),
+ ],
+ "updated": "2026-11-15",
+ "table": _IB_PHYS_TABLE_EN,
+ "course": ("IB Physics HL and SL in English and Russian (online, 1:1)", "One-to-one online preparation for IB Physics HL and SL in English and Russian: topics A–E, Paper 1–2, internal assessment."),
+},
+]
+
+
 def _hub_url(lang):
     return HUB if lang == "ru" else HUB_EN
 
@@ -757,10 +930,10 @@ def _alternates(a):
     """hreflang-набор страницы: себя + пара на другом языке (если есть) + x-default (EN-вариант)."""
     me = f"{HUB}{a['slug']}/"
     if a["lang"] == "ru":
-        twin = next((e for e in ANSWERS_EN + ANSWERS_MATH if e.get("twin") == a["n"]), None)
+        twin = next((e for e in ANSWERS_EN + ANSWERS_MATH + ANSWERS_PHYS if e.get("twin") == a["n"]), None)
         other = (f"{HUB}{twin['slug']}/", "en") if twin else None
     else:
-        twin = next((r for r in ANSWERS + ANSWERS_MATH if r["n"] == a.get("twin")), None)
+        twin = next((r for r in ANSWERS + ANSWERS_MATH + ANSWERS_PHYS if r["n"] == a.get("twin")), None)
         other = (f"{HUB}{twin['slug']}/", "ru") if twin else None
     alts = [(a["lang"], me)]
     if other:
@@ -772,7 +945,7 @@ def _alternates(a):
 
 def _page(a):
     ru = a["lang"] == "ru"
-    a = dict(a, query=QUERIES_MATH.get(a["n"]) or (QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]]))
+    a = dict(a, query=QUERIES_PHYS.get(a["n"]) or QUERIES_MATH.get(a["n"]) or (QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]]))
     if "course" in a:
         ld = course(a["course"][0], a["course"][1], lang=(a["lang"],))
     else:
@@ -797,6 +970,8 @@ def _hub():
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES[a["n"]]}</a></li>' for a in ANSWERS)
     math_rows = "".join(
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES_MATH[a["n"]]}</a></li>' for a in ANSWERS_MATH if a["lang"] == "ru")
+    phys_rows = "".join(
+        f'<li><a href="{HUB}{a["slug"]}/">{QUERIES_PHYS[a["n"]]}</a></li>' for a in ANSWERS_PHYS if a["lang"] == "ru")
     body = f"""<main id="main">
 <section class="subhero section" id="top">
   <div class="wrap">
@@ -811,6 +986,8 @@ def _hub():
     <div class="prose reveal" style="max-width:760px">
       <h2>Вопросы</h2>
       <ul>{rows}</ul>
+      <h2>Сравнение программ: AP Physics и IB Physics</h2>
+      <ul>{phys_rows}</ul>
       <h2>Математика: IB, AP, IGCSE</h2>
       <ul>{math_rows}</ul>
       <h2>Программы</h2>
@@ -836,6 +1013,8 @@ def _hub_en():
         for a in pages)
     math_rows = "".join(
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES_MATH[a["n"]]}</a></li>' for a in ANSWERS_MATH if a["lang"] == "en")
+    phys_rows = "".join(
+        f'<li><a href="{HUB}{a["slug"]}/">{QUERIES_PHYS[a["n"]]}</a></li>' for a in ANSWERS_PHYS if a["lang"] == "en")
     body = f"""<main id="main">
 <section class="subhero section" id="top">
   <div class="wrap">
@@ -850,6 +1029,8 @@ def _hub_en():
     <div class="prose reveal" style="max-width:760px">
       <h2>Questions</h2>
       <ul>{rows}</ul>
+      <h2>Comparing programmes: AP Physics and IB Physics</h2>
+      <ul>{phys_rows}</ul>
       <h2>Mathematics: IB, AP, IGCSE</h2>
       <ul>{math_rows}</ul>
       <h2>Programmes</h2>
@@ -869,4 +1050,4 @@ def _hub_en():
 
 
 def answer_pages():
-    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN] + [_page(a) for a in ANSWERS_MATH]
+    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN] + [_page(a) for a in ANSWERS_MATH] + [_page(a) for a in ANSWERS_PHYS]

@@ -298,4 +298,40 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/repetitor-igcse-matematika-0580-na-russkom/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/igcse-maths-0580-tutor-russian-speaking/"/>
   </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ap-physics-1-2-c-chem-otlichayutsya/</loc>
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ap-physics-1-2-c-chem-otlichayutsya/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ap-physics-1-vs-2-vs-c-which-to-take/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-physics-1-vs-2-vs-c-which-to-take/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ib-physics-hl-ili-sl-chto-vybrat/</loc>
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-ili-sl-chto-vybrat/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-vs-sl-which-to-take/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-vs-sl-which-to-take/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ap-physics-1-vs-2-vs-c-which-to-take/</loc>
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ap-physics-1-vs-2-vs-c-which-to-take/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ap-physics-1-2-c-chem-otlichayutsya/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-physics-1-vs-2-vs-c-which-to-take/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ib-physics-hl-vs-sl-which-to-take/</loc>
+    <lastmod>2026-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-vs-sl-which-to-take/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-ili-sl-chto-vybrat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ib-physics-hl-vs-sl-which-to-take/"/>
+  </url>
 </urlset>
