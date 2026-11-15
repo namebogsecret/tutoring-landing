@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 28)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ по месяцам
+        self.assertEqual(len(set(URLS.values())), 30)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ по месяцам + 2 «как выбрать»
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -499,7 +499,8 @@ class TestRazbor(Base):
 
 
 PHYS_QUERIES = ["Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
-                "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare"]
+                "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare",
+                "How to choose an AP Physics 1 tutor online: 5 criteria", "How to choose an IB Physics HL tutor online: 5 criteria"]
 
 
 class TestPhysPages(Base):
@@ -510,7 +511,7 @@ class TestPhysPages(Base):
         return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
 
     def test_four_queries_and_pairs(self):
-        self.assertEqual(len(self.PH), 5)
+        self.assertEqual(len(self.PH), 7)
         self.assertEqual(sorted(AP.QUERIES_PHYS.values()), sorted(PHYS_QUERIES))
         for a in self.PH:
             self.assertIn(AP.QUERIES_PHYS[a["n"]], self.src[URLS[a["slug"]]], a["slug"])
@@ -668,6 +669,66 @@ class TestEgePlanPage(Base):
         sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
         self.assertIn("/answers/%s/" % self.SLUG, sm)
         self.assertIn("/answers/%s/" % self.SLUG, open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read())
+
+
+class TestChooseTutorPages(Base):
+    """Две страницы-чеклиста «как выбрать репетитора» (15.11, провальные запросы замера #9 AP Physics 1, #10 IB Physics HL)."""
+    SLUGS = ("how-to-choose-ap-physics-1-tutor", "how-to-choose-ib-physics-hl-tutor")
+
+    def entries(self):
+        return [next(a for a in AP.ANSWERS_PHYS if a["slug"] == s) for s in self.SLUGS]
+
+    def test_registered_sitemap_llms_hub(self):
+        sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
+        llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
+        for slug in self.SLUGS:
+            u = "/answers/%s/" % slug
+            self.assertIn("<loc>%s%s</loc>" % (BASE, u), sm)
+            self.assertIn(BASE + u, llms)
+            self.assertIn('href="%s"' % u, self.src[HUB_EN])
+            self.assertNotIn('href="%s"' % u, self.src[HUB])
+
+    def test_faqpage_jsonld_at_least_3(self):
+        for a in self.entries():
+            s = self.src[URLS[a["slug"]]]
+            faq = [b for b in jsonld_blocks(s) if b.get("@type") == "FAQPage"]
+            self.assertEqual(len(faq), 1, a["slug"])
+            self.assertGreaterEqual(len(faq[0]["mainEntity"]), 3)
+            self.assertEqual([e["name"] for e in faq[0]["mainEntity"]], [q for q, _ in a["faq"]])
+
+    def test_answer_first_lead_up_to_50_words(self):
+        for a in self.entries():
+            m = re.search(r'<p class="lead[^"]*">(.*?)</p>', self.src[URLS[a["slug"]]], re.S)
+            self.assertLessEqual(len(visible_text(m.group(1)).split()), 50, a["slug"])
+
+    def test_five_criteria_in_list_and_table(self):
+        for a in self.entries():
+            s = self.src[URLS[a["slug"]]]
+            ol = re.search(r"<ol>(.*?)</ol>", s, re.S).group(1)
+            self.assertGreaterEqual(len(re.findall(r"<li>", ol)), 5, a["slug"])
+            self.assertEqual(a["table"]["head"], ["Criterion", "What to check", "Red flag"])
+            self.assertGreaterEqual(len(a["table"]["rows"]), 5)
+            self.assertTrue(all(len(r) == 3 and all(r) for r in a["table"]["rows"]))
+            self.assertIn('<table class="spec-table">', s)
+
+    def test_stop_words_and_razbor_block(self):
+        for a in self.entries():
+            s = self.src[URLS[a["slug"]]]
+            for pat in FORBIDDEN + EXTRA_FORBIDDEN:
+                self.assertIsNone(re.search(pat, strip_razbor(s).replace('data-cta="tutor-page"', ""), re.I), (a["slug"], pat))
+            b = RAZBOR_RE.search(s).group(0)
+            self.assertIn("utm_campaign=tutor-answers-" + a["slug"], b)
+            self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', s)
+
+    def test_facts_from_verified_sheet_only(self):
+        ap = visible_text(self.src[URLS[self.SLUGS[0]]])
+        for must in ("42", "85", "95", "8 units", "algebra-based"):
+            self.assertIn(must, ap)
+        ib = visible_text(self.src[URLS[self.SLUGS[1]]])
+        for must in ("240", "150", "60 marks", "90 marks", "4 h 30 min", "24 marks"):
+            self.assertIn(must, ib)
+        for t in (ap, ib):
+            self.assertNotRegex(t, r"(?i)college credit|grade boundar|\bband|score of [1-7]")
 
 
 if __name__ == "__main__":

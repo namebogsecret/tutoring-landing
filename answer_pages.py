@@ -661,6 +661,8 @@ QUERIES_PHYS = {
     501: "AP Physics 1 vs 2 vs C: which exam to take",
     502: "IB Physics HL vs SL: differences and how to prepare",
     403: "Подготовка к ЕГЭ по физике 2027: план по месяцам",
+    503: "How to choose an AP Physics 1 tutor online: 5 criteria",
+    504: "How to choose an IB Physics HL tutor online: 5 criteria",
 }
 _AP1_URL = "https://apcentral.collegeboard.org/courses/ap-physics-1"
 _AP2_URL = "https://apcentral.collegeboard.org/courses/ap-physics-2"
@@ -863,6 +865,84 @@ ANSWERS_PHYS = [
  "updated": "2026-11-15",
  "table": _EGE_PLAN_TABLE_RU,
  "course": ("План подготовки к ЕГЭ по физике 2027 по месяцам (онлайн, 1:1)", "Индивидуальная онлайн-подготовка к ЕГЭ по физике 2027 по месяцам: разделы кодификатора, диагностика, развёрнутые решения по критериям, полные варианты."),
+},
+]
+
+
+# ── «Как выбрать репетитора»: чек-листы критериев под провальные запросы замера (#9 AP Physics 1, #10 IB Physics HL), 15.11 ──
+# Факты — только из ФАКТЫ-ЭКЗАМЕНЫ-2026-11.md (AP Physics 1 и 2; IB Physics guide, first assessment 2025). Шкалы, даты, кредиты не пишутся.
+_AP1_CHOOSE_TABLE = {'title': 'Five criteria for choosing an AP Physics 1 tutor: what to check and what to avoid',
+ 'head': ['Criterion', 'What to check', 'Red flag'],
+ 'rows': [['1. The right course', 'The tutor names the 8 units of AP Physics 1 (from Kinematics to Fluids) and treats it as an algebra-based course', 'Lessons are generic "high-level physics" or calculus-based Physics C material'],
+          ['2. The exam format', 'Practice in the real format: 42 multiple-choice questions in 85 min and 4 free-response questions in 95 min, each 50% of the exam', 'Only multiple-choice drilling, or no timed practice at all'],
+          ['3. Free-response skills', 'The tutor trains written reasoning for all four question types: mathematical routines, translation between representations, experimental design and analysis, qualitative/quantitative translation', 'Answers are checked only by the final number'],
+          ['4. A plan by unit weights', 'A diagnostic by the 8 units, then a plan weighted by the unit shares in the multiple-choice section (for example 18–23% for Force and Translational Dynamics)', 'The same plan for every student, or lessons start without any diagnostic'],
+          ['5. A process you can check', 'Homework with a written error review, and official sources (AP Central) quoted for any statement about the exam', 'Promises of a specific score, or exam facts with no source']]}
+
+_IB_CHOOSE_TABLE = {'title': 'Five criteria for choosing an IB Physics HL tutor: what to check and what to avoid',
+ 'head': ['Criterion', 'What to check', 'Red flag'],
+ 'rows': [['1. The current guide', 'The tutor works from the Physics guide (first assessment 2025): topics A–E and the extra HL material (240 hours against 150 at SL)', 'Cannot name the five topics, or mixes HL and SL content'],
+          ['2. Paper 1 and Paper 2', 'Separate practice for Paper 1 (2 h, 60 marks: 40 multiple-choice + 20 data-based) and Paper 2 (2 h 30 min, 90 marks), in timed conditions', 'Only worked problems with no exam timing'],
+          ['3. Command terms and the data booklet', 'Lessons use the guide\'s command terms and the Physics data booklet, because they decide how a question is read', 'Formulas are learned by heart with no booklet work'],
+          ['4. Help with the internal assessment', 'The tutor builds the method: research design, data handling, uncertainty, and the criteria Research design, Data analysis, Conclusion, Evaluation; the student writes the work', 'The tutor offers to write or rewrite the investigation'],
+          ['5. A plan by topic hours', 'A diagnostic by topics A–E, then a plan weighted by HL hours (A 42, B 32, C 29, D 38, E 39)', 'Equal time for every topic, or no diagnostic']]}
+
+ANSWERS_PHYS += [
+{"n": 503, "slug": "how-to-choose-ap-physics-1-tutor", "lang": "en",
+ "title": "How to choose an AP Physics 1 tutor online: 5 criteria",
+ "desc": "Checklist for choosing an AP Physics 1 tutor online: course units, exam format, free-response skills, plan by unit weights, red flags. MSU physicist, 1:1.",
+ "h1": "How to choose an AP Physics 1 tutor online: 5 criteria",
+ "answer": "Choose an AP Physics 1 tutor by five checks: the 8-unit algebra-based course, the real exam format, free-response coaching, a plan by unit weights, sources instead of promised scores. Vladimir Podlevskikh, an MSU physicist, teaches it online, 1:1.",
+ "facts": ["Source: College Board AP Central, AP Physics 1 course and exam pages (checked 15 November 2026)",
+           "AP Physics 1 is an algebra-based, introductory college-level physics course with 8 units",
+           "Exam format, effective starting with the May 2027 exam: Section I has 42 multiple-choice questions (85 min, 50%); Section II has 4 free-response questions (95 min, 50%)",
+           "Calculators are allowed; in the Physics 1 and 2 exams multiple-choice is taken in Bluebook and free-response by hand in a paper booklet",
+           "Four free-response types: mathematical routines; translation between representations; experimental design and analysis; qualitative/quantitative translation"],
+ "sections": [
+   ("The checklist: five criteria", "<ol><li><strong>The right course.</strong> AP Physics 1 covers 8 units: Kinematics; Force and Translational Dynamics; Work, Energy, and Power; Linear Momentum; Torque and Rotational Dynamics; Energy and Momentum of Rotating Systems; Oscillations; Fluids. A tutor should name them without hesitation and keep to algebra-based methods.</li>"
+    "<li><strong>The exam format.</strong> Half of the exam is 42 multiple-choice questions in 85 minutes, half is 4 free-response questions in 95 minutes. Ask how often lessons include timed sections in this format.</li>"
+    "<li><strong>Free-response skills.</strong> The four free-response questions are one of each type listed above. A good tutor teaches how to write a justified solution, not only how to reach a number.</li>"
+    "<li><strong>A plan by unit weights.</strong> The unit shares in the multiple-choice section differ: Force and Translational Dynamics and Work, Energy, and Power are 18–23% each, Torque and Rotational Dynamics 10–15%, Oscillations 5–8%. The plan should follow a diagnostic, not a fixed template.</li>"
+    "<li><strong>A process you can check.</strong> Homework between lessons, a written error review, and a source for each statement about the exam.</li></ol>"),
+   ("What a tutor cannot honestly promise", "<p>Score conversion, exam dates and university credit are set by College Board and by each university and change over time, so a tutor who promises a particular score or a fixed credit outcome is giving information nobody can verify. Check dates and requirements on AP Central and with the programme you apply to.</p>"),
+   ("How to test a tutor in one lesson", "<p>Bring one free-response question from a past exam and ask the tutor to solve it aloud. Watch for three things: whether the reasoning is written step by step, whether the tutor names the question type, and whether the lesson ends with a short list of the topics to revisit.</p>"),
+   ("Official sources", "<p>The course and exam description is on the " + _ext(_AP1_URL, "AP Physics 1 page at apcentral.collegeboard.org") + ". Format details apply from the May 2027 exam; check the page for later updates.</p>")],
+ "faq": [("How do I choose an AP Physics 1 tutor?", "Check five things: the tutor knows the 8-unit algebra-based course, practises the real exam format, coaches free-response writing, plans lessons by unit weights after a diagnostic, and gives sources for exam facts."),
+         ("What is the AP Physics 1 exam format?", "Section I: 42 multiple-choice questions, 85 minutes, 50% of the exam. Section II: 4 free-response questions, 95 minutes, 50%. Calculators are allowed. This applies starting with the May 2027 exam."),
+         ("Should a tutor teach AP Physics 1 with calculus?", "AP Physics 1 is described by College Board as an algebra-based course, so lessons should use algebra-based methods. Calculus-based material belongs to AP Physics C."),
+         ("What should a good first lesson include?", "A short diagnostic by the 8 units, one free-response question solved with written reasoning, and a draft plan weighted by the unit shares."),
+         ("Can I prepare for AP Physics 1 in Russian?", "Yes: explanations in Russian with exam terminology and wording in English, or fully in English.")],
+ "updated": "2026-11-15",
+ "table": _AP1_CHOOSE_TABLE,
+ "course": ("AP Physics 1 online tutoring in English and Russian (1:1)", "One-to-one online preparation for AP Physics 1 in English and Russian: 8 units, multiple-choice and free-response practice."),
+},
+{"n": 504, "slug": "how-to-choose-ib-physics-hl-tutor", "lang": "en",
+ "title": "How to choose an IB Physics HL tutor online: 5 criteria",
+ "desc": "Checklist for choosing an IB Physics HL tutor online: guide topics A–E, Paper 1 and 2, internal assessment, red flags. MSU physicist, 1:1 online.",
+ "h1": "How to choose an IB Physics HL tutor online: 5 criteria",
+ "answer": "Choose an IB Physics HL tutor by five checks: the current guide (topics A–E), separate Paper 1 and 2 practice, command terms and data booklet, internal assessment guided not written, a plan by topic hours. Vladimir Podlevskikh, an MSU physicist, teaches it online.",
+ "facts": ["Source: IB Physics guide, first assessment 2025; five topics A–E",
+           "HL: 240 hours (180 of content); SL: 150 hours (110 of content)",
+           "HL external assessment, 4 h 30 min: Paper 1 — 2 h, 60 marks; Paper 2 — 2 h 30 min, 90 marks",
+           "Internal assessment: 20%, one scientific investigation, 24 marks; the teacher reads one draft and advises but does not edit",
+           "Calculators allowed; Physics data booklet required; no marks deducted for wrong multiple-choice answers"],
+ "sections": [
+   ("The checklist: five criteria", "<ol><li><strong>The current guide.</strong> The tutor works from the Physics guide (first assessment 2025): topics A Space, time and motion; B The particulate nature of matter; C Wave behaviour; D Fields; E Nuclear and quantum physics, with the additional HL material on top of SL.</li>"
+    "<li><strong>Paper 1 and Paper 2 separately.</strong> Paper 1 has part 1A (40 multiple-choice questions) and part 1B (data-based questions); Paper 2 is short-answer and extended-response and includes the additional HL material. They need different practice, in timed conditions.</li>"
+    "<li><strong>Command terms and the data booklet.</strong> Calculators are allowed and the Physics data booklet is required, so lessons should include work with the booklet and with the guide's command terms.</li>"
+    "<li><strong>Help with the internal assessment.</strong> The IA is 20% of the grade and the teacher reads one draft and does not edit it. A tutor helps with research design, data analysis, conclusion and evaluation, while the student writes the work.</li>"
+    "<li><strong>A plan by topic hours.</strong> At HL the hours per topic are A 42, B 32, C 29, D 38, E 39. The plan should follow a diagnostic by topics A–E and weight time accordingly.</li></ol>"),
+   ("Where a tutor helps in each part of the course", "<p>Paper 1: timed multiple-choice sets and data-based questions, with error review by topic. Paper 2: written extended answers and the HL-only material. Internal assessment: method, data handling and uncertainty evaluation against the four criteria. Across all parts: reading questions through command terms.</p>"),
+   ("Questions to ask a tutor before the first lesson", "<p>How do you split the 240 HL hours across topics A–E? How are Paper 1 and Paper 2 practised differently? What exactly will you do and not do for my internal assessment? A tutor who answers concretely and points to the guide is easier to trust than one who answers in general terms.</p>"),
+   ("Official document", "<p>The current description is in the Physics guide (first assessment 2025) on ibo.org; check programme updates and dates there and with the student's institution.</p>")],
+ "faq": [("How do I choose an IB Physics HL tutor?", "Check five things: the tutor works from the current guide with topics A–E, practises Paper 1 and Paper 2 separately, uses command terms and the data booklet, helps with the internal assessment without writing it, and plans by topic hours."),
+         ("How does a tutor help with the IB Physics internal assessment?", "By building the method: research design, data analysis, uncertainty, conclusion and evaluation. The investigation itself is written by the student; the teacher reads one draft and advises but does not edit."),
+         ("How long are the IB Physics HL papers?", "Paper 1 is 2 h (60 marks) and Paper 2 is 2 h 30 min (90 marks); together the external assessment is 4 h 30 min."),
+         ("Is there a Paper 3 in IB Physics HL?", "In the Physics guide (first assessment 2025), the HL external assessment is made up of Paper 1 (2 h) and Paper 2 (2 h 30 min), which together give 4 h 30 min."),
+         ("Can I prepare for IB Physics HL in Russian?", "Yes: explanations in Russian with IB terms and wording in English, or fully in English.")],
+ "updated": "2026-11-15",
+ "table": _IB_CHOOSE_TABLE,
+ "course": ("IB Physics HL online tutoring in English and Russian (1:1)", "One-to-one online preparation for IB Physics HL in English and Russian: topics A–E, Paper 1–2, internal assessment."),
 },
 ]
 
