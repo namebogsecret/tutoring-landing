@@ -15,7 +15,7 @@ import answer_pages as AP                      # noqa: E402
 from test_pillar_pages import FORBIDDEN, FORBIDDEN_VISIBLE, visible_text, jsonld_blocks  # noqa: E402
 
 BASE = "https://tutor.podlevskikh.com"
-ALL = AP.ANSWERS + AP.ANSWERS_EN
+ALL = AP.ANSWERS + AP.ANSWERS_EN + AP.ANSWERS_MATH
 URLS = {a["slug"]: "/answers/%s/" % a["slug"] for a in ALL}
 HUB = "/answers/"
 HUB_EN = "/answers/en/"
@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 17)  # 11 + 6 EN-пар
+        self.assertEqual(len(set(URLS.values())), 23)  # 11 + 6 EN-пар + 6 математических
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -170,7 +170,7 @@ class TestEnglishAndHreflang(Base):
             self.assertEqual(len(a["faq"]), len(next(r for r in AP.ANSWERS if r["n"] == a["twin"])["faq"]))
 
     def test_no_cyrillic_in_visible_en_text(self):
-        for a in AP.ANSWERS_EN:
+        for a in AP.ANSWERS_EN + [m for m in AP.ANSWERS_MATH if m["lang"] == "en"]:
             src = self.src[URLS[a["slug"]]]
             main = src[src.index('<section class="subhero'):src.index('id="tutor-page-block"')]  # без общего nav/футера
             vis = visible_text(main)
@@ -212,11 +212,11 @@ class TestEnglishAndHreflang(Base):
 
     def test_llms_lists_en_pages(self):
         llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
-        for a in AP.ANSWERS_EN:
+        for a in AP.ANSWERS_EN + AP.ANSWERS_MATH:
             self.assertIn(BASE + URLS[a["slug"]], llms)
 
     def test_tutor_page_metric_hook_on_en(self):
-        for a in AP.ANSWERS_EN:
+        for a in AP.ANSWERS_EN + [m for m in AP.ANSWERS_MATH if m["lang"] == "en"]:
             self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', self.src[URLS[a["slug"]]])
 
 
@@ -316,6 +316,116 @@ class TestBuilder(unittest.TestCase):
             self.assertIn("FAQPage", open(os.path.join(out, "index.html"), encoding="utf-8").read())
         finally:
             shutil.rmtree(out, ignore_errors=True)
+
+
+MATH_RU = [a for a in AP.ANSWERS_MATH if a["lang"] == "ru"]
+MATH_EN = [a for a in AP.ANSWERS_MATH if a["lang"] == "en"]
+OFFICIAL = {   # twin n → (подстрока официального URL, ...) — страницы программ, на которые обязана ссылаться пара
+    201: ("https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/",),
+    202: ("https://apcentral.collegeboard.org/courses/ap-calculus-bc",),
+    203: ("https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-igcse-mathematics-0580/",),
+}
+MATH_QUERIES = ["репетитор IB Math AA онлайн русскоязычный", "репетитор AP Calculus онлайн на русском",
+                "репетитор IGCSE математика 0580 на русском", "best IB Math AA HL tutor online",
+                "best AP Calculus BC tutor online", "IGCSE Maths 0580 tutor Russian-speaking"]
+
+
+class TestMathPages(Base):
+    """Шесть математических страниц-ответов (15.11): покрытие запросов, пары, официальные ссылки, FAQ, дата."""
+
+    def test_six_queries_covered(self):
+        self.assertEqual(len(MATH_RU), 3)
+        self.assertEqual(len(MATH_EN), 3)
+        self.assertEqual(sorted(AP.QUERIES_MATH.values()), sorted(MATH_QUERIES))
+        for a in AP.ANSWERS_MATH:
+            self.assertIn(AP.QUERIES_MATH[a["n"]], self.src[URLS[a["slug"]]], a["slug"])   # запрос в eyebrow
+
+    def test_pairs_and_hreflang(self):
+        for en in MATH_EN:
+            ru = next(r for r in MATH_RU if r["n"] == en["twin"])
+            for u in (URLS[en["slug"]], URLS[ru["slug"]]):
+                h = dict(re.findall(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"', self.src[u]))
+                self.assertEqual(h["en"], BASE + URLS[en["slug"]], u)
+                self.assertEqual(h["ru"], BASE + URLS[ru["slug"]], u)
+                self.assertEqual(h["x-default"], BASE + URLS[en["slug"]], u)
+
+    def test_official_program_links(self):
+        for en in MATH_EN:
+            ru = next(r for r in MATH_RU if r["n"] == en["twin"])
+            for a in (en, ru):
+                s = self.src[URLS[a["slug"]]]
+                for url in OFFICIAL[en["twin"]]:
+                    m = re.search(r'<a href="%s"[^>]*>' % re.escape(url), s)
+                    self.assertIsNotNone(m, "%s: нет ссылки %s" % (a["slug"], url))
+                    self.assertIn('rel="noopener"', m.group(0))
+
+    def test_date_and_dateModified(self):
+        sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
+        for a in AP.ANSWERS_MATH:
+            s = self.src[URLS[a["slug"]]]
+            self.assertRegex(s, r'<time datetime="2026-11-15">', a["slug"])
+            self.assertIn('"dateModified": "2026-11-15"', s, a["slug"])
+            self.assertRegex(visible_text(s), r"(Обновлено: 15 ноября 2026|Updated: 15 November 2026)", a["slug"])
+            blk = re.search(r"<url>\s*<loc>%s%s</loc>\s*<lastmod>([^<]*)</lastmod>" % (re.escape(BASE), re.escape(URLS[a["slug"]])), sm)
+            self.assertIsNotNone(blk, a["slug"])
+            self.assertEqual(blk.group(1), "2026-11-15")
+
+    def test_faq_jsonld_valid_json(self):
+        import json
+        for a in AP.ANSWERS_MATH:
+            s = self.src[URLS[a["slug"]]]
+            raws = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
+            parsed = [json.loads(r) for r in raws]          # каждый блок — валидный JSON
+            faq = [p for p in parsed if p.get("@type") == "FAQPage"]
+            self.assertEqual(len(faq), 1, a["slug"])
+            self.assertGreaterEqual(len(faq[0]["mainEntity"]), 3, a["slug"])
+            self.assertGreaterEqual(len(a["faq"]), 3)
+
+    def test_razbor_and_tutor_cta(self):
+        for a in AP.ANSWERS_MATH:
+            s = self.src[URLS[a["slug"]]]
+            self.assertEqual(len(RAZBOR_RE.findall(s)), 1, a["slug"])
+            self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', s)
+
+    def test_hubs_link_math_pages(self):
+        for a in MATH_RU:
+            self.assertIn('href="%s"' % URLS[a["slug"]], self.src[HUB])
+        for a in MATH_EN:
+            self.assertIn('href="%s"' % URLS[a["slug"]], self.src[HUB_EN])
+
+    def test_math_who_facts_only_known(self):
+        for a in AP.ANSWERS_MATH:
+            t = visible_text(self.src[URLS[a["slug"]]])
+            self.assertIn("5165", t)
+            self.assertIn("200/200", t)
+            for pat in (r"Лимасс", r"Limassol", r"Кипр", r"Cyprus"):
+                self.assertIsNone(re.search(pat, t, re.I), (a["slug"], pat))
+
+    def test_unverified_exam_numbers_absent_on_ib(self):
+        # ibo.org отдаёт 403 автоматическим запросам: часы/веса/длительность работ IB на страницах не приводятся
+        for a in (m for m in AP.ANSWERS_MATH if m["n"] in (201, 301)):
+            t = visible_text(self.src[URLS[a["slug"]]])
+            self.assertIsNone(re.search(r"\b(150|240)\b", t), a["slug"])
+            self.assertIsNone(re.search(r"\b(Paper [12]|Paper 3)\b.*\d+ (min|мин)", t), a["slug"])
+
+    def test_ap_format_matches_verified_facts(self):
+        for n in (202, 302):
+            a = next(m for m in AP.ANSWERS_MATH if m["n"] == n)
+            s = self.src[URLS[a["slug"]]]
+            self.assertIn('<table class="spec-table">', s)
+            t = visible_text(s)
+            for token in ("42", "100", "90", "29", "62", "13", "38"):
+                self.assertRegex(t, r"\b%s\b" % token, (n, token))
+
+    def test_igcse_math_facts(self):
+        for n in (203, 303):
+            a = next(m for m in AP.ANSWERS_MATH if m["n"] == n)
+            s = self.src[URLS[a["slug"]]]
+            t = visible_text(s)
+            self.assertIn("0580", t)
+            self.assertRegex(t, r"80")
+            self.assertRegex(t, r"100")
+            self.assertIn("A*–E", t)
 
 
 if __name__ == "__main__":

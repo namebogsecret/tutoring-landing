@@ -448,6 +448,205 @@ ANSWERS_EN = [
 ]
 
 
+# ── Математика (задача 15.11): 3 RU + 3 EN, hreflang-пары. Факты об экзаменах — ФАКТЫ-ЭКЗАМЕНЫ-2026-11.md, раздел «Математика» ──
+# Запросы вне замера 11.11 (ЗАМЕРЫ-ИИ.md), поэтому не в QUERIES: у каждой страницы свой ключ "query".
+LASTMOD_MATH = "2026-11-15"
+QUERIES_MATH = {
+    201: "репетитор IB Math AA онлайн русскоязычный",
+    202: "репетитор AP Calculus онлайн на русском",
+    203: "репетитор IGCSE математика 0580 на русском",
+    301: "best IB Math AA HL tutor online",
+    302: "best AP Calculus BC tutor online",
+    303: "IGCSE Maths 0580 tutor Russian-speaking",
+}
+_RU_WHO_MATH = ("Владимир Подлевских — физик, выпускник физического факультета МГУ им. Ломоносова (2006); "
+                "23 года частного преподавания, 350+ учеников; 200/200 на американских экзаменах Praxis Mathematics (5165) и Praxis Physics (5266).")
+_EN_WHO_MATH = ("Vladimir Podlevskikh is a physicist, a graduate of the Faculty of Physics of Lomonosov Moscow State "
+                "University (2006), with 23 years of private tutoring, 350+ students and a perfect 200/200 on both the US Praxis "
+                "Mathematics (5165) and Praxis Physics (5266) exams.")
+_IB_URL = "https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/"
+_AP_BC_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-bc"
+_AP_BC_EXAM_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-bc/exam"
+_AP_AB_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-ab"
+_IGCSE_URL = "https://www.cambridgeinternational.org/programmes-and-qualifications/cambridge-igcse-mathematics-0580/"
+
+
+def _ext(url, text):
+    return f'<a href="{url}" target="_blank" rel="noopener">{text}</a>'
+
+
+_AP_TABLE_RU = {'title': 'Формат экзамена AP Calculus BC (по AP Central)',
+ 'head': ['Раздел', 'Вопросы', 'Время', 'Доля оценки', 'Калькулятор'],
+ 'rows': [['I-A: выбор ответа', '29', '62 мин', '50% (весь раздел I)', 'не разрешён'],
+          ['I-B: выбор ответа', '13', '38 мин', '(в разделе I)', 'графический обязателен'],
+          ['II-A: свободный ответ', '2', '30 мин', '50% (весь раздел II)', 'графический обязателен'],
+          ['II-B: свободный ответ', '4', '60 мин', '(в разделе II)', 'не разрешён']]}
+_AP_TABLE_EN = {'title': 'AP Calculus BC exam format (per AP Central)',
+ 'head': ['Section', 'Questions', 'Time', 'Share of score', 'Calculator'],
+ 'rows': [['I-A: multiple choice', '29', '62 min', '50% (all of Section I)', 'not permitted'],
+          ['I-B: multiple choice', '13', '38 min', '(within Section I)', 'graphing calculator required'],
+          ['II-A: free-response', '2', '30 min', '50% (all of Section II)', 'graphing calculator required'],
+          ['II-B: free-response', '4', '60 min', '(within Section II)', 'not permitted']]}
+
+ANSWERS_MATH = [
+# ── RU: IB Math AA ──
+{"n": 201, "slug": "repetitor-ib-math-aa-online-russkoyazychnyj", "lang": "ru", "who": _RU_WHO_MATH,
+ "title": "Репетитор IB Math AA онлайн, русскоязычный (HL/SL)",
+ "desc": "Русскоязычный репетитор IB Mathematics: analysis and approaches (AA) онлайн, 1:1: физик МГУ, 23 года, 350+ учеников, Praxis Mathematics 200/200.",
+ "h1": "Русскоязычный репетитор IB Math AA онлайн",
+ "answer": "Курс IB Mathematics: analysis and approaches (AA) можно изучать с русскоязычным преподавателем: Владимир Подлевских, физик МГУ, 200/200 на американском экзамене Praxis Mathematics. Занятия онлайн, один на один: объяснения по-русски, термины и формулировки IB по-английски.",
+ "facts": ["Программа: IB Diploma, Mathematics: analysis and approaches (AA); второй курс математики IB — applications and interpretation (AI)",
+           "Формат: онлайн, 1:1, по всему миру (GMT+2/+3)",
+           "Язык занятий: русский, английский или смешанно",
+           "Подтверждение уровня по математике: Praxis Mathematics 5165 — 200/200 (11 июля 2025)",
+           "Часы, структура работ и веса — в Mathematics guide и на странице программы на ibo.org (ссылка ниже)"],
+ "sections": [
+   ("Что здесь не пересказывается", "<p>Число учебных часов, состав и длительность работ, критерии внутренней оценки и процентные веса IB задаёт в официальных документах и со временем обновляет, поэтому эта страница цифр не повторяет. Актуальное описание курсов математики — на странице " + _ext(_IB_URL, "Mathematics в IB Diploma Programme на ibo.org") + ".</p>"),
+   ("Как проходит подготовка", "<p>Начинаем с диагностики: какие темы курса уже пройдены уверенно, где пробелы. Затем строим план к экзамену, разбираем типы заданий, тренируем оформление решений (в математике IB оценивается не только ответ, но и обоснование) и проходим пробные работы в формате экзамена. Работаем с тем курсом, по которому ученик уже учится; выбор между AA и AI делается в учебном заведении ученика.</p>"),
+   ("Ограничения", "<p>Результат зависит от стартового уровня и времени до экзамена, поэтому балл заранее не обещается.</p>"),
+ ],
+ "faq": [
+   ("Можно ли изучать IB Math AA на русском?", "Да: объяснения идут на русском, а термины, формулировки заданий и запись решений — на английском, как на экзамене. Можно и полностью на английском."),
+   ("Чем отличаются курсы AA и AI?", "Это два разных курса математики IB Diploma: analysis and approaches и applications and interpretation. Официальное описание обоих — на странице IB Mathematics на ibo.org; выбор делается в учебном заведении ученика."),
+   ("Есть ли у преподавателя подтверждение уровня по математике?", "Да: 200/200 на американском экзамене Praxis Mathematics (5165), 11 июля 2025; также выпускник физического факультета МГУ (2006)."),
+ ],
+ "updated": "2026-11-15",
+ "course": ("IB Math AA на русском и английском (онлайн, 1:1)", "Индивидуальная онлайн-подготовка по курсу IB Mathematics: analysis and approaches на русском и английском: диагностика, план, типы заданий, пробные работы."),
+},
+# ── RU: AP Calculus ──
+{"n": 202, "slug": "repetitor-ap-calculus-na-russkom", "lang": "ru", "who": _RU_WHO_MATH,
+ "title": "Репетитор AP Calculus AB/BC онлайн на русском",
+ "desc": "Репетитор AP Calculus AB и BC онлайн на русском и английском, 1:1. Формат экзамена по AP Central. Физик МГУ, Praxis Mathematics 200/200.",
+ "h1": "Репетитор AP Calculus онлайн на русском",
+ "answer": "Подготовку к AP Calculus (AB и BC) на русском ведёт Владимир Подлевских, физик МГУ, 200/200 на американском экзамене Praxis Mathematics: занятия онлайн, один на один, объяснения по-русски, термины и задания College Board по-английски. Ниже — формат экзамена по AP Central.",
+ "facts": ["AP Calculus BC — по описанию College Board, вводный курс матанализа университетского уровня",
+           "Экзамен BC: раздел I — 42 вопроса с выбором ответа, 100 минут, 50%; раздел II — 6 вопросов со свободным ответом, 90 минут, 50%",
+           "Часть вопросов — без калькулятора, часть — с графическим калькулятором (таблица ниже)",
+           "Формат экзамена AB на странице AP Central такой же по числу вопросов и времени",
+           "Формат: онлайн, 1:1, по всему миру; язык занятий — русский, английский или смешанно"],
+ "table": _AP_TABLE_RU,
+ "sections": [
+   ("Юниты AP Calculus BC", "<p>В описании курса — 10 юнитов, по 5–20% от раздела с выбором ответа: 1 — пределы и непрерывность; 2 — дифференцирование: определение и основные свойства; 3 — композитные, неявные и обратные функции; 4 — контекстные приложения производной; 5 — аналитические приложения производной; 6 — интегрирование и накопление изменения; 7 — дифференциальные уравнения; 8 — приложения интегрирования; 9 — параметрические уравнения, полярные координаты и векторные функции; 10 — бесконечные последовательности и ряды. Веса по юнитам смотрите на " + _ext(_AP_BC_URL, "странице курса BC") + ".</p>"),
+   ("Что нужно сверять с College Board", "<p>На страницах курсов College Board указано, что число вопросов с выбором ответа и время будут обновлены, начиная с экзаменов мая 2027 года. Поэтому цифры в таблице — по состоянию на 15.11.2026; актуальный формат смотрите на " + _ext(_AP_BC_EXAM_URL, "странице экзамена BC") + " и " + _ext(_AP_AB_URL, "странице курса AB") + ". Шкалу баллов 1–5 и проходные баллы эта страница не приводит.</p>"),
+   ("Как проходит подготовка", "<p>Диагностика по юнитам, план к дате экзамена, разбор вопросов со свободным ответом (обоснование и запись решения важны так же, как ответ) и тренировка на времени с учётом разделов без калькулятора. Результат зависит от стартового уровня и времени до экзамена; балл заранее не обещается.</p>"),
+ ],
+ "faq": [
+   ("Можно ли готовиться к AP Calculus на русском?", "Да: объяснения на русском, формулировки заданий College Board и терминология — на английском; возможен и полностью английский формат."),
+   ("Сколько длится экзамен AP Calculus BC?", "По странице экзамена AP Central: раздел I — 100 минут (42 вопроса с выбором ответа), раздел II — 90 минут (6 вопросов со свободным ответом). College Board сообщает об обновлении числа вопросов и времени начиная с мая 2027 года, поэтому сверяйтесь с AP Central."),
+   ("Нужен ли калькулятор на экзамене?", "Да, но не везде: в разделе I часть A и в разделе II часть B калькуляторы не разрешены, в остальных частях нужен графический калькулятор."),
+ ],
+ "updated": "2026-11-15",
+ "course": ("AP Calculus AB/BC на русском и английском (онлайн, 1:1)", "Индивидуальная онлайн-подготовка к AP Calculus (AB и BC) на русском и английском: юниты, вопросы со свободным ответом, работы на времени."),
+},
+# ── RU: IGCSE Maths 0580 ──
+{"n": 203, "slug": "repetitor-igcse-matematika-0580-na-russkom", "lang": "ru", "who": _RU_WHO_MATH,
+ "title": "Репетитор IGCSE математика 0580 на русском языке",
+ "desc": "Репетитор по Cambridge IGCSE Mathematics 0580 на русском и английском: Core и Extended, Paper 1–4. Онлайн 1:1, физик МГУ, 23 года опыта.",
+ "h1": "Репетитор по IGCSE математике 0580 на русском",
+ "answer": "Cambridge IGCSE Mathematics 0580 можно изучать на русском: Владимир Подлевских, физик МГУ, 200/200 на Praxis Mathematics, объясняет материал по-русски, а термины и формулировки экзамена даёт по-английски, как в спецификации Cambridge. Занятия онлайн, один на один.",
+ "facts": ["Код программы: Cambridge IGCSE Mathematics 0580; спецификации 2025–2027 и 2028–2030",
+           "9 тем: число; алгебра и графики; координатная геометрия; геометрия; длины, площади и объёмы (mensuration); тригонометрия; преобразования и векторы; вероятность; статистика",
+           "Core: Paper 1 (без калькулятора) + Paper 3 (с калькулятором), оценки C–G; Extended: Paper 2 (без калькулятора) + Paper 4 (с калькулятором), оценки A*–E",
+           "Каждая из двух работ даёт 50% оценки; для Paper 3 и Paper 4 нужен научный калькулятор",
+           "Язык занятий: русский, английский или смешанно"],
+ "table": {'title': 'Core и Extended в IGCSE Mathematics 0580 (спецификация 2025–2027)',
+           'head': ['Уровень', 'Работы', 'Длительность и баллы', 'Оценки'],
+           'rows': [['Core', 'Paper 1 (без калькулятора) + Paper 3 (калькулятор)', 'по 1 ч 30 мин, по 80 баллов, по 50%', 'C–G'],
+                    ['Extended', 'Paper 2 (без калькулятора) + Paper 4 (калькулятор)', 'по 2 ч, по 100 баллов, по 50%', 'A*–E']]},
+ "sections": [
+   ("Core или Extended", "<p>По спецификации Cambridge, на Core (Paper 1 и Paper 3) записывают тех, кто изучал содержание Core или ожидает оценку D и ниже; на Extended (Paper 2 и Paper 4) — тех, кто изучал содержание Extended и ожидает оценку C и выше. Уровень выбирают вместе с учебным заведением ученика в начале подготовки.</p>"),
+   ("Из чего состоит оценка", "<p>Цели оценивания — AO1 (знание и понимание математических методов) и AO2 (анализ, интерпретация и изложение математических рассуждений). Для Core их вес 60–70% и 30–40%, для Extended — 40–50% и 50–60%. На Extended больше половины оценки — за применение и объяснение, поэтому на занятиях используются вопросы в формате экзамена.</p>"),
+   ("Официальные источники", "<p>Спецификации, их обновления и актуальные сроки — на " + _ext(_IGCSE_URL, "странице Cambridge IGCSE Mathematics 0580 на cambridgeinternational.org") + ". Cambridge ориентируется примерно на 130 учебных часов на предмет; это оценка объёма курса, а не норма занятий с репетитором.</p>"),
+ ],
+ "faq": [
+   ("Можно ли заниматься по IGCSE Mathematics на русском?", "Да. Объяснения — на русском, терминология и формулировки экзамена — на английском, как удобнее ученику."),
+   ("Чем отличаются Paper 1 и Paper 3?", "Обе — работы уровня Core по 1 ч 30 мин и 80 баллов, по 50% оценки. Paper 1 пишется без калькулятора, для Paper 3 нужен научный калькулятор."),
+   ("Какие оценки можно получить на Core и на Extended?", "По спецификации 2025–2027: на Core — оценки C–G, на Extended — A*–E."),
+ ],
+ "updated": "2026-11-15",
+ "course": ("Cambridge IGCSE Mathematics 0580 на русском (онлайн, 1:1)", "Индивидуальная подготовка к Cambridge IGCSE Mathematics 0580 на русском и английском: Core и Extended, Paper 1–4."),
+},
+
+# ── EN: IB Math AA HL ──
+{"n": 301, "twin": 201, "slug": "best-ib-math-aa-hl-tutor-online", "lang": "en", "who": _EN_WHO_MATH,
+ "title": "Best IB Math AA HL tutor online: how to choose",
+ "desc": "How to choose an IB Math AA HL tutor online, and who teaches here: MSU physicist, 23 years, 350+ students, Praxis Mathematics 200/200. 1:1.",
+ "h1": "IB Math AA HL tutor online",
+ "answer": "There is no objective “best” tutor, but here is what to check: subject depth, exam-specific preparation and a verifiable record. Vladimir Podlevskikh teaches IB Mathematics: analysis and approaches online, one to one: MSU physicist, 23 years of tutoring, perfect 200/200 on US Praxis Mathematics.",
+ "facts": ["Programme: IB Diploma, Mathematics: analysis and approaches (AA), at HL or SL; the other IB maths course is applications and interpretation (AI)",
+           "Format: online, 1:1, worldwide (GMT+2/+3)",
+           "Lesson language: English, Russian or mixed",
+           "Subject record: Praxis Mathematics 5165 — 200/200 (11 July 2025); Faculty of Physics, MSU (2006)",
+           "Hours, paper structure and weightings: see the Mathematics guide and programme page on ibo.org (link below)"],
+ "sections": [
+   ("How to choose a tutor", "<p>Ask three things: what the tutor can show about subject knowledge (degree, exam scores), whether the lessons are built around the actual exam format, and whether the plan starts from the student's current level. A tutor who cannot answer these cannot be compared with another.</p>"),
+   ("What this page does not repeat", "<p>Teaching hours, paper structure, internal assessment criteria and weightings are set by the IB in its official documents and change over time, so this page does not repeat them. The current description of the maths courses is on the " + _ext(_IB_URL, "Mathematics page of the IB Diploma Programme at ibo.org") + ".</p>"),
+   ("How preparation goes", "<p>We start with a diagnostic: which topics of the course are solid and where the gaps are. Then comes a plan to the exam, task types, practice in writing out solutions (in IB mathematics the reasoning is assessed, not only the answer) and timed practice papers. We work with the course the student already follows; choosing between AA and AI is done with the student's own institution. No score is promised: the result depends on the starting level and the time left.</p>"),
+ ],
+ "faq": [
+   ("Do you teach IB Math AA at HL?", "Yes: IB Mathematics: analysis and approaches, online and one to one. HL and SL are both covered."),
+   ("Can lessons be in Russian?", "Yes: explanations in Russian, IB terms and task wording in English, or fully in English."),
+   ("Where can I see the official IB maths course description?", "On the Mathematics page of the IB Diploma Programme at ibo.org, which is the source for hours, assessment and course changes."),
+ ],
+ "updated": "2026-11-15",
+ "course": ("IB Math AA tutoring online (1:1)", "One-to-one online preparation for IB Mathematics: analysis and approaches in English and Russian: diagnostic, plan, task types, timed practice papers."),
+},
+# ── EN: AP Calculus BC ──
+{"n": 302, "twin": 202, "slug": "best-ap-calculus-bc-tutor-online", "lang": "en", "who": _EN_WHO_MATH,
+ "title": "Best AP Calculus BC tutor online: how to choose",
+ "desc": "How to choose an AP Calculus BC tutor online, and who teaches here: MSU physicist, 23 years, Praxis Mathematics 200/200. 1:1, English or Russian.",
+ "h1": "AP Calculus BC tutor online",
+ "answer": "There is no objective “best” tutor, but here is what to check: subject depth, exam-specific preparation and a verifiable record. Vladimir Podlevskikh teaches AP Calculus (AB and BC) online, one to one: MSU physicist, 23 years of tutoring, perfect 200/200 on US Praxis Mathematics.",
+ "facts": ["AP Calculus BC is described by College Board as an introductory college-level calculus course",
+           "BC exam: Section I — 42 multiple-choice questions, 100 minutes, 50%; Section II — 6 free-response questions, 90 minutes, 50%",
+           "Part of each section is without a calculator, part needs a graphing calculator (table below)",
+           "The AP Central page for AB shows the same question counts and timing",
+           "Format: online, 1:1, worldwide; lesson language English, Russian or mixed"],
+ "table": _AP_TABLE_EN,
+ "sections": [
+   ("Units of AP Calculus BC", "<p>The course description lists 10 units, each 5–20% of the multiple-choice section: 1 — limits and continuity; 2 — differentiation: definition and fundamental properties; 3 — differentiation: composite, implicit and inverse functions; 4 — contextual applications of differentiation; 5 — analytical applications of differentiation; 6 — integration and accumulation of change; 7 — differential equations; 8 — applications of integration; 9 — parametric equations, polar coordinates and vector-valued functions; 10 — infinite sequences and series. Exact weightings are on the " + _ext(_AP_BC_URL, "BC course page") + ".</p>"),
+   ("What to check with College Board", "<p>The College Board course pages state that the number of multiple-choice questions and the timing will be updated starting with the May 2027 exams. The table therefore reflects the pages as read on 15 November 2026; for the current format see the " + _ext(_AP_BC_EXAM_URL, "BC exam page") + " and the " + _ext(_AP_AB_URL, "AB course page") + ". Score scales (1–5) and cut-offs are not given here.</p>"),
+   ("How preparation goes", "<p>A diagnostic by unit, a plan to the exam date, work on free-response questions (the reasoning and the written solution count as much as the answer) and timed practice that respects the no-calculator parts. The result depends on the starting level and the time left; no score is promised.</p>"),
+ ],
+ "faq": [
+   ("Do you teach AP Calculus BC?", "Yes, AP Calculus AB and BC, online and one to one."),
+   ("How long is the AP Calculus BC exam?", "Per the AP Central exam page: Section I is 100 minutes (42 multiple-choice questions), Section II is 90 minutes (6 free-response questions). College Board says the number of questions and timing will be updated from May 2027, so check AP Central."),
+   ("Can lessons be in Russian?", "Yes: explanations in Russian, College Board wording and terminology in English, or fully in English."),
+ ],
+ "updated": "2026-11-15",
+ "course": ("AP Calculus AB/BC tutoring online (1:1)", "One-to-one online AP Calculus (AB and BC) preparation in English and Russian: units, free-response questions, timed practice."),
+},
+# ── EN: IGCSE Maths 0580 ──
+{"n": 303, "twin": 203, "slug": "igcse-maths-0580-tutor-russian-speaking", "lang": "en", "who": _EN_WHO_MATH,
+ "title": "IGCSE Maths 0580 tutor, Russian-speaking, online",
+ "desc": "Cambridge IGCSE Mathematics 0580 tutor in Russian and English: Core and Extended, Paper 1–4. Online 1:1, MSU physicist, 23 years of experience.",
+ "h1": "Russian-speaking IGCSE Maths 0580 tutor",
+ "answer": "Cambridge IGCSE Mathematics 0580 can be studied in Russian: Vladimir Podlevskikh, an MSU physicist with a perfect 200/200 on Praxis Mathematics, explains the material in Russian and gives exam terms and wording in English, as in the Cambridge syllabus. Lessons are online, one-to-one.",
+ "facts": ["Programme code: Cambridge IGCSE Mathematics 0580; syllabuses 2025–2027 and 2028–2030",
+           "9 topics: number; algebra and graphs; coordinate geometry; geometry; mensuration; trigonometry; transformations and vectors; probability; statistics",
+           "Core: Paper 1 (non-calculator) + Paper 3 (calculator), grades C–G; Extended: Paper 2 (non-calculator) + Paper 4 (calculator), grades A*–E",
+           "Each of the two papers is 50% of the mark; a scientific calculator is required for Paper 3 and Paper 4",
+           "Lesson language: Russian, English or mixed"],
+ "table": {'title': 'Core and Extended in IGCSE Mathematics 0580 (2025–2027 syllabus)',
+           'head': ['Tier', 'Papers', 'Duration and marks', 'Grades'],
+           'rows': [['Core', 'Paper 1 (non-calculator) + Paper 3 (calculator)', '1 h 30 min and 80 marks each, 50% each', 'C–G'],
+                    ['Extended', 'Paper 2 (non-calculator) + Paper 4 (calculator)', '2 h and 100 marks each, 50% each', 'A*–E']]},
+ "sections": [
+   ("Core or Extended", "<p>Per the Cambridge syllabus, Core (Paper 1 and Paper 3) is for candidates who studied the Core content or are expected to achieve grade D or below; Extended (Paper 2 and Paper 4) is for those who studied the Extended content and are expected to achieve grade C or above. The tier is chosen together with the student's own institution at the start of preparation.</p>"),
+   ("What the mark consists of", "<p>Assessment objectives: AO1 (knowledge and understanding of mathematical techniques) and AO2 (analyse, interpret and communicate mathematically). For Core they weigh 60–70% and 30–40%; for Extended, 40–50% and 50–60%. At Extended more than half of the mark is for applying and explaining, so lessons use exam-style questions.</p>"),
+   ("Official sources", "<p>Syllabuses, their updates and current dates are on the " + _ext(_IGCSE_URL, "Cambridge IGCSE Mathematics 0580 page at cambridgeinternational.org") + ". Cambridge assumes about 130 guided learning hours per subject; this is an estimate of the course size, not a norm for tutoring.</p>"),
+ ],
+ "faq": [
+   ("Can I study IGCSE Mathematics in Russian?", "Yes. Explanations are in Russian, exam terminology and wording in English, whichever suits the student."),
+   ("What is the difference between Paper 1 and Paper 3?", "Both are Core papers of 1 h 30 min and 80 marks, 50% of the mark each. Paper 1 is taken without a calculator; Paper 3 requires a scientific calculator."),
+   ("Which grades are available at Core and Extended?", "Per the 2025–2027 syllabus: grades C–G at Core and A*–E at Extended."),
+ ],
+ "updated": "2026-11-15",
+ "course": ("Cambridge IGCSE Mathematics 0580 in Russian and English (online, 1:1)", "One-to-one preparation for Cambridge IGCSE Mathematics 0580 in Russian and English: Core and Extended, Paper 1–4."),
+},
+]
+
+
 def _hub_url(lang):
     return HUB if lang == "ru" else HUB_EN
 
@@ -521,7 +720,7 @@ def render_body(a):
     tbl = _table_html(a, ru) + "\n      " if a.get("table") else ""
     upd = (f'    <p class="muted"><time datetime="{a["updated"]}">'
            f'{"Обновлено" if ru else "Updated"}: {_fmt_date(a["updated"], ru)}</time></p>\n') if a.get("updated") else ""
-    who = _RU_WHO if ru else _EN_WHO
+    who = a.get("who") or (_RU_WHO if ru else _EN_WHO)
     return f"""<main id="main">
 <section class="subhero section" id="top">
   <div class="wrap">
@@ -553,10 +752,10 @@ def _alternates(a):
     """hreflang-набор страницы: себя + пара на другом языке (если есть) + x-default (EN-вариант)."""
     me = f"{HUB}{a['slug']}/"
     if a["lang"] == "ru":
-        twin = next((e for e in ANSWERS_EN if e["twin"] == a["n"]), None)
+        twin = next((e for e in ANSWERS_EN + ANSWERS_MATH if e.get("twin") == a["n"]), None)
         other = (f"{HUB}{twin['slug']}/", "en") if twin else None
     else:
-        twin = next((r for r in ANSWERS if r["n"] == a.get("twin")), None)
+        twin = next((r for r in ANSWERS + ANSWERS_MATH if r["n"] == a.get("twin")), None)
         other = (f"{HUB}{twin['slug']}/", "ru") if twin else None
     alts = [(a["lang"], me)]
     if other:
@@ -568,7 +767,7 @@ def _alternates(a):
 
 def _page(a):
     ru = a["lang"] == "ru"
-    a = dict(a, query=QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]])
+    a = dict(a, query=QUERIES_MATH.get(a["n"]) or (QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]]))
     if "course" in a:
         ld = course(a["course"][0], a["course"][1], lang=(a["lang"],))
     else:
@@ -591,6 +790,8 @@ def _page(a):
 def _hub():
     rows = "".join(
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES[a["n"]]}</a></li>' for a in ANSWERS)
+    math_rows = "".join(
+        f'<li><a href="{HUB}{a["slug"]}/">{QUERIES_MATH[a["n"]]}</a></li>' for a in ANSWERS_MATH if a["lang"] == "ru")
     body = f"""<main id="main">
 <section class="subhero section" id="top">
   <div class="wrap">
@@ -605,13 +806,15 @@ def _hub():
     <div class="prose reveal" style="max-width:760px">
       <h2>Вопросы</h2>
       <ul>{rows}</ul>
+      <h2>Математика: IB, AP, IGCSE</h2>
+      <ul>{math_rows}</ul>
       <h2>Программы</h2>
       <ul>{"".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["ru"])}</ul>
     </div>
   </div>
 </section>
 </main>"""
-    return {"url": HUB, "lang": "ru", "body_html": body, "no_cta": True, "lastmod": LASTMOD,
+    return {"url": HUB, "lang": "ru", "body_html": body, "no_cta": True, "lastmod": LASTMOD_MATH,
             "title": "Ответы о репетиторе по физике: ЕГЭ, IB, AP, IGCSE",
             "desc": "Краткие ответы по запросам: репетитор по физике для ЕГЭ, IB, AP Physics и IGCSE 0625 онлайн, на русском и английском. Физик МГУ, 23 года опыта.",
             "crumbs": [("Главная", "/"), ("Ответы", None)],
@@ -626,6 +829,8 @@ def _hub_en():
     rows = "".join(
         f'<li><a href="{HUB}{a["slug"]}/">{QUERIES[a["n"]] if a["n"] in QUERIES else QUERIES_EN[a["twin"]]}</a></li>'
         for a in pages)
+    math_rows = "".join(
+        f'<li><a href="{HUB}{a["slug"]}/">{QUERIES_MATH[a["n"]]}</a></li>' for a in ANSWERS_MATH if a["lang"] == "en")
     body = f"""<main id="main">
 <section class="subhero section" id="top">
   <div class="wrap">
@@ -640,13 +845,15 @@ def _hub_en():
     <div class="prose reveal" style="max-width:760px">
       <h2>Questions</h2>
       <ul>{rows}</ul>
+      <h2>Mathematics: IB, AP, IGCSE</h2>
+      <ul>{math_rows}</ul>
       <h2>Programmes</h2>
       <ul>{"".join(f'<li><a href="{h}">{t}</a></li>' for h, t in PILLARS["en"])}</ul>
     </div>
   </div>
 </section>
 </main>"""
-    return {"url": HUB_EN, "lang": "en", "body_html": body, "no_cta": True, "lastmod": LASTMOD_EN,
+    return {"url": HUB_EN, "lang": "en", "body_html": body, "no_cta": True, "lastmod": LASTMOD_MATH,
             "title": "Physics tutor answers: EGE, IB, AP, IGCSE",
             "desc": "Short answers: physics tutor for the EGE, IB, AP Physics and IGCSE 0625 online, in English and Russian. MSU physicist, 23 years of experience.",
             "crumbs": [("Home", "/"), ("Answers", None)],
@@ -657,4 +864,4 @@ def _hub_en():
 
 
 def answer_pages():
-    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN]
+    return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN] + [_page(a) for a in ANSWERS_MATH]
