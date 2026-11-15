@@ -441,10 +441,6 @@ class TestMathPages(Base):
             self.assertIn("A*–E", t)
 
 
-if __name__ == "__main__":
-    unittest.main(verbosity=1)
-
-
 class TestRazbor(Base):
     """Блок «записаться на разбор»: на каждой странице-ответе ровно один, UTM по странице-источнику."""
 
@@ -570,6 +566,21 @@ class TestPhysPages(Base):
             for must in ("240", "150", "4 ч 30 мин" if n == 402 else "4 h 30 min", "38", "19", "24"):
                 self.assertIn(must, t, (n, must))
             self.assertNotRegex(t, r"(?i)границ\w* оценок|grade boundar|band")
+
+    def test_no_unsourced_claims_and_table_cells(self):
+        for a in self.PH:
+            t = visible_text(self.src[URLS[a["slug"]]])
+            self.assertNotRegex(t, r"(?i)чаще рассматрива|usual consideration")
+            if "Bluebook" in t:   # гибридный формат подтверждён только для Physics 1 и 2
+                self.assertRegex(t, r"Physics 1 (и|and) 2 (экзамен|exams)")
+        ib = {r[0]: r[1:] for r in AP._IB_PHYS_TABLE_RU["rows"]}
+        self.assertEqual(ib["D. Fields"], ["19 ч", "38 ч"])
+        self.assertEqual(ib["A. Space, time and motion"], ["27 ч", "42 ч"])
+        self.assertEqual(ib["Часы всего (из них контент)"], ["150 (110)", "240 (180)"])
+        ap = {r[0]: r[1:] for r in AP._AP_PHYS_TABLE_RU["rows"]}
+        self.assertEqual(ap["Калькулятор"], ["разрешён"] * 4)
+        self.assertTrue(all("42 вопроса" in c and "85 мин" in c for c in ap["Раздел I"]))
+        self.assertTrue(all("4 вопроса" in c and "95 мин" in c for c in ap["Раздел II"]))
 
 
 if __name__ == "__main__":
