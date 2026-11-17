@@ -735,19 +735,19 @@ _ALEVEL_IB_PLAN_TABLE_RU = {'title': 'План на 8 месяцев: A-level (E
           ['Месяц 3', 'Waves and the Particle Nature of Light; Further Mechanics',
            'C.1 Simple harmonic motion; C.2 Wave model; C.3 Wave phenomena'],
           ['Месяц 4', 'Thermodynamics; Oscillations',
-           'B.1 Thermal energy transfers; B.2 Greenhouse effect; B.3 Gas laws; B.4 Thermodynamics (HL)'],
+           'B.1 Thermal energy transfers; B.2 Greenhouse effect; B.3 Gas laws; B.4 Thermodynamics (HL); черновик internal assessment (срок — по графику вашего учебного заведения)'],
           ['Месяц 5', 'Electric and Magnetic Fields; Gravitational Fields',
            'C.4 Standing waves and resonance; C.5 Doppler effect; D.1 Gravitational fields; D.2 Electric and magnetic fields'],
           ['Месяц 6', 'Nuclear and Particle Physics; Nuclear Radiation; Space',
            'D.3 Motion in electromagnetic fields; D.4 Induction (HL); E.1 Structure of the atom; E.2 Quantum physics (HL)'],
           ['Месяц 7', 'Paper 3: общие и практические принципы по всем темам; разбор практических заданий',
-           'E.3 Radioactive decay; E.4 Fission; E.5 Fusion and stars; A.5 Galilean and special relativity (HL); черновик internal assessment'],
+           'E.3 Radioactive decay; E.4 Fission; E.5 Fusion and stars; A.5 Galilean and special relativity (HL); data-based вопросы Paper 1B'],
           ['Месяц 8', 'Полные Paper 1, 2 и 3 по времени; разбор ошибок',
            'Полные Paper 1 и Paper 2 по времени (в Paper 1 — 1A и 1B); разбор ошибок']]}
 _ALEVEL_FORMAT_TABLE_RU = {'title': 'Формат экзамена: A-level Physics (Edexcel 9PH0) и IB Physics HL/SL',
  'head': ['', 'A-level Physics (Edexcel 9PH0)', 'IB Physics SL', 'IB Physics HL'],
  'rows': [['Работы', 'Paper 1 (90 баллов), Paper 2 (90), Paper 3 (120)', 'Paper 1 (1A + 1B, 45 баллов), Paper 2 (50 баллов), internal assessment', 'Paper 1 (1A + 1B, 60 баллов), Paper 2 (90 баллов), internal assessment'],
-          ['Сумма баллов', '300', 'внешняя оценка 3 ч (80%) + IA 24 балла (20%)', 'внешняя оценка 4 ч 30 мин (80%) + IA 24 балла (20%)'],
+          ['Баллы и вес', '300 баллов', 'внешняя оценка 3 ч (80%) + IA 24 балла (20%)', 'внешняя оценка 4 ч 30 мин (80%) + IA 24 балла (20%)'],
           ['Вопросы с выбором ответа', 'не приводятся (данные exam-topics)', '25 вопросов (1A)', '40 вопросов (1A)'],
           ['Темы', '13 тем: от Working as a Physicist до Oscillations', '5 тем A–E', '5 тем A–E плюс дополнительный HL-материал']]}
 
@@ -906,19 +906,19 @@ ANSWERS_PHYS = [
            "Занятия: онлайн, 1:1, русский, английский или смешанно; место проживания ученика не важно",
            "Точные даты экзаменов и шкалы итоговых оценок на странице не приводятся: проверяйте у Pearson Edexcel и IBO"],
  "sections": [
-   ("Программа: что входит в экзамен", "<p>A-level Physics по спецификации Edexcel 9PH0 состоит из 13 тем: Working as a Physicist, Mechanics, Electric Circuits, Materials, Waves and the Particle Nature of Light, Further Mechanics, Electric and Magnetic Fields, Nuclear and Particle Physics, Thermodynamics, Space, Nuclear Radiation, Gravitational Fields, Oscillations. Они распределены по трём работам: Paper 1 охватывает механику, цепи, дальнейшую механику, поля и ядерную физику, Paper 2 — материалы, волны, термодинамику, космос, радиацию, гравитацию и колебания, Paper 3 проверяет общие и практические принципы по всем темам. Другие экзаменационные организации (AQA, OCR) строят программу иначе: перед стартом сверяем спецификацию именно вашей организации.</p>"
+   ("Программа: что входит в экзамен", "<p>A-level Physics по спецификации Edexcel 9PH0 состоит из 13 тем: Working as a Physicist, Mechanics, Electric Circuits, Materials, Waves and the Particle Nature of Light, Further Mechanics, Electric and Magnetic Fields, Nuclear and Particle Physics, Thermodynamics, Space, Nuclear Radiation, Gravitational Fields, Oscillations. Они распределены по трём работам: Paper 1 охватывает механику, электрические цепи, дальнейшую механику, электрические и магнитные поля и тему Nuclear and Particle Physics, Paper 2 — материалы, волны, термодинамику, космос, ядерную радиацию, гравитационные поля и колебания; Working as a Physicist входит в обе работы, Paper 3 проверяет общие и практические принципы по всем темам. Другие экзаменационные организации (AQA, OCR) строят программу иначе: перед стартом сверяем спецификацию именно вашей организации.</p>"
     "<p>IB Physics состоит из пяти тем: A Space, time and motion; B The particulate nature of matter; C Wave behaviour; D Fields; E Nuclear and quantum physics. У HL добавлен материал (например, A.4 Rigid body mechanics, A.5 Galilean and special relativity, B.4 Thermodynamics, D.4 Induction, E.2 Quantum physics) и больше часов на каждую тему. Подробнее о выборе уровня — на странице <a href=\"/answers/ib-physics-hl-ili-sl-chto-vybrat/\">IB Physics HL или SL</a>.</p>"
     "<h3>Формат экзамена по данным exam-topics</h3>"
     "<table class=\"spec-table\"><thead><tr>" + "".join("<th>%s</th>" % c for c in _ALEVEL_FORMAT_TABLE_RU["head"]) + "</tr></thead><tbody>"
     + "".join("<tr>" + "".join("<td>%s</td>" % c for c in r) + "</tr>" for r in _ALEVEL_FORMAT_TABLE_RU["rows"]) + "</tbody></table>"),
    ("Как строится план", "<p>План ниже — типовой каркас на 8 месяцев: механика и методы работы идут первыми, потому что они нужны в каждой следующей теме; поля, колебания и ядерная физика — во второй половине; последний месяц отдан полным работам по времени. Месяцы абстрактные, без календарных дат: порядок и длительность подстраиваются под результаты диагностики и под срок до экзамена. Если срок короче, темы, где диагностика показала уверенный результат, сжимаются, а время уходит на пробелы и на развёрнутые решения.</p>"),
    ("Разбор типичных ошибок", "<p>Эти ошибки проверяются на диагностике и разбираются на занятиях:</p><ul>"
-    "<li><b>Потерянные единицы и погрешности.</b> Тема Working as a Physicist в A-level и методы работы в IB (в том числе data-based вопросы Paper 1B) требуют единиц СИ, погрешностей и работы с графиками; ответ без единиц или без оценки погрешности теряет баллы даже при верном числе.</li>"
+    "<li><b>Потерянные единицы и погрешности.</b> Тема Working as a Physicist в A-level и методы работы в IB (в том числе data-based вопросы Paper 1B) требуют единиц СИ, погрешностей и работы с графиками; ответ без единиц теряет баллы даже при верном числе, а там, где вопрос просит оценить погрешность, её нужно привести и обосновать.</li>"
     "<li><b>Ответ без хода решения.</b> В работах с развёрнутыми ответами оценивается рассуждение, а не только число; решение записывается так, чтобы проверяющий видел каждый шаг и формулу.</li>"
     "<li><b>Пропущенные вопросы с выбором ответа в IB.</b> В 1A баллы за неправильный ответ не снимаются (Physics guide), поэтому пустой ответ ничего не даёт: всегда стоит выбрать наиболее вероятный вариант.</li>"
-    "<li><b>Ответ не по command term.</b> IB использует command terms (describe, explain, outline и другие) — слова, задающие глубину ответа; ответ «в целом про тему» вместо требуемого действия теряет баллы.</li>"
+    "<li><b>Ответ не по command term.</b> IB использует command terms (describe, explain, outline и другие) — слова, задающие глубину ответа; ответ должен делать именно то, что требует термин, а не пересказывать тему в целом.</li>"
     "<li><b>Internal assessment «в последний момент».</b> IA — это 20% оценки и одно задание на 24 балла; учитель читает один черновик и советует, но не редактирует, поэтому план исследования, анализ данных, вывод и оценка (Research design, Data analysis, Conclusion, Evaluation) готовятся заранее, а не в последний месяц.</li>"
-    "<li><b>Незнание формата.</b> Калькуляторы разрешены, а в IB нужен Physics data booklet; тренировка по времени на полных работах убирает потерю минут на работе с формулами.</li></ul>"),
+    "<li><b>Незнание формата.</b> В IB калькуляторы разрешены и нужен Physics data booklet (допустимые калькуляторы A-level уточняйте у Pearson Edexcel); тренировка по времени на полных работах убирает потерю минут на работе с формулами.</li></ul>"),
    ("Как проходят занятия онлайн", "<p>Занятия идут один на один онлайн на общей интерактивной доске, на русском или английском. Первый шаг — диагностика на 20 минут: уровень, пробелы и реалистичный план. Между занятиями — домашние задания с письменным разбором ошибок. Какой результат реален, зависит от старта и времени до экзамена; конкретный балл я не обещаю.</p>"),
    ("Официальные документы", "<p>Состав тем и формат работ публикуют Pearson Edexcel (спецификация Advanced GCE in Physics 9PH0) и IBO (Diploma Programme Physics guide). Даты экзаменов, шкалы оценок и допустимые калькуляторы смотрите у них: на этой странице они намеренно не приводятся.</p>"),
  ],

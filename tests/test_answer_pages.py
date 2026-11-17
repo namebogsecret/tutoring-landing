@@ -794,15 +794,12 @@ class TestALevelIbPage(Base):
 
     def test_a_level_plan_covers_every_exam_topics_topic_once(self):
         d = self._json("alevel-physics.json")
-        col = " | ".join(r[1] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"])
         for t in d["topics"]:
             name = t["name"]["en"]
-            n = len(re.findall(r"(?<![\w])" + re.escape(name) + r"(?![\w])", col))
             # «Mechanics» входит в «Further Mechanics»: считаем вхождения как самостоятельной темы через разделитель «; »/начало ячейки
             parts = [p.strip() for cell in (r[1] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]) for p in cell.split(";")]
             hits = [p for p in parts if p == name or p.startswith(name + " (")]
             self.assertEqual(len(hits), 1, "тема A-level %r встречается в плане %d раз" % (name, len(hits)))
-            self.assertGreaterEqual(n, 1)
         self.assertEqual(len(d["topics"]), 13)
 
     def test_ib_plan_covers_every_subtopic_once(self):
@@ -824,9 +821,18 @@ class TestALevelIbPage(Base):
         self.assertEqual(hl["tasks"][0]["maxPrimary"], 40)
         self.assertEqual(sl["tasks"][3]["maxPrimary"], 24)
         text = visible_text(self.s)
-        for must in ("Paper 1 (90 баллов)", "Paper 2 (90)", "Paper 3 (120)", "300", "25 вопросов (1A)", "40 вопросов (1A)",
+        for must in ("Paper 1 (90 баллов)", "Paper 2 (90)", "Paper 3 (120)", "300 баллов", "25 вопросов (1A)", "40 вопросов (1A)",
                      "240 часов", "150 часов", "24 балла", "13 тем", "9PH0", "Physics data booklet"):
             self.assertIn(must, text)
+
+    def test_plan_table_rendered_on_page(self):
+        """Таблица плана реально выведена в HTML страницы (а не только лежит в словаре)."""
+        self.assertIn('<table class="spec-table">', self.s)
+        self.assertIn(AP._ALEVEL_IB_PLAN_TABLE_RU["title"], self.s)
+        self.assertEqual(self.s.count('<table class="spec-table">'), 2)    # план + формат экзамена
+        for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]:
+            self.assertIn("<td>%s</td>" % r[0], self.s)
+        self.assertIn("черновик internal assessment", self.s)               # IA-черновик не в последнем месяце
 
     def test_months_are_in_order_and_abstract(self):
         self.assertEqual([r[0] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]], ["Месяц %d" % i for i in range(1, 9)])
