@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 30)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ по месяцам + 2 «как выбрать»
+        self.assertEqual(len(set(URLS.values())), 31)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ по месяцам + 2 «как выбрать» + 1 A-level/IB
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -519,7 +519,7 @@ class TestRazbor(Base):
         self.assertIn('if(a.hasAttribute("data-sb-cta")) return;', js)   # без дубля cta-calendly в «Записях»
 
 
-PHYS_QUERIES = ["Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
+PHYS_QUERIES = ["Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок", "Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
                 "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare",
                 "How to choose an AP Physics 1 tutor online: 5 criteria", "How to choose an IB Physics HL tutor online: 5 criteria"]
 
@@ -532,7 +532,7 @@ class TestPhysPages(Base):
         return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
 
     def test_four_queries_and_pairs(self):
-        self.assertEqual(len(self.PH), 7)
+        self.assertEqual(len(self.PH), 8)
         self.assertEqual(sorted(AP.QUERIES_PHYS.values()), sorted(PHYS_QUERIES))
         for a in self.PH:
             self.assertIn(AP.QUERIES_PHYS[a["n"]], self.src[URLS[a["slug"]]], a["slug"])
@@ -562,7 +562,7 @@ class TestPhysPages(Base):
             self.assertIn("utm_source=tutor.podlevskikh.com", b)
 
     def test_date_table_and_hubs(self):
-        for a in self.PH:
+        for a in (x for x in self.PH if x["n"] != 404):   # 404 — страница A-level/IB (18.11), своя дата и тесты
             s = self.src[URLS[a["slug"]]]
             self.assertIn('<table class="spec-table">', s)
             self.assertIn('<time datetime="2026-11-15">', s)
@@ -750,6 +750,119 @@ class TestChooseTutorPages(Base):
             self.assertIn(must, ib)
         for t in (ap, ib):
             self.assertNotRegex(t, r"(?i)college credit|grade boundar|\bband|score of [1-7]")
+
+
+class TestALevelIbPage(Base):
+    """Страница «Подготовка к A-level и IB по физике онлайн» (автопилот 18.11): данные exam-topics, FAQPage, блок «следующий шаг» с UTM,
+    запись в llms.txt, метрики (data-cta и razbor-slug), валидность разметки."""
+    SLUG = "podgotovka-a-level-ib-fizika-onlajn"
+    DATA = os.path.expanduser("~/exam-topics/site/data/")
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.s = cls.src[URLS[cls.SLUG]]
+        cls.entry = next(a for a in AP.ANSWERS_PHYS if a["slug"] == cls.SLUG)
+
+    def _json(self, name):
+        import json
+        path = self.DATA + name
+        if not os.path.exists(path):
+            self.skipTest("exam-topics недоступен")
+        return json.load(open(path, encoding="utf-8"))
+
+    def test_faqpage_jsonld_valid_and_matches_visible_faq(self):
+        blocks = jsonld_blocks(self.s)   # json.loads внутри: невалидный JSON-LD уронит тест
+        faq = [b for b in blocks if b.get("@type") == "FAQPage"]
+        self.assertEqual(len(faq), 1)
+        self.assertEqual(faq[0]["@context"], "https://schema.org")
+        self.assertEqual(len(faq[0]["mainEntity"]), len(self.entry["faq"]))
+        self.assertGreaterEqual(len(faq[0]["mainEntity"]), 5)
+        for q, (qq, aa) in zip(faq[0]["mainEntity"], self.entry["faq"]):
+            self.assertEqual(q["@type"], "Question")
+            self.assertEqual(q["name"], qq)
+            self.assertEqual(q["acceptedAnswer"]["@type"], "Answer")
+            self.assertEqual(q["acceptedAnswer"]["text"], aa)
+            self.assertIn(htmllib.escape(qq, quote=False), self.s.replace("&#x27;", "'"))   # вопрос виден на странице
+        types = [b.get("@type") for b in blocks]
+        for t in ("Course", "WebPage"):
+            self.assertIn(t, types)
+        wp = next(b for b in blocks if b.get("@type") == "WebPage")
+        self.assertEqual(wp["url"], BASE + URLS[self.SLUG])
+        self.assertEqual(wp["inLanguage"], "ru")
+        self.assertEqual(wp["dateModified"], "2026-11-18")
+
+    def test_a_level_plan_covers_every_exam_topics_topic_once(self):
+        d = self._json("alevel-physics.json")
+        col = " | ".join(r[1] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"])
+        for t in d["topics"]:
+            name = t["name"]["en"]
+            n = len(re.findall(r"(?<![\w])" + re.escape(name) + r"(?![\w])", col))
+            # «Mechanics» входит в «Further Mechanics»: считаем вхождения как самостоятельной темы через разделитель «; »/начало ячейки
+            parts = [p.strip() for cell in (r[1] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]) for p in cell.split(";")]
+            hits = [p for p in parts if p == name or p.startswith(name + " (")]
+            self.assertEqual(len(hits), 1, "тема A-level %r встречается в плане %d раз" % (name, len(hits)))
+            self.assertGreaterEqual(n, 1)
+        self.assertEqual(len(d["topics"]), 13)
+
+    def test_ib_plan_covers_every_subtopic_once(self):
+        d = self._json("ib-physics.json")
+        col = " ; ".join(r[2] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"])
+        for th in d["topics"]:
+            for c in th["children"]:
+                name = c["name"]["en"]          # «A.1 Kinematics» или «A.4 Rigid body mechanics (HL)»
+                code = name.split(" ", 1)[0]
+                self.assertEqual(len(re.findall(r"(?<![\w.])" + re.escape(code) + r"(?![\w])", col)), 1, "IB %s: не ровно один раз в плане" % code)
+                self.assertIn(name, col, name)
+        self.assertEqual(len(d["topics"]), 5)
+
+    def test_format_numbers_match_exam_topics(self):
+        al, hl, sl = (self._json(n) for n in ("alevel-physics.json", "ib-physics.json", "ib-physics-sl.json"))
+        self.assertEqual([t["maxPrimary"] for t in al["tasks"]], [90, 90, 120])
+        self.assertEqual(al["maxPrimary"], 300)
+        self.assertEqual(sl["tasks"][0]["maxPrimary"], 25)
+        self.assertEqual(hl["tasks"][0]["maxPrimary"], 40)
+        self.assertEqual(sl["tasks"][3]["maxPrimary"], 24)
+        text = visible_text(self.s)
+        for must in ("Paper 1 (90 баллов)", "Paper 2 (90)", "Paper 3 (120)", "300", "25 вопросов (1A)", "40 вопросов (1A)",
+                     "240 часов", "150 часов", "24 балла", "13 тем", "9PH0", "Physics data booklet"):
+            self.assertIn(must, text)
+
+    def test_months_are_in_order_and_abstract(self):
+        self.assertEqual([r[0] for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]], ["Месяц %d" % i for i in range(1, 9)])
+        self.assertTrue(all(len(r) == 3 and all(r) for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]))
+        main = self.s[self.s.index('<main id="main">'):self.s.index("</main>")]   # без футера («Обновлено: ноябрь 2026»)
+        text = visible_text(main).replace("Обновлено: 18 ноября 2026", "")
+        for bad in (r"(май|мая|июн\w*|июл\w*|нояб\w*)\s+20\d\d", r"\d{1,2}[./]\d{1,2}[./]20\d\d", r"\bA\*\s*=\s*\d+", r"границ\w+ оценок\s*:"):
+            self.assertNotRegex(text, bad)
+
+    def test_next_step_block_utm_and_metrics_hooks(self):
+        slug = AP.razbor_slug(self.entry)
+        self.assertEqual(slug, "tutor-answers-" + self.SLUG)
+        b = RAZBOR_RE.search(self.s).group(0)
+        for part in ("utm_source=tutor.podlevskikh.com", "utm_medium=razbor", "utm_campaign=" + slug, 'data-slug="%s"' % slug):
+            self.assertIn(part, b)
+        self.assertEqual(len(RAZBOR_RE.findall(self.s)), 1)
+        self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', self.s)     # tutor-страница: событие cta-tutor-page
+        self.assertIn('href="/answers/ib-physics-hl-ili-sl-chto-vybrat/"', self.s)   # перелинковка на соседний ответ
+        self.assertIn('/assets/start-block.js', self.s)
+
+    def test_stop_words_and_location_online(self):
+        s = strip_razbor(self.s).replace('data-cta="tutor-page"', "")
+        for pat in FORBIDDEN + EXTRA_FORBIDDEN:
+            self.assertIsNone(re.search(pat, s, re.I), pat)
+        self.assertRegex(visible_text(self.s), r"онлайн")
+        self.assertNotRegex(visible_text(self.s), r"(?i)lond|лондон|москв|ереван")   # место не называем: только онлайн
+
+    def test_in_hub_sitemap_llms(self):
+        u = "/answers/%s/" % self.SLUG
+        self.assertIn(u, self.src[HUB])
+        self.assertIn(BASE + u, open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read())
+        llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
+        line = next(l for l in llms.splitlines() if BASE + u in l)
+        self.assertIn("A-level", line)
+        self.assertIn("IB", line)
+        self.assertIn("## Short answers to common queries", llms.split(line)[0])
 
 
 if __name__ == "__main__":
