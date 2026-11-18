@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 31)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ по месяцам + 2 «как выбрать» + 1 A-level/IB
+        self.assertEqual(len(set(URLS.values())), 32)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -521,12 +521,13 @@ class TestRazbor(Base):
 
 PHYS_QUERIES = ["Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок", "Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
                 "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare",
-                "How to choose an AP Physics 1 tutor online: 5 criteria", "How to choose an IB Physics HL tutor online: 5 criteria"]
+                "How to choose an AP Physics 1 tutor online: 5 criteria", "How to choose an IB Physics HL tutor online: 5 criteria",
+                "Подготовка к ЕГЭ по математике (профиль) 2027: план по месяцам, типичные ошибки, как заниматься онлайн"]
 
 
 class TestPhysPages(Base):
     """Четыре страницы AP Physics 1/2/C и IB Physics HL/SL (15.11): запросы, пары, FAQPage, блок разбора с UTM, факты."""
-    PH = AP.ANSWERS_PHYS
+    PH = [a for a in AP.ANSWERS_PHYS if a["n"] != 405]    # 405 (математика, 18.11) — в TestEgeMathPlanPage
 
     def u(self, n):
         return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
@@ -605,91 +606,91 @@ class TestPhysPages(Base):
         self.assertTrue(all("4 вопроса" in c and "95 мин" in c for c in ap["Раздел II"]))
 
 
-class TestEgePlanPage(Base):
-    """Страница «Подготовка к ЕГЭ по физике 2027: план по месяцам» (15.11): данные exam-topics, FAQPage, ссылки, метрика."""
-    SLUG = "podgotovka-ege-fizika-2027-plan-po-mesyacam"
+class TestEgeMathPlanPage(Base):
+    """Страница «Подготовка к ЕГЭ по математике (профиль) 2027: план по месяцам, ошибки, онлайн» (18.11):
+    данные exam-topics + спецификация ФИПИ 2027, FAQPage, UTM-блок «следующий шаг», llms.txt, разметка."""
+    SLUG = "podgotovka-ege-matematika-profil-2027-plan"
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.s = cls.src[URLS[cls.SLUG]] if cls.SLUG in URLS else read("/answers/%s/" % cls.SLUG)
+        cls.s = cls.src[URLS[cls.SLUG]]
         cls.entry = next(a for a in AP.ANSWERS_PHYS if a["slug"] == cls.SLUG)
 
     def test_faqpage_jsonld_matches_visible_faq(self):
-        blocks = jsonld_blocks(self.s)
-        faq = next(b for b in blocks if b.get("@type") == "FAQPage")
+        faq = next(b for b in jsonld_blocks(self.s) if b.get("@type") == "FAQPage")
         self.assertEqual(len(faq["mainEntity"]), len(self.entry["faq"]))
-        self.assertGreaterEqual(len(faq["mainEntity"]), 3)
+        self.assertGreaterEqual(len(faq["mainEntity"]), 5)
         for q, (qq, aa) in zip(faq["mainEntity"], self.entry["faq"]):
-            self.assertEqual(q["@type"], "Question")
-            self.assertEqual(q["name"], qq)
-            self.assertEqual(q["acceptedAnswer"]["text"], aa)
+            self.assertEqual((q["@type"], q["name"], q["acceptedAnswer"]["@type"], q["acceptedAnswer"]["text"]),
+                             ("Question", qq, "Answer", aa))
             self.assertIn(qq, self.s)
 
-    def test_jsonld_valid_webpage_and_course(self):
-        types = [b.get("@type") for b in jsonld_blocks(self.s)]
-        for t in ("FAQPage", "WebPage", "Course"):
-            self.assertIn(t, types)
+    def test_jsonld_types_and_webpage_fields(self):
+        blocks = jsonld_blocks(self.s)
+        self.assertTrue({"FAQPage", "WebPage", "Course"} <= {b.get("@type") for b in blocks})
+        wp = next(b for b in blocks if b.get("@type") == "WebPage")
+        self.assertEqual(wp["url"], BASE + "/answers/%s/" % self.SLUG)
+        self.assertEqual((wp["inLanguage"], wp["dateModified"]), ("ru", "2026-11-18"))
+        self.assertIn("<h1", self.s)
+        self.assertEqual(len(re.findall(r"<h1[ >]", self.s)), 1)
 
-    def test_program_link_and_razbor_metric_block(self):
-        self.assertIn('href="/ege-physics/"', self.s)
+    def test_next_step_utm_block_and_tutor_link(self):
         slug = AP.razbor_slug(self.entry)
         self.assertEqual(slug, "tutor-answers-" + self.SLUG)
-        self.assertIn('data-slug="%s"' % slug, self.s)           # показ/клик razbor-*-<slug> в GoatCounter (доля до записи)
-        self.assertIn("utm_campaign=%s" % slug, self.s)
+        self.assertIn('data-slug="%s"' % slug, self.s)                 # из_ИИ_на_репетитора / показ-клик в funnel-metrics
+        for part in ("utm_source=tutor.podlevskikh.com", "utm_medium=razbor", "utm_campaign=%s" % slug):
+            self.assertIn(part, self.s)
+        # клики_к_репетитору: ссылка на /exam-prep-online/ (site.js считает как tutor-page)
+        self.assertIn('href="/exam-prep-online/"', self.s)
+        self.assertIn('href="/ege-physics/"', self.s)
 
-    def test_plan_months_follow_exam_topics(self):
-        """Все темы кодификатора из exam-topics/ege-physics.json (уровень разделов-детей) встречаются в плане."""
-        path = os.path.expanduser("~/exam-topics/site/data/ege-physics.json")
+    def test_in_hub_sitemap_llms(self):
+        self.assertIn("/answers/%s/" % self.SLUG, self.src[HUB])
+        sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
+        self.assertIn("%s/answers/%s/" % (BASE, self.SLUG), sm)
+        llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
+        self.assertIn("%s/answers/%s/" % (BASE, self.SLUG), llms)
+
+    def test_facts_from_fipi_spec_2027(self):
+        text = visible_text(self.s)
+        for must in ("19 заданий", "32 первичных балла", "12 заданий", "7 заданий", "62,5%", "235 минут", "3 ч 55 мин",
+                     "13, 15 и 16 — по 2", "14 и 17 — по 3", "18 и 19 — по 4", "7 заданий и 7 баллов",
+                     "10 заданий и 17 баллов", "2 задания (18 и 19) и 8 баллов"):
+            self.assertIn(must, text)
+        # баллы сходятся: 12*1 + 3*2 + 2*3 + 2*4 = 32, уровни 7+10+2 = 19, 7+17+8 = 32
+        self.assertEqual(12 + 3 * 2 + 2 * 3 + 2 * 4, 32)
+        self.assertEqual((7 + 10 + 2, 7 + 17 + 8), (19, 32))
+        for bad in (r"(июн|июл)\w*[^.]{0,20}2027", r"2027[^.]{0,20}(июн|июл)", r"\d{1,2}[./]\d{1,2}[./]2027",
+                    r"100 баллов", r"100-балл", r"тестов(ых|ый) балл", r"\d{1,2}\s+(мая|июня|июля)\s+2027",
+                    r"калькулятор"):
+            self.assertNotRegex(text, bad)
+
+    def test_sections_cover_exam_topics(self):
+        path = os.path.expanduser("~/exam-topics/site/data/ege-math.json")
         if not os.path.exists(path):
             self.skipTest("exam-topics недоступен")
         import json
         data = json.load(open(path, encoding="utf-8"))
-        # тема кодификатора -> (месяц плана, точная фраза в колонке «Темы»; граница слова слева, чтобы
-        # «динамик» не находился в «электродинамика»/«термодинамика», «бора» — в «разбора»)
-        where = {"Кинематика": ("Ноябрь", r"кинематик\w*"), "Динамика": ("Ноябрь", r"динамик\w*"),
-                 "Статика и гидростатика": ("Ноябрь", r"статика и гидростатика"),
-                 "Законы сохранения": ("Декабрь", r"законы сохранения"),
-                 "Механические колебания и волны": ("Декабрь", r"механические колебания и волны"),
-                 "Основы МКТ": ("Январь", r"основы мкт"), "Тепловые явления": ("Январь", r"тепловые явления"),
-                 "Термодинамика": ("Январь", r"термодинамик\w*"),
-                 "Электростатика": ("Февраль", r"электростатик\w*"), "Постоянный ток": ("Февраль", r"постоянный ток"),
-                 "Магнитное поле": ("Февраль", r"магнитное поле"),
-                 "Электромагнитная индукция": ("Март", r"электромагнитная индукция"),
-                 "ЭМ колебания и волны": ("Март", r"эм колебания и волны"), "Оптика": ("Март", r"оптик\w*"),
-                 "Фотоэффект, фотоны": ("Апрель", r"фотоэффект\w*"), "Постулаты Бора, спектры": ("Апрель", r"постулаты бора"),
-                 "Строение ядра, радиоактивность": ("Апрель", r"ядро и радиоактивность"),
-                 "Измерения, погрешности, приборы": ("Апрель", r"измерения и погрешности"),
-                 "Элементы астрофизики": ("Апрель", r"астрофизик\w*")}
-        topics = {r[0]: r[2].lower().replace("ё", "е") for r in AP._EGE_PLAN_TABLE_RU["rows"]}
-        names = {c["name"]["ru"] for t in data["topics"] for c in t["children"]}
-        for ru in names:
-            self.assertIn(ru, where, "новая тема в exam-topics, добавьте в план: " + ru)
-            month, pat = where[ru]
-            rx = re.compile(r"(?<!\w)" + pat + r"(?!\w)")
-            self.assertRegex(topics[month], rx, "%s не в строке месяца %s" % (ru, month))
-            for m, cell in topics.items():
-                if m != month:
-                    self.assertNotRegex(cell, rx, "%s найдена в чужом месяце %s" % (ru, m))
-
-    def test_facts_only_from_spec_no_dates_or_scale(self):
-        text = visible_text(self.s)
-        for must in ("26 заданий", "45 первичных баллов", "20 заданий", "до 28 баллов", "6 заданий", "до 17 баллов",
-                     "квантовая физика 2", "235 минут", "3 ч 55 мин", "8–10", "6–8", "7–10"):
-            self.assertIn(must, text)
-        for bad in (r"(июн|июл)\w*[^.]{0,20}2027", r"2027[^.]{0,20}(июн|июл)", r"\d{1,2}[./]\d{1,2}[./]2027",
-                    r"100 баллов", r"100-балл", r"тестов(ых|ый) балл", r"\d{1,2}\s+(мая|июня|июля)\s+2027"):
-            self.assertNotRegex(text, bad)
-
-    def test_months_are_in_order(self):
-        months = [r[0] for r in AP._EGE_PLAN_TABLE_RU["rows"]]
+        cells = " ".join(r[2] for r in AP._EGE_MATH_TABLE_RU["rows"]).lower().replace("ё", "е")
+        key = {"calc-num": "числа и вычисления", "equineq": "уравнения и неравенства", "functions": "функции и анализ",
+               "planimetry": "планиметрия", "stereometry": "стереометрия", "vectors": "координаты и векторы",
+               "probstat": "вероятность и статистика", "applied": "прикладные и текстовые задачи",
+               "numtheory": "числа и их свойства"}
+        ids = {t["id"] for t in data["topics"]}
+        self.assertEqual(ids, set(key), "новый раздел в exam-topics — добавьте в план")
+        for k, phrase in key.items():
+            self.assertIn(phrase, cells, k)
+        months = [r[0] for r in AP._EGE_MATH_TABLE_RU["rows"]]
         self.assertEqual(months, ["Ноябрь", "Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май"])
+        for n in range(13, 20):                      # задания части 2 привязаны к месяцам
+            self.assertRegex(cells, r"задани[ея] %d\b" % n)
 
-    def test_in_hub_and_sitemap(self):
-        self.assertIn("/answers/%s/" % self.SLUG, self.src[HUB])
-        sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
-        self.assertIn("/answers/%s/" % self.SLUG, sm)
-        self.assertIn("/answers/%s/" % self.SLUG, open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read())
+    def test_mistakes_and_online_sections(self):
+        text = visible_text(self.s)
+        for must in ("Типичные ошибки", "Как заниматься онлайн", "наблюдения из практики преподавания, а не статистика",
+                     "балл не обещаю"):
+            self.assertIn(must, text)
 
 
 class TestChooseTutorPages(Base):
