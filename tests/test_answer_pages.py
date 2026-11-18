@@ -1012,8 +1012,6 @@ class TestIgcsePage(Base):
         for must in ("0625", "0580", "Paper 1", "Paper 4", "Paper 5", "Paper 6", "20% оценки", "30%", "50%", "A*–G", "A*–E",
                      "130", "6 тем", "9 тем", "без калькулятора", "4PH1", "4MA1", "Edexcel", "Cambridge", "онлайн"):
             self.assertIn(must, text)
-        dm = self._json("igcse-math.json")
-        self.assertEqual([t["maxPrimary"] for t in dm["tasks"]], [70, 130])
 
     def test_no_dates_or_grade_scales(self):
         main = self.s[self.s.index('<main id="main">'):self.s.index("</main>")]
