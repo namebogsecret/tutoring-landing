@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 32)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика
+        self.assertEqual(len(set(URLS.values())), 33)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика + 1 IGCSE физика/математика
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -579,7 +579,7 @@ class TestRazbor(Base):
         self.assertIn('if(a.hasAttribute("data-sb-cta")) return;', js)   # без дубля cta-calendly в «Записях»
 
 
-PHYS_QUERIES = ["Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок", "Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
+PHYS_QUERIES = ["Подготовка к IGCSE по физике и математике онлайн: программа Edexcel и Cambridge, план по месяцам, типичные ошибки, первое занятие", "Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок", "Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
                 "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare",
                 "How to choose an AP Physics 1 tutor online: 5 criteria", "How to choose an IB Physics HL tutor online: 5 criteria",
                 "Подготовка к ЕГЭ по математике (профиль) 2027: план по месяцам, типичные ошибки, как заниматься онлайн"]
@@ -587,7 +587,7 @@ PHYS_QUERIES = ["Подготовка к A-level и IB по физике онл�
 
 class TestPhysPages(Base):
     """Четыре страницы AP Physics 1/2/C и IB Physics HL/SL (15.11): запросы, пары, FAQPage, блок разбора с UTM, факты."""
-    PH = [a for a in AP.ANSWERS_PHYS if a["n"] != 405]    # 405 (математика, 18.11) — в TestEgeMathPlanPage
+    PH = [a for a in AP.ANSWERS_PHYS if a["n"] not in (405, 406)]    # 405 (математика, 18.11) — в TestEgeMathPlanPage
 
     def u(self, n):
         return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
@@ -962,6 +962,90 @@ class TestReprobe1118(Base):
                 self.assertLessEqual(len(item["acceptedAnswer"]["text"].split()), 60, q)
             for pat in EXTRA_FORBIDDEN:
                 self.assertIsNone(re.search(pat, s, re.I), (slug, pat))
+
+
+class TestIgcsePage(Base):
+    """Страница «Подготовка к IGCSE по физике и математике онлайн» (автопилот 19.11): данные exam-topics и ФАКТЫ-ЭКЗАМЕНЫ,
+    FAQPage + Course, блок «следующий шаг» с UTM (из_ИИ_на_репетитора, клики_к_репетитору), llms.txt, sitemap, хаб, стоп-слова."""
+    SLUG = "podgotovka-igcse-fizika-matematika-onlajn"
+    DATA = os.path.expanduser("~/exam-topics/site/data/")
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.s = cls.src[URLS[cls.SLUG]]
+        cls.entry = next(a for a in AP.ANSWERS_PHYS if a["slug"] == cls.SLUG)
+
+    def _json(self, name):
+        import json
+        path = self.DATA + name
+        if not os.path.exists(path):
+            self.skipTest("exam-topics недоступен")
+        return json.load(open(path, encoding="utf-8"))
+
+    def test_faqpage_course_webpage_valid(self):
+        blocks = jsonld_blocks(self.s)
+        faq = [b for b in blocks if b.get("@type") == "FAQPage"]
+        self.assertEqual(len(faq), 1)
+        self.assertEqual(len(faq[0]["mainEntity"]), len(self.entry["faq"]))
+        self.assertGreaterEqual(len(faq[0]["mainEntity"]), 5)
+        for q, (qq, aa) in zip(faq[0]["mainEntity"], self.entry["faq"]):
+            self.assertEqual((q["@type"], q["name"], q["acceptedAnswer"]["@type"], q["acceptedAnswer"]["text"]), ("Question", qq, "Answer", aa))
+            self.assertIn(htmllib.escape(qq, quote=False), self.s.replace("&#x27;", "'"))
+        self.assertTrue({"Course", "WebPage"} <= {b.get("@type") for b in blocks})
+        wp = next(b for b in blocks if b.get("@type") == "WebPage")
+        self.assertEqual((wp["url"], wp["inLanguage"], wp["dateModified"]), (BASE + URLS[self.SLUG], "ru", "2026-11-19"))
+        self.assertEqual(len(re.findall(r"<h1[ >]", self.s)), 1)
+
+    def test_plan_covers_every_topic_once(self):
+        rows = AP._IGCSE_PLAN_TABLE_RU["rows"]
+        self.assertEqual([r[0] for r in rows], ["Месяц %d" % i for i in range(1, 7)])
+        phys = [p.strip() for r in rows for p in r[1].split(";") if r[1] != "Повторение всех тем"]
+        math = [p.strip() for r in rows for p in r[2].split(";") if r[2] != "Повторение всех тем"]
+        dp, dm = self._json("igcse-physics.json"), self._json("igcse-math.json")
+        self.assertEqual(sorted(phys), sorted(t["name"]["en"] for t in dp["topics"]))
+        self.assertEqual(sorted(math), sorted(t["name"]["en"] for t in dm["topics"]))
+        self.assertEqual((len(dp["topics"]), len(dm["topics"])), (6, 9))
+
+    def test_format_numbers_match_facts(self):
+        text = visible_text(self.s)
+        for must in ("0625", "0580", "Paper 1", "Paper 4", "Paper 5", "Paper 6", "20% оценки", "30%", "50%", "A*–G", "A*–E",
+                     "130", "6 тем", "9 тем", "без калькулятора", "4PH1", "4MA1", "Edexcel", "Cambridge", "онлайн"):
+            self.assertIn(must, text)
+        dm = self._json("igcse-math.json")
+        self.assertEqual([t["maxPrimary"] for t in dm["tasks"]], [70, 130])
+
+    def test_no_dates_or_grade_scales(self):
+        main = self.s[self.s.index('<main id="main">'):self.s.index("</main>")]
+        text = visible_text(main).replace("Обновлено: 19 ноября 2026", "")
+        for bad in (r"(май|мая|июн\w*|июл\w*|нояб\w*)\s+20\d\d", r"\d{1,2}[./]\d{1,2}[./]20\d\d", r"границ\w+ оценок\s*:", r"проходн"):
+            self.assertNotRegex(text, bad)
+
+    def test_next_step_block_utm_and_metrics_hooks(self):
+        slug = AP.razbor_slug(self.entry)
+        self.assertEqual(slug, "tutor-answers-" + self.SLUG)
+        b = RAZBOR_RE.search(self.s).group(0)
+        for part in ("utm_source=tutor.podlevskikh.com", "utm_medium=razbor", "utm_campaign=" + slug, 'data-slug="%s"' % slug):
+            self.assertIn(part, b)
+        self.assertEqual(len(RAZBOR_RE.findall(self.s)), 1)
+        self.assertIn('data-cta="tutor-page" href="/exam-prep-online/"', self.s)
+        self.assertIn('/assets/start-block.js', self.s)
+        self.assertIn('href="/answers/repetitor-igcse-fizika-0625-na-russkom/"', self.s)
+
+    def test_stop_words_and_location_online(self):
+        s = strip_razbor(self.s).replace('data-cta="tutor-page"', "")
+        for pat in FORBIDDEN + EXTRA_FORBIDDEN:
+            self.assertIsNone(re.search(pat, s, re.I), pat)
+        self.assertNotRegex(visible_text(self.s), r"(?i)lond|лондон|москв|ереван")
+
+    def test_in_hub_sitemap_llms(self):
+        u = "/answers/%s/" % self.SLUG
+        self.assertIn(u, self.src[HUB])
+        self.assertIn(BASE + u, open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read())
+        llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
+        line = next(l for l in llms.splitlines() if BASE + u in l)
+        self.assertIn("IGCSE", line)
+        self.assertIn("## Short answers to common queries", llms.split(line)[0])
 
 
 if __name__ == "__main__":
