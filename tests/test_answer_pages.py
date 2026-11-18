@@ -179,7 +179,9 @@ class TestMissFix1119(Base):
 
     def test_faq_counts_and_forbidden(self):
         for slug in ("repetitor-fizika-ege-msu", "ap-physics-1-tutor-online", "igcse-physics-0625-tutor-russian-speaking"):
-            self.assertIn('"@type": "FAQPage"', self.page(slug))
+            s = self.page(slug)
+            self.assertIn('"@type": "FAQPage"', s)
+            self.assertNotRegex(s, r"(?i)Кипр|Лимассол|Cyprus|Limassol")
 
 
 class TestFacts(Base):
