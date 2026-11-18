@@ -872,5 +872,37 @@ class TestALevelIbPage(Base):
         self.assertIn("## Short answers to common queries", llms.split(line)[0])
 
 
+class TestReprobe1118(Base):
+    """Правки по замеру ИИ 18.11 (набор newpages): title с фразой запроса, FAQ под запросы, FAQPage = видимый FAQ, без стоп-слов."""
+    CASES = {
+        "podgotovka-a-level-ib-fizika-onlajn": ("Подготовка к A-level и IB по физике онлайн", ["по месяцам", "русскоязычный репетитор по A-level"]),
+        "podgotovka-ege-matematika-profil-2027-plan": ("Подготовка к ЕГЭ по математике профиль 2027", ["по месяцам", "Как выбрать репетитора"]),
+    }
+
+    def test_title_starts_with_query_phrase_and_faq_added(self):
+        import re
+        for slug, (phrase, faq_marks) in self.CASES.items():
+            s = self.src[URLS[slug]]
+            title = re.search(r"<title>(.*?)</title>", s).group(1)
+            self.assertTrue(title.startswith(phrase), title)
+            qs = [q for q, _ in next(a for a in AP.ANSWERS_PHYS if a["slug"] == slug)["faq"]]
+            for m in faq_marks:
+                self.assertTrue(any(m.lower() in q.lower() for q in qs), (slug, m))
+
+    def test_jsonld_faqpage_matches_visible_and_short_answers(self):
+        import json, re
+        for slug in self.CASES:
+            s = self.src[URLS[slug]]
+            blocks = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)]
+            faq = next(b for b in blocks if b.get("@type") == "FAQPage")
+            entry = next(a for a in AP.ANSWERS_PHYS if a["slug"] == slug)
+            self.assertEqual(len(faq["mainEntity"]), len(entry["faq"]))
+            for item, (q, a) in zip(faq["mainEntity"], entry["faq"]):
+                self.assertEqual(item["name"], q)
+                self.assertLessEqual(len(item["acceptedAnswer"]["text"].split()), 60, q)
+            for pat in EXTRA_FORBIDDEN:
+                self.assertIsNone(re.search(pat, s, re.I), (slug, pat))
+
+
 if __name__ == "__main__":
     unittest.main()
