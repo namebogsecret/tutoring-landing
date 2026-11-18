@@ -95,8 +95,9 @@ class TestUpgraded(Base):
         for slug in UPGRADED:
             s = self.src["/answers/%s/" % slug]
             self.assertIn('<table class="spec-table">', s, slug)
-            self.assertRegex(s, r'<time datetime="2026-11-13">', slug)
-            self.assertIn('"dateModified": "2026-11-13"', s, slug)
+            # 19.11 страница правилась повторно (TestMissFix1119) — дата 13.11 или 19.11
+            self.assertRegex(s, r'<time datetime="2026-11-(13|19)">', slug)
+            self.assertRegex(s, r'"dateModified": "2026-11-(13|19)"', slug)
             self.assertIn('"@type": "FAQPage"', s, slug)
             self.assertIn("<lastmod>2026-11-13</lastmod>", open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read())
             # таблица стоит до FAQ и после lead
@@ -116,12 +117,69 @@ class TestReprobeTables(Base):
         for slug in REPROBE_SLUGS:
             s = self.src["/answers/%s/" % slug]
             self.assertIn('<table class="spec-table">', s, slug)
-            self.assertIn('<time datetime="2026-11-16">', s, slug)
-            self.assertIn('"dateModified": "2026-11-16"', s, slug)
+            self.assertRegex(s, r'<time datetime="2026-11-(16|19)">', slug)
+            self.assertRegex(s, r'"dateModified": "2026-11-(16|19)"', slug)
             self.assertIn('"@type": "FAQPage"', s, slug)
             self.assertLess(s.index('class="lead'), s.index("<table"), slug)
             # таблица до «Кто преподаёт» и до разделов-пояснений
             self.assertLess(s.index("<table"), s.index('id="who"'), slug)
+
+
+class TestMissFix1119(Base):
+    """19.11: по одной нацеленной правке на провал замера 15.11 (#1–#11; #12 запрещён). Метрика: из_ИИ_на_репетитора."""
+    def page(self, slug):
+        return self.src["/answers/%s/" % slug]
+
+    def test_lead_repeats_query_1(self):
+        s = self.page("repetitor-fizika-ege-online")
+        self.assertRegex(s, r'class="lead reveal">Репетитор по физике ЕГЭ онлайн')
+
+    def test_question_h2_with_short_answer_3(self):
+        s = self.page("podgotovka-ege-fizika-za-rubezhom")
+        m = re.search(r"<h2>Как готовиться к ЕГЭ по физике, живя за границей\?</h2>\s*<p>(.*?)</p>", s, re.S)
+        self.assertTrue(m)
+        self.assertLessEqual(len(re.sub(r"<[^>]+>", "", m.group(1)).split()), 50)
+
+    def test_six_topics_4(self):
+        s = self.page("repetitor-igcse-fizika-0625-na-russkom")
+        self.assertIn("Шесть тем IGCSE Physics 0625", s)
+        self.assertIn("Космическая физика", s)
+
+    def test_format_block_5(self):
+        self.assertIn("IB Physics SL/HL на русском: как проходят занятия", self.page("repetitor-ib-physics-russkoyazychnyj"))
+
+    def test_scope_in_lead_6(self):
+        s = self.page("repetitor-ap-physics-na-russkom")
+        self.assertRegex(s, r'class="lead reveal">[^<]*Physics C: Mechanics')
+
+    def test_profilepage_7(self):
+        s = self.page("vladimir-podlevskikh-physics-tutor")
+        self.assertIn('"@type": "ProfilePage"', s)
+        self.assertIn("https://tutor.podlevskikh.com/#vladimir", s)
+
+    def test_h1_verbatim_8(self):
+        self.assertIn(">IGCSE Physics 0625 tutor, Russian-speaking</h1>", self.page("igcse-physics-0625-tutor-russian-speaking"))
+
+    def test_checklists_9_10(self):
+        s9 = self.page("ap-physics-1-tutor-online")
+        self.assertIn("five checks", s9)
+        self.assertEqual(len(re.findall(r"<tr><td>", s9)), 5)
+        s10 = self.page("ib-physics-hl-tutor-online")
+        self.assertIn("How to choose an IB Physics HL tutor: five checks", s10)
+
+    def test_table_first_11(self):
+        s = self.page("russian-ege-physics-tutor-english-speaking")
+        self.assertLess(s.index("<table"), s.index('id="facts"'))
+
+    def test_tutor_link_utm_via_razbor(self):
+        # ссылка на страницу репетитора с UTM: блок «разбор» (utm_medium=razbor, campaign=tutor-answers-<slug>);
+        # tutor→tutor UTM не ставим (tutor_links.py: «ссылка tutor→tutor не сквозная»)
+        for slug in ("repetitor-fizika-ege-online", "ap-physics-1-tutor-online"):
+            self.assertIn("utm_campaign=tutor-answers-" + slug, self.page(slug))
+
+    def test_faq_counts_and_forbidden(self):
+        for slug in ("repetitor-fizika-ege-msu", "ap-physics-1-tutor-online", "igcse-physics-0625-tutor-russian-speaking"):
+            self.assertIn('"@type": "FAQPage"', self.page(slug))
 
 
 class TestFacts(Base):

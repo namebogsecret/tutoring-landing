@@ -10,7 +10,7 @@ FAQ (+ JSON-LD FAQPage из pages_registry/build), перелинковка с p
 обещания баллов, кнопки записи. Запрос #12 замера («…Кипр…») сознательно НЕ покрыт.
 Правка текста — здесь; затем `python3 build.py`.
 """
-from pages_registry import course, service
+from pages_registry import course, service, PERSON_REF
 
 BASE_URL = "https://tutor.podlevskikh.com"
 LASTMOD = "2026-11-12"
@@ -1071,6 +1071,80 @@ for _a in ANSWERS + ANSWERS_EN:
         _a["updated"] = UPDATED_REPROBE
 
 
+# ── 19.11 (замер 15.11: сайты 0/12; таблица правок 13.11): по ОДНОЙ нацеленной правке на каждый провал #1–#11.
+# #12 не правится: запрет 06.11. Факты — только те, что уже стоят на самих страницах (ФАКТ-ЛИСТ).
+UPDATED_MISS = "2026-11-19"
+
+
+def _a(n):
+    return next(x for x in ANSWERS if x["n"] == n)
+
+
+# #1 «репетитор по физике ЕГЭ онлайн»: первое предложение lead дословно повторяет запрос
+_a(1)["answer"] = ("Репетитор по физике ЕГЭ онлайн — Владимир Подлевских: физик, выпускник физического факультета МГУ, "
+                   "23 года частного преподавания, 350+ учеников. Занятия идут один на один, на русском или английском, из любой страны.")
+# #2 «лучший репетитор … с опытом МГУ»: title с запросом-вопросом + FAQ «как выбрать» (проверяемые критерии, без «лучший» как самооценки)
+_a(2)["title"] = "Репетитор по физике ЕГЭ с опытом МГУ: как выбрать и что проверить"
+_a(2)["faq"] = list(_a(2)["faq"]) + [(
+    "Как выбрать лучшего репетитора по физике для ЕГЭ с опытом МГУ?",
+    "Объективного «лучшего» нет, проверяйте три вещи: подтверждаемое образование и результаты (здесь: физфак МГУ, 2006; Praxis Physics 5266 — 200/200), "
+    "знание формата ЕГЭ 2027 и план, который начинается с текущего уровня ученика.")]
+_en102 = next(x for x in ANSWERS_EN if x["n"] == 102)
+_en102["faq"] = list(_en102["faq"]) + [(
+    "How do I choose the best physics tutor for the EGE with an MSU background?",
+    "There is no objective “best”; check three things: verifiable education and results (here: Faculty of Physics, MSU, 2006; Praxis Physics 5266: 200/200), "
+    "knowledge of the EGE 2027 format, and a plan that starts from the student's current level.")]
+_en102["updated"] = UPDATED_MISS
+# #3 «подготовка к ЕГЭ по физике за рубежом»: H2-вопрос и ответ ≤50 слов сразу под ним
+_a(3)["sections"] = [("Как готовиться к ЕГЭ по физике, живя за границей?",
+    "<p>Полностью онлайн: занятия один на один, время подбирается под часовой пояс семьи, программа строится по спецификации КИМ ЕГЭ 2027. "
+    "Начать стоит со сверки тем текущего курса ребёнка с кодификатором ЕГЭ.</p>")] + list(_a(3)["sections"])
+# #4 «репетитор IGCSE физика 0625 на русском»: блок «6 тем 0625 → что разбираем»
+_a(4)["sections"] = list(_a(4)["sections"]) + [("Шесть тем IGCSE Physics 0625: что разбираем",
+    "<ul><li><b>Движение, силы и энергия</b> — задачи на кинематику, силы, работу и энергию;</li>"
+    "<li><b>Тепловая физика</b> — теплоёмкость, агрегатные состояния, газовые законы;</li>"
+    "<li><b>Волны</b> — свойства волн, свет и звук;</li>"
+    "<li><b>Электричество и магнетизм</b> — цепи, поля, электромагнитные явления;</li>"
+    "<li><b>Ядерная физика</b> — строение атома, радиоактивность;</li>"
+    "<li><b>Космическая физика</b> — Солнечная система, звёзды, Вселенная.</li></ul>"
+    "<p>Практические навыки оцениваются отдельно: Paper 5 или Paper 6, 20% оценки. Термины и формулировки заданий остаются английскими, как на экзамене.</p>")]
+# #5 «репетитор IB Physics онлайн русскоязычный»: H2 «на русском: как проходят занятия» + блок формата
+_a(5)["sections"] = [("IB Physics SL/HL на русском: как проходят занятия",
+    "<ul><li><b>Формат:</b> онлайн, один на один;</li><li><b>Язык:</b> объяснения по-русски, термины и задания IB — на английском;</li>"
+    "<li><b>Объём курса:</b> SL — 150 часов, HL — 240 часов (по Physics guide);</li>"
+    "<li><b>Материалы:</b> темы A–E, экзаменационные работы Paper 1 и Paper 2, помощь с Internal Assessment (20% оценки).</li></ul>")] + list(_a(5)["sections"])
+# #6 «репетитор AP Physics онлайн на русском»: в lead — что именно покрыто
+_a(6)["answer"] = ("Подготовку к AP Physics онлайн на русском ведёт Владимир Подлевских, физик МГУ: занятия один на один, объяснения по-русски, "
+                   "задания и термины College Board на английском. На этой странице разобраны AP Physics C: Mechanics и Electricity and Magnetism "
+                   "(курсы с матанализом); сравнение AP Physics 1, 2 и C — на отдельной странице "
+                   '<a href="/answers/ap-physics-1-2-c-chem-otlichayutsya/">AP Physics 1, 2 и C: чем отличаются</a>.')
+# #8 «IGCSE Physics 0625 tutor Russian-speaking»: H1 дословно как запрос + FAQ «Do you teach in Russian?»
+_a(8)["h1"] = "IGCSE Physics 0625 tutor, Russian-speaking"
+_a(8)["faq"] = [("Do you teach in Russian?", "Yes. Lessons can be in Russian, English or a mix; exam terminology and command words stay in English, as on the papers.")] + list(_a(8)["faq"])
+# #9 «best AP Physics 1 tutor online»: чек-лист из 5 критериев (ИИ цитирует списки выбора, не саморекламу)
+_a(9)["table"] = {"title": "Choosing an AP Physics 1 tutor: five checks", "head": ["What to check", "Why it matters", "What can be verified here"],
+    "rows": list(_AP1_T_EN["rows"]) + [
+        ["Language and time zone", "Lessons should fit the student's language and schedule", "English, Russian or a mix; online, 1:1, worldwide (GMT+2/+3)"],
+        ["Official sources", "Exam details should come from the exam board, not from the tutor", "AP Physics 1 format and course framework: College Board AP Central"]]}
+_a(9)["sections"] = [("How to choose an AP Physics 1 tutor: five checks",
+    "<p>There is no objective “best” tutor, so compare on checks you can verify: subject knowledge (degree, exam scores), exam-specific preparation, "
+    "a plan that starts from the student's current level, language and time zone, and exam details taken from College Board rather than from the tutor.</p>")] + list(_a(9)["sections"][1:])
+_a(9)["faq"] = [("How do I choose an AP Physics 1 tutor online?",
+    "Check five things: verifiable subject knowledge, preparation built around the real exam format, a plan that starts from the student's level, "
+    "a language and time zone that fit, and exam details sourced from College Board AP Central.")] + list(_a(9)["faq"])
+# #10 «best IB Physics HL tutor online»: критерии выбора HL-репетитора (+ существующая таблица HL vs SL)
+_a(10)["sections"] = [("How to choose an IB Physics HL tutor: five checks",
+    "<ul><li><b>HL content, not just SL:</b> the tutor should know what HL adds (topic D, Fields, is 38 hours at HL and 19 at SL).</li>"
+    "<li><b>Exam structure:</b> HL Paper 1 is 2 h, 60 marks (36%); Paper 2 is 2 h 30 min, 90 marks (44%).</li>"
+    "<li><b>Internal assessment:</b> one scientific investigation, 24 marks, 20% of the grade; ask how the tutor supports it.</li>"
+    "<li><b>Verifiable record:</b> degree and exam scores, here Faculty of Physics, MSU (2006) and Praxis Physics 5266: 200/200.</li>"
+    "<li><b>Language and format:</b> English or Russian, online, one to one.</li></ul>")] + list(_a(10)["sections"])
+# #11 «Russian EGE physics tutor English-speaking»: таблица «программа → язык → формат» — первым экраном, до списка фактов
+_a(11)["table_first"] = True
+for _n in (1, 2, 3, 4, 5, 6, 8, 9, 10, 11):
+    _a(_n)["updated"] = UPDATED_MISS
+
+
 # ── RU: ЕГЭ по математике (профильный уровень) 2027 — план по месяцам (автопилот 18.11) ──
 # Структура, баллы, уровни, время — только из спецификации КИМ ЕГЭ 2027 «МА-11 СПЕЦ_профильный» (ФИПИ, doc.fipi.ru/ege/
 # demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip, сверено 18.11.2026; разд. 11: «Изменения структуры и содержания
@@ -1204,6 +1278,9 @@ def render_body(a):
     facts = "".join(f"<li>{f}</li>" for f in a["facts"])
     secs = "".join(f'<h2>{h}</h2>\n{b}\n' for h, b in a["sections"])
     tbl = _table_html(a, ru) + "\n      " if a.get("table") else ""
+    tbl_first = ""
+    if a.get("table_first") and tbl:
+        tbl_first, tbl = tbl, ""
     upd = (f'    <p class="muted"><time datetime="{a["updated"]}">'
            f'{"Обновлено" if ru else "Updated"}: {_fmt_date(a["updated"], ru)}</time></p>\n') if a.get("updated") else ""
     who = a.get("who") or (_RU_WHO if ru else _EN_WHO)
@@ -1219,7 +1296,7 @@ def render_body(a):
 <section class="section">
   <div class="wrap">
     <div class="prose reveal" style="max-width:760px">
-      <h2 id="facts">{"Коротко" if ru else "Key facts"}</h2>
+      {tbl_first}<h2 id="facts">{"Коротко" if ru else "Key facts"}</h2>
       <ul>{facts}</ul>
 {tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
@@ -1265,7 +1342,9 @@ def _page(a):
         "og_title": a["title"],
         "crumbs": [("Главная" if ru else "Home", "/"), ("Ответы" if ru else "Answers", _hub_url(a["lang"])), (a["h1"], None)],
         "alternates": _alternates(a),
-        "jsonld": [ld] + ([{"@context": "https://schema.org", "@type": "WebPage", "name": a["title"],
+        "jsonld": [ld] + ([{"@context": "https://schema.org", "@type": "ProfilePage", "name": a["title"],
+                            "url": BASE_URL + f"{HUB}{a['slug']}/", "inLanguage": a["lang"],
+                            "mainEntity": PERSON_REF}] if a["n"] == 7 else []) + ([{"@context": "https://schema.org", "@type": "WebPage", "name": a["title"],
                             "url": BASE_URL + f"{HUB}{a['slug']}/", "inLanguage": a["lang"],
                             "dateModified": a["updated"]}] if a.get("updated") else []),
         "faq_heading": "Частые вопросы" if ru else "Common questions",
