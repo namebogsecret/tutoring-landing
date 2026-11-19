@@ -1312,6 +1312,35 @@ def _razbor_block(a):
     return razbor_block_html(razbor_slug(a), a["lang"])
 
 
+_TASK_TOKENS = {"ib", "igcse", "a-level"}
+
+
+def has_task_block(a):
+    """Блок «разберём вашу задачу» — на страницах-ответах про A-level/IB и IGCSE (по slug страницы)."""
+    slug = "-" + a["slug"] + "-"
+    return any(f"-{t}-" in slug for t in _TASK_TOKENS)
+
+
+def task_block_href(slug):
+    """Ссылка на страницу репетитора с меткой источника = slug страницы-ответа (utm_campaign)."""
+    return f"{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=task-block&amp;utm_campaign={slug}#razbor-zapros"
+
+
+def _task_block(a):
+    """Единый блок «разберём вашу задачу»: ссылка к репетитору несёт slug страницы (data-tutor-src) —
+    assets/site.js шлёт событие cta-to-tutor-answers-<slug>, оно входит в клики_к_репетитору и режется по страницам."""
+    if not has_task_block(a):
+        return ""
+    ru = a["lang"] == "ru"
+    title = "Разберём вашу задачу" if ru else "Let's work through your problem"
+    lead = ("Пришлите задачу или тему, где вы застряли: на странице репетитора — как проходит разбор и с чего начать."
+            if ru else
+            "Send a problem or a topic you are stuck on: the tutor's page (in Russian) shows how a walkthrough goes and how to start.")
+    label = "К репетитору" if ru else "Tutor's page (RU)"
+    return (f'<div class="task-block" id="task-block"><h2>{title}</h2><p>{lead}</p>'
+            f'<p><a class="btn btn-primary btn-lg" data-tutor-src="{a["slug"]}" href="{task_block_href(a["slug"])}">{label} →</a></p></div>\n      ')
+
+
 def _tutor_cta(lang):
     if lang == "ru":
         return (f'<p><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="{TUTOR_PAGE}">'
@@ -1365,7 +1394,7 @@ def render_body(a):
 {tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
-      {_razbor_block(a)}
+      {_task_block(a)}{_razbor_block(a)}
       {_links_block(a['lang'])}
     </div>
   </div>

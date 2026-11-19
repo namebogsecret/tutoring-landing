@@ -1048,3 +1048,53 @@ class TestIgcsePage(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTaskBlock(Base):
+    """Единый блок «разберём вашу задачу» на страницах A-level/IB и IGCSE (автопилот 20.11): ссылка к репетитору несёт
+    slug страницы (data-tutor-src + utm_campaign); site.js шлёт cta-to-tutor-answers-<slug> → клики_к_репетитору по страницам."""
+    BLOCK_RE = re.compile(r'<div class="task-block" id="task-block">.*?</div>', re.S)
+
+    def _targets(self):
+        return [a for a in ALL if AP.has_task_block(a)]
+
+    def test_scope_is_alevel_ib_igcse_only(self):
+        slugs = {a["slug"] for a in self._targets()}
+        self.assertIn("podgotovka-a-level-ib-fizika-onlajn", slugs)
+        self.assertIn("podgotovka-igcse-fizika-matematika-onlajn", slugs)
+        self.assertEqual(len(slugs), 15)
+        for a in ALL:
+            if a["slug"] not in slugs:
+                self.assertNotIn("task-block", self.src[URLS[a["slug"]]], a["slug"])
+                self.assertFalse(re.search(r"(^|-)(ib|igcse|a-level)(-|$)", a["slug"]), a["slug"])
+
+    def test_block_once_per_page_with_page_label(self):
+        for a in self._targets():
+            s = self.src[URLS[a["slug"]]]
+            self.assertEqual(s.count('id="task-block"'), 1, a["slug"])
+            m = self.BLOCK_RE.search(s)
+            self.assertTrue(m, a["slug"])
+            blk = m.group(0)
+            self.assertEqual(blk.count("<a "), 1)
+            self.assertIn('data-tutor-src="%s"' % a["slug"], blk)
+            self.assertIn("/exam-prep-online/?utm_source=answers&amp;utm_medium=task-block&amp;utm_campaign=%s#razbor-zapros" % a["slug"], blk)
+            self.assertIn("Разберём вашу задачу" if a["lang"] == "ru" else "Let's work through your problem", blk)
+
+    def test_block_before_razbor_and_labels_unique(self):
+        labels = set()
+        for a in self._targets():
+            s = self.src[URLS[a["slug"]]]
+            self.assertLess(s.index('id="task-block"'), s.index('data-variant="razbor"'))
+            labels.add(a["slug"])
+        self.assertEqual(len(labels), 15)
+
+    def test_stopwords_in_block(self):
+        for a in self._targets():
+            blk = self.BLOCK_RE.search(self.src[URLS[a["slug"]]]).group(0)
+            for pat in EXTRA_FORBIDDEN:
+                self.assertIsNone(re.search(pat, blk, re.I), (a["slug"], pat))
+
+    def test_site_js_sends_page_event(self):
+        js = open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8").read()
+        self.assertIn('name="to-tutor-answers-"+a.getAttribute("data-tutor-src")', js)
+        self.assertLess(js.index("data-tutor-src"), js.index('name="tutor-page"'))   # раньше общей ветки tutor-page
