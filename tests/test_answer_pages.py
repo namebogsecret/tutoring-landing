@@ -623,11 +623,12 @@ class TestPhysPages(Base):
             self.assertIn("utm_source=tutor.podlevskikh.com", b)
 
     def test_date_table_and_hubs(self):
-        for a in (x for x in self.PH if x["n"] not in (403, 404)):   # 403 — страница ЕГЭ-план (21.11, своя дата); 404 — страница A-level/IB (18.11), своя дата и тесты
+        for a in (x for x in self.PH if x["n"] != 404):   # 404 — страница A-level/IB (18.11), своя дата и тесты
             s = self.src[URLS[a["slug"]]]
             self.assertIn('<table class="spec-table">', s)
-            self.assertIn('<time datetime="2026-11-15">', s)
-            self.assertIn('"dateModified": "2026-11-15"', s)
+            d = "2026-11-21" if a["n"] == 403 else "2026-11-15"   # 403 — страница ЕГЭ-план, обновлена 21.11
+            self.assertIn('<time datetime="%s">' % d, s)
+            self.assertIn('"dateModified": "%s"' % d, s)
             hub = self.src[HUB if a["lang"] == "ru" else HUB_EN]
             self.assertIn('href="%s"' % URLS[a["slug"]], hub)
 
