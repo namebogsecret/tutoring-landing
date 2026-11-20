@@ -890,7 +890,7 @@ class TestALevelIbPage(Base):
         """Таблица плана реально выведена в HTML страницы (а не только лежит в словаре)."""
         self.assertIn('<table class="spec-table">', self.s)
         self.assertIn(AP._ALEVEL_IB_PLAN_TABLE_RU["title"], self.s)
-        self.assertGreaterEqual(self.s.count('<table class="spec-table">'), 2)    # план + формат экзамена
+        self.assertEqual(self.s.count('<table class="spec-table">'), 2)    # план + формат экзамена
         for r in AP._ALEVEL_IB_PLAN_TABLE_RU["rows"]:
             self.assertIn("<td>%s</td>" % r[0], self.s)
         self.assertIn("черновик internal assessment", self.s)               # IA-черновик не в последнем месяце
@@ -1210,13 +1210,13 @@ class TestOlympiadPage(Base):
 
     def test_sections_tables_and_topics(self):
         text = visible_text(self.s)
-        for h in ("Программа", "График по месяцам", "Формат занятий и разбор задач", "Типичные ошибки", "Официальные документы"):
+        for h in ("Программа", "График по месяцам", "Формат занятий и разбор задач", "Типичные ошибки", "Как олимпиадная подготовка связана с поступлением", "Официальные документы"):
             self.assertIn(h, text)
         rows = AP._OLYMP_PLAN_TABLE_RU["rows"]
         self.assertEqual(len(rows), 6)
         for r in rows:
             self.assertTrue(all(c for c in r))
-        self.assertGreaterEqual(self.s.count('<table class="spec-table">'), 2)
+        self.assertEqual(self.s.count('<table class="spec-table">'), 2)
         for must in ("кинематика", "гидростатика", "термодинамика", "электростатика", "магнетизм", "оптика", "колебания",
                      "оценки порядка величины", "размерност", "графики", "нестандартн", "один на один", "онлайн",
                      "месяц 1", "месяц 6", "наблюдения из практики преподавания"):
