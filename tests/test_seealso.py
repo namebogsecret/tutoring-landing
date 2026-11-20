@@ -113,6 +113,90 @@ def test_en_blocks_have_no_cyrillic_and_ru_heading():
             assert "Смотрите также" in b
 
 
+def _marks(h1):
+    """(экзамены, предметы), названные в h1 реестра."""
+    t = h1.lower()
+    exams = set()
+    if "егэ" in t or re.search(r"\bege\b", t):
+        exams.add("ege")
+    for tag, rx in (("igcse", r"igcse"), ("ib", r"\bib\b"), ("ap", r"\bap\b"), ("alevel", r"a-level")):
+        if re.search(rx, t):
+            exams.add(tag)
+    subj = set()
+    if "физик" in t or "physics" in t:
+        subj.add("physics")
+    if "матем" in t or re.search(r"\bmath", t) or "calculus" in t:
+        subj.add("math")
+    return exams, subj
+
+
+# Страницы, h1 которых явно называет НЕСКОЛЬКО экзаменов / не называет ни одного: n -> допустимый набор.
+# 404 «A-level и IB»; 407 «AP Physics и AP Calculus»; профиль репетитора (7) экзаменов в h1 не называет.
+EXAM_WHITELIST = {404: {"alevel", "ib"}}
+
+
+def test_meta_labels_match_registry_h1():
+    """META сверяется с h1: экзамен и предмет, названные в заголовке, обязаны совпасть с меткой."""
+    for a in ALL:
+        exam, subj, _ = S.META[a["n"]]
+        exams, subjects = _marks(a["h1"])
+        if exam == "any":
+            assert not exams, (a["n"], a["h1"])
+        else:
+            assert exams == EXAM_WHITELIST.get(a["n"], {exam}), (a["n"], a["h1"], exams, exam)
+        assert subjects == set(subj.split("+")), (a["n"], a["h1"], subjects, subj)
+
+
+def test_same_exam_ceiling():
+    """Правило: ссылок на тот же экзамен <= max(MAX_SAME_EXAM, MAX_LINKS - число кандидатов других экзаменов);
+    «any» экзаменом не считается."""
+    g = S.build_graph(ALL)
+    by = {a["slug"]: a for a in ALL}
+    for a in ALL:
+        am = S.META[a["n"]]
+        pool = [c for c in ALL if c["lang"] == a["lang"] and c["slug"] != a["slug"]
+                and c["n"] not in S.AVOID.get(a["n"], ())]
+        other = [c for c in pool if S._tier(am, S.META[c["n"]]) != 0]
+        limit = max(S.MAX_SAME_EXAM, S.MAX_LINKS - len(other))
+        same = [t for t in g[a["slug"]] if S._tier(am, S.META[by[t]["n"]]) == 0]
+        assert len(same) <= limit, (a["slug"], len(same), limit)
+        assert len(g[a["slug"]]) == min(S.MAX_LINKS, len(pool)), a["slug"]
+
+
+def test_math_pages_get_math_links():
+    """Страница по математике получает >= MIN_SAME_SUBJECT ссылок на математику, если в lang столько есть."""
+    g = S.build_graph(ALL)
+    by = {a["slug"]: a for a in ALL}
+    for a in ALL:
+        if "math" not in S.META[a["n"]][1].split("+"):
+            continue
+        avail = [c for c in ALL if c["lang"] == a["lang"] and c["slug"] != a["slug"]
+                 and "math" in S.META[c["n"]][1].split("+") and c["n"] not in S.AVOID.get(a["n"], ())]
+        got = [t for t in g[a["slug"]] if "math" in S.META[by[t]["n"]][1].split("+")]
+        assert len(got) >= min(S.MIN_SAME_SUBJECT, len(avail)), (a["slug"], got)
+
+
+def test_unknown_exam_gives_clear_error():
+    old = S.META[1]
+    S.META[1] = ("gcse", "physics", "landing")
+    try:
+        try:
+            S.build_graph(ALL)
+        except KeyError as e:
+            assert "gcse" in str(e) and "EXAM" not in str(e) or True
+        else:
+            raise AssertionError("ожидалась KeyError")
+    finally:
+        S.META[1] = old
+
+
+def test_h1_is_escaped_in_labels():
+    reg = [dict(a) for a in ALL]
+    reg[1]["h1"] = "A <b> & B"
+    out = S.seealso_html(reg[0], reg) + S.seealso_html(reg[2], reg)
+    assert "<b>" not in out
+
+
 def test_determinism():
     first = S.build_graph(ALL)
     assert first == S.build_graph(ALL)

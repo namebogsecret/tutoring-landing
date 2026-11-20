@@ -7,6 +7,7 @@
 
 Запуск:  python3 seealso.py --check   — печатает граф и завершается кодом 1 при нарушении инвариантов.
 """
+import html
 import sys
 
 # n -> (exam, subjects, kind). exam: ege|igcse|ib|alevel|ap|any (профиль репетитора, без экзамена).
@@ -31,10 +32,13 @@ META = {
 # Явные исключения: n -> n, на которые страница НЕ ссылается. Стр. 407 (AP Physics C) по решению проверяющего
 # (tests/test_answer_pages.py, TestApProgramPage) не должна показывать «Physics 1/2» в видимом тексте, а подпись
 # 401 = h1 «AP Physics 1, 2 и C…».
-AVOID = {407: {401}}
+# Стр. 201 (IB Math AA) по тесту TestMathPages не должна содержать дат 2027+ в видимом тексте (нет «дат перехода»),
+# а h1 403/405 содержат «2027».
+AVOID = {407: {401}, 201: {403, 405}}
 
 MIN_LINKS, MAX_LINKS = 2, 4   # цель — 4; нижняя граница инварианта — 2
-MAX_SAME_EXAM = 2            # из 4 ссылок не больше двух на тот же экзамен — остальное уходит в соседние экзамены
+MAX_SAME_EXAM = 2            # из 4 ссылок не больше двух на тот же экзамен (больше — только если других кандидатов не хватает)
+MIN_SAME_SUBJECT = 2         # гарантия предмета: минимум столько ссылок на тот же предмет, если они есть в lang
 EXAM_ORDER = ("any", "ege", "igcse", "ib", "alevel", "ap")   # круг «следующего экзамена»
 MAX_HOPS = 6                 # достижимость: см. обоснование в tests/test_seealso.py
 
@@ -52,12 +56,22 @@ def _tier(a_meta, c_meta):
 
 def build_graph(registry):
     """registry: список записей (поля n, lang, slug). Возвращает {slug: [slug соседей]} в порядке показа.
-    Слоты: до MAX_SAME_EXAM ссылок на тот же экзамен (другой тип страницы — раньше), затем ОДНА ссылка
-    на следующий экзамен по кругу EXAM_ORDER (она гарантирует связность графа), затем добор по приоритету
-    «тот же предмет → остальное». Равные приоритеты решает меньшее число входящих ссылок, затем меньший n."""
+    Слоты по порядку (везде первыми идут страницы того же предмета, затем другой тип страницы, затем меньше
+    входящих ссылок, затем меньший n):
+      1. до MAX_SAME_EXAM ссылок на тот же экзамен И тот же предмет;
+      2. ОДНА ссылка на следующий экзамен по кругу EXAM_ORDER (гарантирует связность графа);
+      3. гарантия предмета: до MIN_SAME_SUBJECT ссылок на КАЖДЫЙ предмет страницы (другие экзамены), если они есть
+         в lang — страница по математике получает математические ссылки, а не только физические;
+      4. тот же экзамен, другой предмет — пока ссылок на тот же экзамен меньше MAX_SAME_EXAM;
+      5. добор из ДРУГИХ экзаменов (тот же предмет раньше), и только затем — из того же экзамена.
+    Точное правило потолка: ссылок на тот же экзамен (кроме «any») не больше MAX_SAME_EXAM, а больше — лишь если
+    иначе не набрать MAX_LINKS, т.е. не больше max(MAX_SAME_EXAM, MAX_LINKS - число кандидатов других экзаменов)."""
     missing = [a["n"] for a in registry if a["n"] not in META]
     if missing:
         raise KeyError("seealso.META: нет записи для n=%s" % missing)
+    unknown = sorted((n, m[0]) for n, m in META.items() if m[0] not in EXAM_ORDER)
+    if unknown:
+        raise KeyError("seealso.META: неизвестный exam %s; допустимы %s" % (unknown, list(EXAM_ORDER)))
     indeg = {a["slug"]: 0 for a in registry}
     graph = {}
     for a in sorted(registry, key=lambda r: (r["lang"], r["n"])):
@@ -67,16 +81,39 @@ def build_graph(registry):
 
         def key(c, am=am):
             cm = META[c["n"]]
-            return (_tier(am, cm), cm[2] == am[2], indeg[c["slug"]], c["n"])
+            return (not (_subj(am) & _subj(cm)), cm[2] == am[2], indeg[c["slug"]], c["n"])
         cands.sort(key=key)
-        picked = [c for c in cands if _tier(am, META[c["n"]]) == 0][:MAX_SAME_EXAM]
+
+        def same_exam(c, am=am):
+            return _tier(am, META[c["n"]]) == 0
+
+        def same_subj(c, am=am):
+            return bool(_subj(am) & _subj(META[c["n"]]))
+        picked = []
+
+        def add(c):
+            if c not in picked and len(picked) < MAX_LINKS:
+                picked.append(c)
+        for c in [c for c in cands if same_exam(c) and same_subj(c)][:MAX_SAME_EXAM]:
+            add(c)
         present = [e for e in EXAM_ORDER if any(META[c["n"]][0] == e for c in cands) or e == am[0]]
         nxt = present[(present.index(am[0]) + 1) % len(present)]
         bridge = [c for c in cands if META[c["n"]][0] == nxt and c not in picked]
         if bridge and nxt != am[0]:
-            picked.append(bridge[0])
-        picked += [c for c in cands if c not in picked]
-        picked = picked[:MAX_LINKS]
+            add(bridge[0])
+        for sub in sorted(_subj(am)):   # для «physics+math» гарантия действует по каждому предмету отдельно
+            for c in [c for c in cands if sub in _subj(META[c["n"]]) and not same_exam(c) and c not in picked]:
+                if sum(sub in _subj(META[p["n"]]) for p in picked) >= MIN_SAME_SUBJECT:
+                    break
+                add(c)
+        for c in [c for c in cands if same_exam(c) and c not in picked]:
+            if sum(same_exam(p) for p in picked) >= MAX_SAME_EXAM:
+                break
+            add(c)
+        for c in [c for c in cands if not same_exam(c)]:
+            add(c)
+        for c in cands:
+            add(c)
         graph[a["slug"]] = [c["slug"] for c in picked]
         for c in picked:
             indeg[c["slug"]] += 1
@@ -121,7 +158,7 @@ def seealso_html(a, registry):
     """HTML блока для записи a (относительные ссылки, подписи — h1 реестра, без атрибутов метрики)."""
     ru = a["lang"] == "ru"
     by_slug = {r["slug"]: r for r in registry}
-    items = "".join('<li><a href="/answers/%s/">%s</a></li>' % (s, by_slug[s]["h1"])
+    items = "".join('<li><a href="/answers/%s/">%s</a></li>' % (s, html.escape(by_slug[s]["h1"]))
                     for s in build_graph(registry)[a["slug"]])
     return ('<div class="seealso" data-seealso>\n<h2 id="seealso">%s</h2>\n<ul>%s</ul>\n</div>'
             % ("Смотрите также" if ru else "See also", items))
