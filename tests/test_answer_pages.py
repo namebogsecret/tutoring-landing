@@ -623,7 +623,7 @@ class TestPhysPages(Base):
             self.assertIn("utm_source=tutor.podlevskikh.com", b)
 
     def test_date_table_and_hubs(self):
-        for a in (x for x in self.PH if x["n"] != 404):   # 404 — страница A-level/IB (18.11), своя дата и тесты
+        for a in (x for x in self.PH if x["n"] not in (403, 404)):   # 403 — страница ЕГЭ-план (21.11, своя дата); 404 — страница A-level/IB (18.11), своя дата и тесты
             s = self.src[URLS[a["slug"]]]
             self.assertIn('<table class="spec-table">', s)
             self.assertIn('<time datetime="2026-11-15">', s)
@@ -1051,7 +1051,7 @@ if __name__ == "__main__":
 
 
 class TestTaskBlock(Base):
-    """Единый блок «разберём вашу задачу» на страницах A-level/IB и IGCSE (автопилот 20.11): ссылка к репетитору несёт
+    """Единый блок «разберём вашу задачу» на страницах A-level/IB, IGCSE и ЕГЭ-физика-план (21.11) (автопилот 20.11): ссылка к репетитору несёт
     slug страницы (data-tutor-src + utm_campaign); site.js шлёт cta-to-tutor-answers-<slug> → клики_к_репетитору по страницам."""
     BLOCK_RE = re.compile(r'<div class="task-block" id="task-block">.*?</div>', re.S)
 
@@ -1062,7 +1062,8 @@ class TestTaskBlock(Base):
         slugs = {a["slug"] for a in self._targets()}
         self.assertIn("podgotovka-a-level-ib-fizika-onlajn", slugs)
         self.assertIn("podgotovka-igcse-fizika-matematika-onlajn", slugs)
-        self.assertEqual(len(slugs), 15)
+        self.assertEqual(len(slugs), 16)
+        self.assertIn("podgotovka-ege-fizika-2027-plan-po-mesyacam", slugs)
         for a in ALL:
             if a["slug"] not in slugs:
                 self.assertNotIn("task-block", self.src[URLS[a["slug"]]], a["slug"])
@@ -1086,7 +1087,7 @@ class TestTaskBlock(Base):
             s = self.src[URLS[a["slug"]]]
             self.assertLess(s.index('id="task-block"'), s.index('data-variant="razbor"'))
             labels.add(a["slug"])
-        self.assertEqual(len(labels), 15)
+        self.assertEqual(len(labels), 16)
 
     def test_stopwords_in_block(self):
         for a in self._targets():
@@ -1098,3 +1099,27 @@ class TestTaskBlock(Base):
         js = open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8").read()
         self.assertIn('name="to-tutor-answers-"+a.getAttribute("data-tutor-src")', js)
         self.assertLess(js.index("data-tutor-src"), js.index('name="tutor-page"'))   # раньше общей ветки tutor-page
+
+
+class TestEgePhysP2Page(Base):
+    """Страница ЕГЭ-физика: план + ошибки второй части + занятия + блок «разберём вашу задачу» (автопилот 21.11)."""
+    SLUG = "podgotovka-ege-fizika-2027-plan-po-mesyacam"
+
+    def test_sections_task_block_and_label(self):
+        s = self.src[URLS[self.SLUG]]
+        for h in ("Типичные ошибки второй части", "Как проходят занятия", "План по месяцам"):
+            self.assertIn(h, s)
+        self.assertEqual(s.count('id="task-block"'), 1)
+        self.assertIn('data-tutor-src="%s"' % self.SLUG, s)
+        self.assertIn("utm_medium=task-block&amp;utm_campaign=%s#razbor-zapros" % self.SLUG, s)
+        self.assertIn("Разберём вашу задачу", s)
+
+    def test_part2_facts_match_spec(self):
+        s = visible_text(self.src[URLS[self.SLUG]])
+        for f in ("№21–26", "17 баллов", "38%", "3 ч 55 мин"):
+            self.assertIn(f, s)
+
+    def test_no_school_cyprus(self):
+        s = visible_text(self.src[URLS[self.SLUG]])
+        for pat in EXTRA_FORBIDDEN:
+            self.assertIsNone(re.search(pat, s, re.I), pat)
