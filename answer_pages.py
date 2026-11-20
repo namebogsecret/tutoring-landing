@@ -666,6 +666,7 @@ QUERIES_PHYS = {
     504: "How to choose an IB Physics HL tutor online: 5 criteria",
     406: "Подготовка к IGCSE по физике и математике онлайн: программа Edexcel и Cambridge, план по месяцам, типичные ошибки, первое занятие",
     404: "Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок",
+    407: "AP Physics и AP Calculus онлайн: программа, график подготовки к майским экзаменам, формат занятий",
 }
 _AP1_URL = "https://apcentral.collegeboard.org/courses/ap-physics-1"
 _AP2_URL = "https://apcentral.collegeboard.org/courses/ap-physics-2"
@@ -1271,6 +1272,88 @@ _IGCSE_ENTRY_RU = {"n": 406, "slug": "podgotovka-igcse-fizika-matematika-onlajn"
 ANSWERS_PHYS.append(_IGCSE_ENTRY_RU)
 
 
+# ── RU: AP Physics C + AP Calculus онлайн: программа, график к майским экзаменам, формат занятий (автопилот 21.11) ──
+# Факты — только из ФАКТЫ-ЭКЗАМЕНЫ-2026-11.md: AP Physics C (College Board, сверено 08.11.2026; формат «с экзамена мая 2027»),
+# AP Calculus BC/AB (WebFetch 15.11.2026; юниты и веса — только BC; юниты AB не подтверждены). Даты экзаменов, шкала 1–5, проходные,
+# предпосылки, кредиты вузов не приводятся. Physics 1/2 как ведущийся курс не заявляются. Формат занятий — по /exam-prep-online/ и ФАКТ-ЛИСТ.
+_APPC_TABLE_RU = {'title': 'Курс → структура экзамена → чем занимаемся',
+ 'head': ['Курс', 'Структура экзамена (College Board)', 'Чем занимаемся'],
+ 'rows': [['AP Physics C: Mechanics (7 юнитов)', 'Формат с экзамена мая 2027: Section I — 42 вопроса с выбором ответа, 85 минут, 50% оценки; Section II — 4 вопроса со свободным ответом (FRQ), 95 минут, 50%. Калькуляторы разрешены', 'Юниты 1–7 по порядку; задачи с выбором ответа на скорость; четыре типа FRQ; письменный разбор решений'],
+          ['AP Physics C: Electricity and Magnetism (6 юнитов, нумерация 8–13)', 'Тот же формат: 42 вопроса за 85 минут и 4 FRQ за 95 минут, по 50%. Калькуляторы разрешены', 'Юниты 8–13 по порядку; графики и цепи; четыре типа FRQ; письменный разбор решений'],
+          ['AP Calculus BC (10 юнитов)', 'Section I — 42 вопроса с выбором ответа, 100 минут, 50% (Part A — 29 вопросов, 62 минуты, без калькулятора; Part B — 13 вопросов, 38 минут, графический калькулятор обязателен); Section II — 6 FRQ, 90 минут, 50% (Part A — 2 вопроса, 30 минут, с калькулятором; Part B — 4 вопроса, 60 минут, без калькулятора)', 'Юниты 1–10 по порядку; отдельная тренировка частей с калькулятором и без; полные работы на времени'],
+          ['AP Calculus AB', 'Страница экзамена AB показывает ту же структуру, что и BC: 42 вопроса за 100 минут и 6 FRQ за 90 минут', 'Тот же каркас занятий; состав юнитов AB сверяем по AP Central в начале подготовки']]}
+
+_APPC_PLAN_TABLE_RU = {'title': 'График подготовки: от ноября к майским экзаменам',
+ 'head': ['Месяц', 'AP Physics C (юниты 1–13)', 'AP Calculus BC (юниты 1–10)', 'Чем проверяем'],
+ 'rows': [['Месяц 1 (ноябрь)', 'Диагностика; Kinematics; Force and Translational Dynamics', 'Диагностика; Limits and Continuity; Differentiation: Definition and Fundamental Properties', 'Диагностика на 20 минут; письменный тест по двум первым юнитам'],
+          ['Месяц 2 (декабрь)', 'Work, Energy, and Power; Linear Momentum', 'Composite, Implicit, and Inverse Functions; Contextual Applications of Differentiation', 'Короткие наборы вопросов с выбором ответа на время'],
+          ['Месяц 3 (январь)', 'Torque and Rotational Dynamics; Energy and Momentum of Rotating Systems', 'Analytical Applications of Differentiation', 'Первые FRQ по теме; письменный разбор каждого решения'],
+          ['Месяц 4 (февраль)', 'Oscillations; Electric Charges, Fields, and Gauss\'s Law', 'Integration and Accumulation of Change', 'Section I целиком на время (механика или математика); разбор ошибок'],
+          ['Месяц 5 (март)', 'Electric Potential; Conductors and Capacitors; Electric Circuits', 'Differential Equations; Applications of Integration', 'FRQ по всем типам; части с калькулятором и без отдельно'],
+          ['Месяц 6 (апрель)', 'Magnetic Fields and Electromagnetism; Electromagnetic Induction', 'Parametric Equations, Polar Coordinates, and Vector-Valued Functions; Infinite Sequences and Series', 'Первая полная работа Section I + Section II по времени'],
+          ['Месяц 7 (май, до экзамена)', 'Повторение слабых юнитов по итогам работ', 'Повторение слабых юнитов по итогам работ', 'Полные работы по времени; финальный разбор ошибок']]}
+
+_APPC_ENTRY_RU = {"n": 407, "slug": "ap-physics-calculus-onlajn-programma-grafik-mayskie-ekzameny", "lang": "ru", "task": True,
+ "title": "AP Physics и AP Calculus онлайн: программа и график к экзаменам",
+ "desc": "AP Physics C и AP Calculus AB/BC онлайн: программа по юнитам, график подготовки с ноября до майских экзаменов, формат занятий 1:1. Физик МГУ.",
+ "h1": "AP Physics и AP Calculus онлайн: программа, график подготовки к майским экзаменам, формат занятий",
+ "answer": "Подготовка к AP Physics C и AP Calculus AB/BC онлайн идёт семь месяцев, с ноября по май: диагностика, затем юниты курса по порядку, с февраля — работы на время, в конце — полные экзамены и разбор ошибок. Занятия один на один на русском или английском; ведёт физик МГУ Владимир Подлевских.",
+ "facts": ["Данные — со страниц College Board (AP Central): сверено в ноябре 2026; точные даты экзаменов — на сайте College Board",
+           "AP Physics C (Mechanics и Electricity and Magnetism): формат с экзамена мая 2027 — Section I: 42 вопроса, 85 минут, 50%; Section II: 4 вопроса со свободным ответом, 95 минут, 50%; калькуляторы разрешены",
+           "AP Calculus AB и BC: Section I — 42 вопроса, 100 минут, 50%; Section II — 6 вопросов со свободным ответом, 90 минут, 50%; College Board сообщает об обновлении числа вопросов и времени начиная с мая 2027 года, поэтому сверяйтесь с AP Central",
+           "Юниты и их вес в разделе с выбором ответа — в разделе «Программа»; состав юнитов AB на этой странице не приводится",
+           "Занятия: онлайн, 1:1, русский, английский или смешанно, под ваш часовой пояс"],
+ "sections": [
+   ("Программа: юниты и их вес", "<p>AP Physics C — два экзамена, Mechanics и Electricity and Magnetism; курс описан College Board как calculus-based, университетского уровня. В Mechanics семь юнитов, в Electricity and Magnetism шесть (нумерация продолжается с 8). Вес — доля раздела с выбором ответа.</p>"
+    "<h3>AP Physics C: Mechanics</h3><ul>"
+    "<li>1 Kinematics — 10–15%</li><li>2 Force and Translational Dynamics — 20–25%</li><li>3 Work, Energy, and Power — 15–25%</li>"
+    "<li>4 Linear Momentum — 10–20%</li><li>5 Torque and Rotational Dynamics — 10–15%</li>"
+    "<li>6 Energy and Momentum of Rotating Systems — 10–15%</li><li>7 Oscillations — 10–15%</li></ul>"
+    "<h3>AP Physics C: Electricity and Magnetism</h3><ul>"
+    "<li>8 Electric Charges, Fields, and Gauss's Law — 15–25%</li><li>9 Electric Potential — 10–20%</li><li>10 Conductors and Capacitors — 10–15%</li>"
+    "<li>11 Electric Circuits — 15–25%</li><li>12 Magnetic Fields and Electromagnetism — 10–20%</li><li>13 Electromagnetic Induction — 10–20%</li></ul>"
+    "<h3>AP Calculus BC</h3><p>Курс описан College Board как вводный курс матанализа университетского уровня; 10 юнитов, вес — доля раздела с выбором ответа:</p><ul>"
+    "<li>1 Limits and Continuity — 5–10%</li><li>2 Differentiation: Definition and Fundamental Properties — 5–10%</li><li>3 Composite, Implicit, and Inverse Functions — 5–10%</li>"
+    "<li>4 Contextual Applications of Differentiation — 5–10%</li><li>5 Analytical Applications of Differentiation — 10–15%</li><li>6 Integration and Accumulation of Change — 15–20%</li>"
+    "<li>7 Differential Equations — 5–10%</li><li>8 Applications of Integration — 5–10%</li>"
+    "<li>9 Parametric Equations, Polar Coordinates, and Vector-Valued Functions — 10–15%</li><li>10 Infinite Sequences and Series — 15–20%</li></ul>"
+    "<p>Для AP Calculus AB состав юнитов на этой странице не приводится: его сверяют по " + _ext(_AP_AB_URL, "странице экзамена AB на AP Central") + ". Полные описания курсов: "
+    + _ext(_APCM_URL, "Physics C: Mechanics") + ", " + _ext(_APCEM_URL, "Physics C: Electricity and Magnetism") + ", " + _ext(_AP_BC_URL, "Calculus BC") + ".</p>"),
+   ("График подготовки к майским экзаменам", "<p>Ниже — типовой каркас на семь месяцев, с ноября до майских экзаменов. Месяцы относительные, без привязки к дням: порядок и темп подстраиваются под диагностику и число занятий в неделю. Точные даты экзаменов — на сайте College Board. Если вы начинаете позже, юниты, где диагностика показала уверенный результат, сжимаются; если нужен один экзамен (например, только Mechanics или только Calculus), берётся один столбец. Юниты Calculus AB сверяются по AP Central, поэтому в столбце Calculus показан порядок BC.</p>"
+    "<table class=\"spec-table\"><thead><tr>" + "".join("<th>%s</th>" % c for c in _APPC_PLAN_TABLE_RU["head"]) + "</tr></thead><tbody>"
+    + "".join("<tr>" + "".join("<td>%s</td>" % c for c in r) + "</tr>" for r in _APPC_PLAN_TABLE_RU["rows"]) + "</tbody></table>"),
+   ("Формат занятий", "<p>Занятия проходят онлайн, один на один, на общей интерактивной доске, на русском, английском или смешанно: объяснения — на языке, который удобнее ученику, а термины и формулировки College Board остаются английскими, как в экзаменационных работах. Мы подстраиваемся под ваш часовой пояс.</p>"
+    "<ul><li><b>Диагностика на 20 минут</b> в начале: уровень, пробелы, язык занятий.</li>"
+    "<li><b>Разбор задач</b> по текущему юниту: сначала вместе, затем самостоятельно с обсуждением.</li>"
+    "<li><b>Письменный разбор FRQ</b>: решение, где ход рассуждений виден по шагам; затем разбор ошибок.</li>"
+    "<li><b>Работы на время</b> в формате экзамена: сначала по разделам, ближе к экзамену — целиком.</li></ul>"),
+   ("Типичные ошибки на FRQ", "<p>Это наблюдения из практики преподавания, а не статистика экзамена.</p><ul>"
+    "<li><b>Physics C: тренируется один тип FRQ.</b> У College Board четыре типа вопросов со свободным ответом: mathematical routines; translation between representations; experimental design and analysis; qualitative/quantitative translation. Если решать только расчётные, остальные типы на экзамене будут впервые.</li>"
+    "<li><b>Physics C: формулы без вывода.</b> Курс calculus-based, поэтому от ученика ждут не подстановки в готовую формулу, а работы с производными и интегралами в физическом контексте.</li>"
+    "<li><b>Calculus: смешаны режимы с калькулятором и без.</b> В Section I и Section II есть части без калькулятора и части с калькулятором: привычка к калькулятору мешает в первых, а в частях с ним нужно знать, что именно считать.</li>"
+    "<li><b>Calculus: решение без записи рассуждений.</b> Ход решения нужно записывать целиком, поэтому на занятиях FRQ разбираются письменно.</li>"
+    "<li><b>Работа без времени.</b> Раздел с выбором ответа и FRQ ограничены по минутам, и темп приходит только с работами на время.</li></ul>"),
+   ("Официальные документы", "<p>Состав курсов, формат экзаменов и даты публикует College Board: " + _ext("https://apcentral.collegeboard.org/", "AP Central") + ". На этой странице даты экзаменов и шкала оценок намеренно не приводятся.</p>"),
+ ],
+ "faq": [
+   ("Как подготовиться к AP Physics C и AP Calculus онлайн?", "Нужны диагностика, график по юнитам от ноября до мая, задачи на время и письменный разбор FRQ. Занятия идут онлайн один на один на русском или английском."),
+   ("Сколько месяцев нужно на подготовку к майским экзаменам?", "В графике на странице семь месяцев, с ноября. Если вы начинаете позже, юниты, где диагностика показала уверенный результат, сжимаются."),
+   ("Из чего состоит экзамен AP Physics C?", "По College Board, формат с экзамена мая 2027: Section I — 42 вопроса с выбором ответа за 85 минут, Section II — 4 вопроса со свободным ответом за 95 минут, по 50% оценки. Калькуляторы разрешены."),
+   ("Из чего состоит экзамен AP Calculus AB и BC?", "Section I — 42 вопроса с выбором ответа за 100 минут, Section II — 6 вопросов со свободным ответом за 90 минут, по 50%. College Board сообщает об обновлении числа вопросов и времени с мая 2027 года: сверяйтесь с AP Central."),
+   ("Какие юниты входят в AP Physics C и AP Calculus BC?", "В Physics C — 13 юнитов: 7 в Mechanics и 6 в Electricity and Magnetism. В Calculus BC — 10 юнитов, от пределов до бесконечных рядов. Полный список с весами — на странице."),
+   ("Как проходят занятия?", "Онлайн, один на один, на общей интерактивной доске, на русском, английском или смешанно. Разбираем задачи по юниту, решаем FRQ письменно и пишем работы на время."),
+   ("Когда экзамены в мае и где посмотреть точные даты?", "Точные даты — на сайте College Board (AP Central). На этой странице они намеренно не приводятся, чтобы не разойтись с официальным расписанием."),
+   ("Какие ошибки часто встречаются на FRQ?", "По наблюдениям из практики преподавания (не статистика экзамена): отработан один тип FRQ из четырёх, смешаны режимы с калькулятором и без, решение записано без рассуждений, нет работ на время."),
+   ("Можно ли готовиться на русском языке?", "Да: объяснения на русском, термины и формулировки College Board остаются английскими; возможен и полностью английский формат."),
+ ],
+ "updated": "2026-11-21",
+ "table": _APPC_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("Подготовка к AP Physics C и AP Calculus онлайн (1:1)", "Индивидуальная онлайн-подготовка к AP Physics C и AP Calculus AB/BC: юниты, график к майским экзаменам, письменный разбор FRQ, работы на время."),
+}
+ANSWERS_PHYS.append(_APPC_ENTRY_RU)
+
+
 def _hub_url(lang):
     return HUB if lang == "ru" else HUB_EN
 
@@ -1316,7 +1399,10 @@ _TASK_TOKENS = {"ib", "igcse", "a-level"}
 
 
 def has_task_block(a):
-    """Блок «разберём вашу задачу» — на страницах-ответах про A-level/IB и IGCSE (по slug страницы)."""
+    """Блок «разберём вашу задачу» — на страницах-ответах про A-level/IB и IGCSE (по slug страницы)
+    и на страницах с явным флагом a["task"] (например, AP Physics + Calculus)."""
+    if a.get("task"):
+        return True
     slug = "-" + a["slug"] + "-"
     return any(f"-{t}-" in slug for t in _TASK_TOKENS)
 
