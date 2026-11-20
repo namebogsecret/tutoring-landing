@@ -11,6 +11,7 @@ FAQ (+ JSON-LD FAQPage из pages_registry/build), перелинковка с p
 Правка текста — здесь; затем `python3 build.py`.
 """
 from pages_registry import course, service, PERSON_REF
+import seealso
 
 BASE_URL = "https://tutor.podlevskikh.com"
 LASTMOD = "2026-11-12"
@@ -1452,6 +1453,11 @@ def _table_html(a, ru):
             f'<tbody>{rows}</tbody>\n</table>')
 
 
+def _seealso_block(a):
+    """«Смотрите также»: соседи из seealso.py (генерируется из реестра; без data-tutor-src/data-cta)."""
+    return seealso.seealso_html(a, ANSWERS + ANSWERS_EN + ANSWERS_MATH + ANSWERS_PHYS)
+
+
 def render_body(a):
     ru = a["lang"] == "ru"
     facts = "".join(f"<li>{f}</li>" for f in a["facts"])
@@ -1481,6 +1487,7 @@ def render_body(a):
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
       {_task_block(a)}{_razbor_block(a)}
+      {_seealso_block(a)}
       {_links_block(a['lang'])}
     </div>
   </div>
