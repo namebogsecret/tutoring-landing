@@ -1510,23 +1510,23 @@ def diag_block_href(slug):
 _DIAG_TEXT = {
     "ru": {
         "title": "Диагностика за 10 минут",
-        "lead": "Пять вопросов по теме этой страницы, у каждого один верный ответ из четырёх. Результат появится после ответа на все пять; это ориентир по базовым темам, а не прогноз экзаменационного балла.",
+        "lead": "Пять вопросов по теме этой страницы, у каждого один верный ответ из четырёх. Ответы можно менять; результат покажет кнопка, когда отвечены все пять; это ориентир по базовым темам, а не прогноз экзаменационного балла.",
         "q": "Вопрос", "score": "Верно: {n} из 5", "right": "верно", "wrong": "неверно",
         "levels": ["Основы пока нетвёрдые: в таком случае полезно спокойно пройти базовые темы по порядку и найти, где именно возникает путаница.",
                    "Основа есть, но часть тем держится нетвёрдо. Следующий шаг — понять, какие именно темы и типы заданий дают ошибки.",
                    "Уверенная база. Дальше важны задачи повышенной сложности, оформление решений и работа со временем."],
         "cta": "Разобрать результат с репетитором",
-        "hint": "Ответьте на все пять вопросов, чтобы увидеть результат.",
+        "hint": "Ответьте на все пять вопросов, затем нажмите кнопку.", "show": "Показать результат",
     },
     "en": {
         "title": "10-minute diagnostic",
-        "lead": "Five questions on the topic of this page, one correct answer out of four each. The result appears once all five are answered; it is a guide to core topics, not a prediction of an exam grade.",
+        "lead": "Five questions on the topic of this page, one correct answer out of four each. Answers can be changed; the button shows the result once all five are answered; it is a guide to core topics, not a prediction of an exam grade.",
         "q": "Question", "score": "Correct: {n} out of 5", "right": "correct", "wrong": "incorrect",
         "levels": ["The basics are not yet secure: it helps to go through the core topics in order and find where exactly the confusion starts.",
                    "There is a base, but some topics are shaky. The next step is to find which topics and question types produce the mistakes.",
                    "A solid base. From here, harder problems, the way solutions are written up and working to time matter most."],
         "cta": "Go through the result with the tutor (page in Russian)",
-        "hint": "Answer all five questions to see your result.",
+        "hint": "Answer all five questions, then press the button.", "show": "Show result",
     },
 }
 
@@ -1553,8 +1553,9 @@ def _diag_block(a):
             f'data-score="{esc(t["score"])}" hidden>'
             f'<h2>{t["title"]}</h2><p>{t["lead"]}</p><ol class="diag-list">{items}</ol>'
             f'<p class="diag-hint muted">{t["hint"]}</p>'
-            f'<div class="diag-result" aria-live="polite" hidden><p class="diag-score"></p>{levels}'
-            f'<p><a class="btn btn-primary btn-lg" data-tutor-src="diag-{a["slug"]}" href="{diag_block_href(a["slug"])}">{t["cta"]} →</a></p></div></div>\n'
+            f'<p class="diag-actions"><button type="button" class="btn btn-primary diag-show" disabled>{t["show"]}</button></p>'
+            f'<div class="diag-result" aria-live="polite"><p class="diag-score"></p>{levels}'
+            f'<p class="diag-cta" hidden><a class="btn btn-primary btn-lg" data-tutor-src="diag-{a["slug"]}" href="{diag_block_href(a["slug"])}">{t["cta"]} →</a></p></div></div>\n'
             f'      <script src="/assets/diag.js" defer></script>\n      ')
 
 

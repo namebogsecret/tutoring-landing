@@ -149,6 +149,24 @@ class TestDiagBlock(unittest.TestCase):
         self.assertLess(js.index("/^diag-/"), js.index('name="to-tutor-answers-"'))
         self.assertLess(js.index('name="to-tutor-answers-"'), js.index('name="tutor-page"'))
 
+    def test_ap_sets_stay_in_course_scope(self):
+        """Ревью: AP Physics 1 без термодинамики/конденсаторов; AP Calculus AB без рядов (BC)."""
+        out_of_scope = re.compile(r"изотерм|конденсатор|isotherm|capacitor|радиус сходимости|radius of convergence|ряд", re.I)
+        for key in ("ap-physics", "ap-calc"):
+            for lang in ("ru", "en"):
+                for q, opts, _ in DS.SETS[key][lang]:
+                    self.assertIsNone(out_of_scope.search(q + " " + " ".join(opts)), (key, lang, q))
+
+    def test_result_shown_by_button_live_region_visible(self):
+        """Результат по кнопке (disabled до 5 ответов); aria-live на изначально видимом контейнере."""
+        for lang, label in (("ru", "Показать результат"), ("en", "Show result")):
+            a = next(x for x in ALL if x["lang"] == lang and DS.diag_set(x["slug"], lang))
+            full = FULL_RE.search(page(a["slug"])).group(0)
+            self.assertRegex(full, r'<button type="button" class="btn btn-primary diag-show" disabled>%s</button>' % label)
+            m = re.search(r'<div class="diag-result"([^>]*)>', full)
+            self.assertIn('aria-live="polite"', m.group(1))
+            self.assertNotIn("hidden", m.group(1))
+
     def test_results_texts_three_levels(self):
         for lang in ("ru", "en"):
             self.assertEqual(len(AP._DIAG_TEXT[lang]["levels"]), 3)
@@ -197,14 +215,18 @@ class TestDiagClickScenario(unittest.TestCase):
         del external[:]                                   # шрифты и аналитика — штатные запросы страницы; считаем только после загрузки
         self.assertTrue(blk.is_visible())
         self.assertFalse(pg.locator(".diag-result").is_visible())
+        self.assertTrue(pg.locator(".diag-show").is_disabled())
         qs = pg.locator(".diag-q")
         self.assertEqual(qs.count(), 5)
         for i in range(5):
             corr = int(qs.nth(i).get_attribute("data-correct"))
             pick = (corr + 1) % 4 if i < wrong else corr
-            if i < 4:
-                self.assertFalse(pg.locator(".diag-result").is_visible())   # результат не раньше пятого ответа
+            self.assertEqual(pg.locator(".diag-score").inner_text(), "")      # результата нет до кнопки
             qs.nth(i).locator("input").nth(pick).check()
+        btn = pg.locator(".diag-show")
+        self.assertTrue(btn.is_enabled())
+        self.assertEqual(pg.locator(".diag-score").inner_text(), "")      # пятый ответ результат сам не показывает
+        btn.click()
         self.assertTrue(pg.locator(".diag-result").is_visible())
         return pg, beacons, external
 
@@ -231,6 +253,28 @@ class TestDiagClickScenario(unittest.TestCase):
         pg, _, _ = self._run("repetitor-ap-calculus-na-russkom", wrong=2)
         self.assertIn("Верно: 3 из 5", pg.locator(".diag-score").inner_text())
         self.assertIn("Основа есть", pg.locator(".diag-level:visible").inner_text())
+        pg.close()
+
+    def test_change_answer_before_show_is_counted(self):
+        """Ответы можно менять до кнопки: последний выбор учитывается, кнопка активна только при всех 5 ответах."""
+        pg = self.browser.new_page()
+        pg.goto("http://127.0.0.1:%d/answers/repetitor-ap-calculus-na-russkom/" % self.port)
+        qs = pg.locator(".diag-q")
+        btn = pg.locator(".diag-show")
+        for i in range(4):
+            qs.nth(i).locator("input").nth(int(qs.nth(i).get_attribute("data-correct"))).check()
+        self.assertTrue(btn.is_disabled())
+        corr = int(qs.nth(4).get_attribute("data-correct"))
+        qs.nth(4).locator("input").nth((corr + 1) % 4).check()      # промах (случайный выбор)
+        self.assertTrue(btn.is_enabled())
+        self.assertEqual(pg.locator(".diag-score").inner_text(), "")
+        self.assertTrue(qs.nth(4).locator("input").first.is_enabled())   # ничего не заблокировано
+        qs.nth(4).locator("input").nth(corr).check()                # исправил
+        qs.nth(0).locator("input").nth((int(qs.nth(0).get_attribute("data-correct")) + 1) % 4).check()  # и испортил первый
+        btn.click()
+        self.assertIn("Верно: 4 из 5", pg.locator(".diag-score").inner_text())
+        self.assertTrue(qs.nth(0).locator("input").first.is_disabled())  # после показа инпуты заблокированы
+        self.assertEqual(pg.locator(".diag-bad").count(), 1)
         pg.close()
 
     def test_without_js_block_hidden(self):

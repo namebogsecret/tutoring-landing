@@ -217,4 +217,6 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
 .diag-mark { font-size: .9em; margin: .3em 0 0; }
 .diag-ok .diag-mark::before { content: "\2713\00a0"; }
 .diag-bad .diag-mark::before { content: "\2717\00a0"; }
+.diag-actions { margin: 1em 0 0; }
+.diag-show[disabled] { opacity: .5; cursor: not-allowed; }
 .diag-score { font-size: 1.25em; font-weight: 700; }

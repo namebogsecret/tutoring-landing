@@ -96,24 +96,24 @@ SETS = {
              ["сила на автомобиль больше", "сила на грузовик больше", "силы равны по модулю", "зависит от скоростей до удара"], 2),  # 3-й закон
             ("Скорость тела массой 2 кг изменилась с 3 м/с до 5 м/с. Какую работу совершила равнодействующая сила?",
              ["4 Дж", "16 Дж", "8 Дж", "34 Дж"], 1),                                             # ½·2·(25−9)=16
-            ("Идеальный газ изотермически расширяется. Что верно?",
-             ["внутренняя энергия растёт", "газ получает теплоту, равную совершённой им работе", "газ отдаёт теплоту", "давление не меняется"], 1),
+            ("Тележка массой 2 кг движется со скоростью 3 м/с и сталкивается с неподвижной тележкой массой 1 кг; после удара тележки сцепляются. Какова их общая скорость?",
+             ["1 м/с", "1,5 м/с", "2 м/с", "3 м/с"], 2),                                          # 2·3/(2+1)=2
             ("Шарик на нити движется по горизонтальной окружности с постоянной по модулю скоростью. Куда направлена равнодействующая сил на шарик?",
              ["по касательной к окружности", "от центра", "вдоль нити к центру окружности", "равнодействующая равна нулю"], 2),
-            ("Плоский конденсатор подключён к батарее. Расстояние между обкладками увеличили вдвое, батарею не отключали. Как изменилась ёмкость?",
-             ["выросла вдвое", "не изменилась", "уменьшилась вдвое", "выросла вчетверо"], 2),    # C~1/d
+            ("Груз на пружине совершает гармонические колебания. Массу груза увеличили в 4 раза, пружина прежняя. Как изменился период колебаний?",
+             ["не изменился", "уменьшился в 2 раза", "вырос в 2 раза", "вырос в 4 раза"], 2),    # T=2π√(m/k)~√m
         ],
         "en": [
             ("A truck collides with a small car. How do the magnitudes of the forces they exert on each other during the collision compare?",
              ["the force on the car is greater", "the forces are equal in magnitude", "the force on the truck is greater", "it depends on the speeds before impact"], 1),
             ("A 2 kg object speeds up from 3 m/s to 5 m/s. How much work does the net force do?",
              ["4 J", "8 J", "34 J", "16 J"], 3),
-            ("An ideal gas expands isothermally. Which statement is true?",
-             ["its internal energy increases", "it absorbs heat equal to the work it does", "it releases heat", "its pressure stays constant"], 1),
+            ("A 2 kg cart moving at 3 m/s collides with a stationary 1 kg cart and the carts stick together. What is their common speed after the collision?",
+             ["2 m/s", "1 m/s", "3 m/s", "1.5 m/s"], 0),                                         # 2·3/(2+1)=2
             ("A ball on a string moves in a horizontal circle at constant speed. What is the direction of the net force on the ball?",
              ["toward the centre of the circle", "tangent to the circle", "away from the centre", "the net force is zero"], 0),
-            ("A parallel-plate capacitor stays connected to a battery. The plate separation is doubled. What happens to the capacitance?",
-             ["it doubles", "it stays the same", "it quadruples", "it halves"], 3),
+            ("A mass on a spring undergoes simple harmonic motion. The mass is increased by a factor of 4 with the same spring. What happens to the period?",
+             ["it doubles", "it stays the same", "it quadruples", "it is halved"], 0),           # T=2π√(m/k)~√m
         ],
     },
     # ── A-level Physics (Edexcel 9PH0) ─────────────────────────────────────
@@ -197,8 +197,8 @@ SETS = {
              ["0", "1", "не существует", "3"], 3),
             ("Вычислите интеграл от 1 до e от (1/x) dx.",
              ["1", "e", "e − 1", "0"], 0),
-            ("Найдите радиус сходимости ряда Σ (x/2)ⁿ, n от 0 до бесконечности.",
-             ["1⁄2", "1", "2", "бесконечность"], 2),
+            ("В какой точке функция f(x) = x² − 4x + 5 достигает минимума?",
+             ["x = −2", "x = 0", "x = 2", "x = 4"], 2),                                          # f'=2x−4=0
             ("Радиус круга растёт со скоростью 2 см/с. С какой скоростью растёт площадь круга в момент, когда r = 3 см?",
              ["6π см²/с", "18π см²/с", "36π см²/с", "12π см²/с"], 3),                              # 2πr·r'=12π
         ],
@@ -209,8 +209,8 @@ SETS = {
              ["3", "1", "0", "it does not exist"], 0),
             ("Evaluate the integral from 1 to e of (1/x) dx.",
              ["e", "e − 1", "0", "1"], 3),
-            ("Find the radius of convergence of the series Σ (x/2)ⁿ, n from 0 to infinity.",
-             ["2", "1⁄2", "1", "infinity"], 0),
+            ("At which x does f(x) = x² − 4x + 5 attain its minimum?",
+             ["x = 4", "x = 2", "x = 0", "x = −2"], 1),                                          # f'=2x−4=0
             ("The radius of a circle grows at 2 cm/s. How fast is the area growing when r = 3 cm?",
              ["6π cm²/s", "12π cm²/s", "18π cm²/s", "36π cm²/s"], 1),
         ],
