@@ -220,3 +220,10 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
 .diag-actions { margin: 1em 0 0; }
 .diag-show[disabled] { opacity: .5; cursor: not-allowed; }
 .diag-score { font-size: 1.25em; font-weight: 700; }
+
+/* Блок «Разобрать задачу из ИИ» (assets/ai-task-paste.js; без JS скрыт атрибутом hidden) и форма #task-intake на /exam-prep-online/ */
+.paste-block, .task-intake { border: 1px solid var(--accent-line, rgba(128,128,128,.3)); border-radius: 14px; padding: 20px 24px; margin: calc(var(--stack, 16px) * 1.4) 0; }
+.paste-block[hidden], .task-intake[hidden] { display: none; }
+.paste-block h2, .task-intake h3 { margin-top: 0; }
+.paste-text, .task-intake textarea { width: 100%; box-sizing: border-box; min-height: 8em; padding: 10px 12px; font: inherit; color: inherit; background: transparent; border: 1px solid var(--accent-line, rgba(128,128,128,.4)); border-radius: 10px; resize: vertical; }
+.task-intake .task-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: .8em 0 0; }
