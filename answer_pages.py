@@ -11,6 +11,8 @@ FAQ (+ JSON-LD FAQPage из pages_registry/build), перелинковка с p
 Правка текста — здесь; затем `python3 build.py`.
 """
 from pages_registry import course, service, PERSON_REF
+from html import escape as html_escape
+from diag_sets import diag_set
 
 BASE_URL = "https://tutor.podlevskikh.com"
 LASTMOD = "2026-11-12"
@@ -1500,6 +1502,62 @@ def _task_block(a):
             f'<p><a class="btn btn-primary btn-lg" data-tutor-src="{a["slug"]}" href="{task_block_href(a["slug"])}">{label} →</a></p></div>\n      ')
 
 
+def diag_block_href(slug):
+    """Ссылка на страницу репетитора с меткой источника блока диагностики: utm_campaign=diag-<slug>."""
+    return f"{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=diag-block&amp;utm_campaign=diag-{slug}#razbor-zapros"
+
+
+_DIAG_TEXT = {
+    "ru": {
+        "title": "Диагностика за 10 минут",
+        "lead": "Пять вопросов по теме этой страницы, у каждого один верный ответ из четырёх. Результат появится после ответа на все пять; это ориентир по базовым темам, а не прогноз экзаменационного балла.",
+        "q": "Вопрос", "score": "Верно: {n} из 5", "right": "верно", "wrong": "неверно",
+        "levels": ["Основы пока нетвёрдые: в таком случае полезно спокойно пройти базовые темы по порядку и найти, где именно возникает путаница.",
+                   "Основа есть, но часть тем держится нетвёрдо. Следующий шаг — понять, какие именно темы и типы заданий дают ошибки.",
+                   "Уверенная база. Дальше важны задачи повышенной сложности, оформление решений и работа со временем."],
+        "cta": "Разобрать результат с репетитором",
+        "hint": "Ответьте на все пять вопросов, чтобы увидеть результат.",
+    },
+    "en": {
+        "title": "10-minute diagnostic",
+        "lead": "Five questions on the topic of this page, one correct answer out of four each. The result appears once all five are answered; it is a guide to core topics, not a prediction of an exam grade.",
+        "q": "Question", "score": "Correct: {n} out of 5", "right": "correct", "wrong": "incorrect",
+        "levels": ["The basics are not yet secure: it helps to go through the core topics in order and find where exactly the confusion starts.",
+                   "There is a base, but some topics are shaky. The next step is to find which topics and question types produce the mistakes.",
+                   "A solid base. From here, harder problems, the way solutions are written up and working to time matter most."],
+        "cta": "Go through the result with the tutor (page in Russian)",
+        "hint": "Answer all five questions to see your result.",
+    },
+}
+
+
+def _diag_block(a):
+    """Блок «Диагностика за 10 минут»: 5 вопросов набора по предмету/экзамену страницы (diag_sets.py), подсчёт на клиенте
+    (assets/diag.js, без запросов наружу). Скрыт (hidden), пока JS не включит его. Кнопка результата ведёт к репетитору:
+    utm_campaign=diag-<slug>, data-tutor-src="diag-<slug>" → assets/site.js шлёт событие cta-to-tutor-diag-<slug>."""
+    found = diag_set(a["slug"], a["lang"])
+    if not found:
+        return ""
+    key, qs = found
+    t = _DIAG_TEXT[a["lang"]]
+    esc = html_escape
+    items = ""
+    for i, (q, opts, correct) in enumerate(qs):
+        radios = "".join(
+            f'<label class="diag-opt"><input type="radio" name="diag-q{i}" value="{j}"> <span>{esc(o)}</span></label>'
+            for j, o in enumerate(opts))
+        items += (f'<li class="diag-q" data-correct="{correct}"><p class="diag-qt">{esc(q)}</p>'
+                  f'<div class="diag-opts">{radios}</div><p class="diag-mark" hidden></p></li>')
+    levels = "".join(f'<p class="diag-level" data-levels="{k}" hidden>{esc(x)}</p>' for k, x in enumerate(t["levels"]))
+    return (f'<div class="diag-block" id="diag-block" data-diag="{key}" data-right="{t["right"]}" data-wrong="{t["wrong"]}" '
+            f'data-score="{esc(t["score"])}" hidden>'
+            f'<h2>{t["title"]}</h2><p>{t["lead"]}</p><ol class="diag-list">{items}</ol>'
+            f'<p class="diag-hint muted">{t["hint"]}</p>'
+            f'<div class="diag-result" aria-live="polite" hidden><p class="diag-score"></p>{levels}'
+            f'<p><a class="btn btn-primary btn-lg" data-tutor-src="diag-{a["slug"]}" href="{diag_block_href(a["slug"])}">{t["cta"]} →</a></p></div></div>\n'
+            f'      <script src="/assets/diag.js" defer></script>\n      ')
+
+
 def _tutor_cta(lang):
     if lang == "ru":
         return (f'<p><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="{TUTOR_PAGE}">'
@@ -1553,7 +1611,7 @@ def render_body(a):
 {tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
-      {_task_block(a)}{_razbor_block(a)}
+      {_diag_block(a)}{_task_block(a)}{_razbor_block(a)}
       {_links_block(a['lang'])}
     </div>
   </div>
