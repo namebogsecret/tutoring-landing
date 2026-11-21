@@ -69,6 +69,7 @@
 - [Подготовка к IGCSE: физика и математика онлайн, план](https://tutor.podlevskikh.com/answers/podgotovka-igcse-fizika-matematika-onlajn/): IGCSE физика (0625) и математика (0580) онлайн: программа Cambridge и Edexcel, план на 6 месяцев, ошибки, первое занятие. Физик МГУ.
 - [AP Physics и AP Calculus онлайн: программа и график к экзаменам](https://tutor.podlevskikh.com/answers/ap-physics-calculus-onlajn-programma-grafik-mayskie-ekzameny/): AP Physics C и AP Calculus AB/BC онлайн: программа по юнитам, график подготовки с ноября до майских экзаменов, формат занятий 1:1. Физик МГУ.
 - [Олимпиадная физика онлайн: задачи и поступление в вузы](https://tutor.podlevskikh.com/answers/olimpiadnaya-fizika-podgotovka-tehnicheskie-vuzy-onlajn/): Олимпиадная физика онлайн: программа по месяцам, разбор нестандартных задач, типичные ошибки, поступление в технические вузы. Физик МГУ, 1:1.
+- [Физика для UCAS, Oxford и Cambridge онлайн: план подготовки](https://tutor.podlevskikh.com/answers/podgotovka-fizika-zarubezhnye-vuzy-ucas-oxford-cambridge-onlajn/): Физика для поступления в вузы Великобритании онлайн: UCAS, ESAT вместо Oxford PAT, Cambridge, интервью, план по месяцам. Физик МГУ, 1:1.
 
 ## Method blog (worked problems & exam technique)
 - [Как читать графики движения: разбор типовых задач кинематики](https://tutor.podlevskikh.com/blog/kinematics-grafiki/): Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами.
