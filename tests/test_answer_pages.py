@@ -1288,7 +1288,7 @@ class TestUcasPage(Base):
         for t in (AP._UCAS_TABLE_RU, AP._UCAS_PLAN_TABLE_RU):
             self.assertTrue(all(c for r in t["rows"] for c in r))
 
-    def test_facts_confirmed_by_primary_sources(self):
+    def test_facts_present_on_page(self):
         t = visible_text(self.s)
         for must in ("ESAT", "прежний PAT не используется", "15 октября", "27 вопросов", "40 минут", "калькулятор",
                      "Mathematics 1", "A*A*A", "776", "ucas.com", "esat-tmua.ac.uk"):
