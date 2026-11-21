@@ -80,17 +80,21 @@ class TestPasteBlock(unittest.TestCase):
         self.assertEqual(s.count("/assets/ai-task-paste.js"), 1)
         form = re.search(r'<form class="task-intake" id="task-intake".*?</form>', s, re.S).group(0)
         self.assertIn('maxlength="2000"', form)
-        self.assertIn('href="mailto:vladimir@podlevskikh.com"', form)
+        self.assertIn('data-mail="vladimir@podlevskikh.com"', form)
+        self.assertRegex(form, r'<form [^>]*\bhidden\b')            # без JS форма скрыта
+        self.assertNotIn("mailto:", form)                              # статического письма без тела нет
+        self.assertIn(".task-intake[hidden]", read("assets", "content.css"))
         self.assertIn('id="task-copy"', form)
         self.assertIsNone(STOP.search(form))
 
     def test_js_keeps_text_out_of_url_and_analytics(self):
         js = read("assets", "ai-task-paste.js")
+        self.assertIn("localStorage", js)
         self.assertIn("sessionStorage", js)
         self.assertIn('"tutorTask"', js)
         for bad in ("location.search +=", "location.search=", "location.href", "location.hash", "history.",
                     "innerHTML", "outerHTML", "insertAdjacentHTML", "fetch(", "XMLHttpRequest", "sendBeacon", "Image(",
-                    "encodeURIComponent(text", "localStorage", "document.cookie", "goatcounter"):
+                    "encodeURIComponent(text", "document.cookie", "goatcounter"):
             self.assertNotIn(bad, js)
 
 
@@ -146,7 +150,7 @@ class TestPasteClickScenario(unittest.TestCase):
         self.assertNotIn("SECRET", url)
         self.assertNotIn("SECRET", pg.evaluate("decodeURIComponent(location.href)"))
         self.assertEqual(pg.locator("#task-intake textarea").input_value(), self.TEXT)
-        self.assertIsNone(pg.evaluate("sessionStorage.getItem('tutorTask')"))
+        self.assertIsNone(pg.evaluate("localStorage.getItem('tutorTask')"))
         self.assertTrue(pg.locator("#task-intake textarea").evaluate("e => document.activeElement === e"))
         href = pg.locator("#task-mail").get_attribute("href")
         self.assertTrue(href.startswith("mailto:vladimir@podlevskikh.com?subject="), href)
@@ -169,7 +173,7 @@ class TestPasteClickScenario(unittest.TestCase):
         pg.wait_for_load_state("networkidle")
         self.assertIn("/exam-prep-online/", pg.url)
         self.assertEqual(pg.locator("#task-intake textarea").input_value(), "")
-        self.assertIsNone(pg.evaluate("sessionStorage.getItem('tutorTask')"))
+        self.assertIsNone(pg.evaluate("localStorage.getItem('tutorTask')"))
         pg.close()
 
     def test_mailto_follows_typing_and_without_js_block_hidden(self):
@@ -184,6 +188,108 @@ class TestPasteClickScenario(unittest.TestCase):
         self.assertFalse(pg.locator("#ai-task-paste").is_visible())
         ctx.close()
 
+
+    def _intake(self, init=None, text=None):
+        ctx = self.browser.new_context()
+        if init:
+            ctx.add_init_script(init)
+        pg = ctx.new_page()
+        pg.goto("http://127.0.0.1:%d/exam-prep-online/" % self.port)
+        return ctx, pg
+
+    def test_ttl_expired_record_ignored_and_removed(self):
+        old = int((__import__("time").time() - 31 * 60) * 1000)
+        init = "if (!localStorage.getItem('seeded')) { localStorage.setItem('seeded','1'); localStorage.setItem('tutorTask', JSON.stringify({text:'OLDTEXT',slug:'x',ts:%d})); }" % old
+        ctx, pg = self._intake(init)
+        self.assertEqual(pg.locator("#task-intake textarea").input_value(), "")
+        self.assertIsNone(pg.evaluate("localStorage.getItem('tutorTask')"))
+        ctx.close()
+        fresh = int((__import__("time").time() - 5 * 60) * 1000)
+        init = "if (!localStorage.getItem('seeded')) { localStorage.setItem('seeded','1'); localStorage.setItem('tutorTask', JSON.stringify({text:'FRESHTEXT',slug:'x',ts:%d})); }" % fresh
+        ctx, pg = self._intake(init)
+        self.assertEqual(pg.locator("#task-intake textarea").input_value(), "FRESHTEXT")
+        self.assertIsNone(pg.evaluate("localStorage.getItem('tutorTask')"))
+        ctx.close()
+
+    def test_empty_click_erases_saved_text(self):
+        slug = "repetitor-fizika-ege-online"
+        pg, _ = self._open(slug)
+        pg.evaluate("localStorage.setItem('tutorTask', JSON.stringify({text:'STALE',slug:'x',ts:Date.now()}))")
+        with pg.expect_navigation():
+            pg.locator('a[data-tutor-src="paste-%s"]' % slug).click()
+        pg.wait_for_load_state("networkidle")
+        self.assertEqual(pg.locator("#task-intake textarea").input_value(), "")
+        pg.close()
+
+    def test_auxclick_middle_button_and_ctrl_click_save(self):
+        slug = "ib-physics-hl-tutor-online"
+        pg, _ = self._open(slug)
+        pg.evaluate("['click','auxclick'].forEach(t => document.querySelector('a[data-tutor-src]').addEventListener(t, e => e.preventDefault()))")
+        pg.locator("#ai-task-paste textarea").fill("MIDDLE")
+        pg.locator('a[data-tutor-src="paste-%s"]' % slug).click(button="middle")
+        self.assertEqual(__import__("json").loads(pg.evaluate("localStorage.getItem('tutorTask')"))["text"], "MIDDLE")
+        pg.evaluate("localStorage.clear()")
+        pg.locator("#ai-task-paste textarea").fill("CTRL")
+        pg.locator('a[data-tutor-src="paste-%s"]' % slug).click(modifiers=["Control"])
+        self.assertEqual(__import__("json").loads(pg.evaluate("localStorage.getItem('tutorTask')"))["text"], "CTRL")
+        pg.evaluate("localStorage.clear()")
+        pg.locator("#ai-task-paste textarea").fill("ENTER")
+        pg.locator('a[data-tutor-src="paste-%s"]' % slug).focus()
+        with pg.expect_navigation():
+            pg.keyboard.press("Enter")
+        pg.wait_for_load_state("networkidle")
+        self.assertEqual(pg.locator("#task-intake textarea").input_value(), "ENTER")      # Enter по ссылке = click
+        pg.close()
+
+    def test_long_cyrillic_text_mailto_limited(self):
+        long = "Решите задачу про ускорение. " * 80
+        long = long[:2000]
+        pg = self.browser.new_page()
+        pg.goto("http://127.0.0.1:%d/exam-prep-online/" % self.port)
+        pg.locator("#task-intake textarea").fill(long)
+        href = pg.locator("#task-mail").get_attribute("href")
+        self.assertLessEqual(len(href), 2100, len(href))
+        body = __import__("urllib.parse").parse.unquote(href.split("&body=")[1])
+        self.assertIn("текст обрезан", body)
+        self.assertTrue(body.startswith("Решите задачу"))
+        self.assertTrue(pg.locator("#task-long").is_visible())
+        self.assertIn("Скопировать", pg.locator("#task-long").text_content())
+        pg.locator("#task-intake textarea").fill("коротко")
+        self.assertFalse(pg.locator("#task-long").is_visible())
+        self.assertNotIn("%D0%BE%D0%B1%D1%80%D0%B5%D0%B7", pg.locator("#task-mail").get_attribute("href"))
+        pg.close()
+
+    def test_form_hidden_in_html_visible_after_js(self):
+        ctx = self.browser.new_context(java_script_enabled=False)
+        pg = ctx.new_page()
+        pg.goto("http://127.0.0.1:%d/exam-prep-online/" % self.port)
+        self.assertFalse(pg.locator("#task-intake").is_visible())
+        ctx.close()
+        pg = self.browser.new_page()
+        pg.goto("http://127.0.0.1:%d/exam-prep-online/" % self.port)
+        self.assertTrue(pg.locator("#task-intake").is_visible())
+        pg.close()
+
+    def test_storage_unavailable_does_not_break(self):
+        init = ("Object.defineProperty(window,'localStorage',{get(){throw new Error('denied')}});"
+                "Object.defineProperty(window,'sessionStorage',{get(){throw new Error('denied')}});")
+        ctx = self.browser.new_context()
+        ctx.add_init_script(init)
+        pg = ctx.new_page()
+        errors = []
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        slug = "ib-physics-hl-tutor-online"
+        pg.goto("http://127.0.0.1:%d/answers/%s/" % (self.port, slug))
+        self.assertTrue(pg.locator("#ai-task-paste").is_visible())
+        pg.locator("#ai-task-paste textarea").fill("TEXT")
+        with pg.expect_navigation():
+            pg.locator('a[data-tutor-src="paste-%s"]' % slug).click()
+        pg.wait_for_load_state("networkidle")
+        self.assertIn("/exam-prep-online/", pg.url)
+        self.assertTrue(pg.locator("#task-intake").is_visible())
+        self.assertEqual(pg.locator("#task-intake textarea").input_value(), "")
+        self.assertEqual(errors, [])
+        ctx.close()
 
 if __name__ == "__main__":
     unittest.main()

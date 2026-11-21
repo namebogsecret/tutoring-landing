@@ -127,14 +127,15 @@ TASK_MAIL = "vladimir@podlevskikh.com"
 
 
 def _task_intake():
-    """Форма «Ваша задача» (assets/ai-task-paste.js): подхватывает текст из sessionStorage.tutorTask, готовит письмо и копирование."""
-    return (f'      <form class="task-intake" id="task-intake" data-mail="{TASK_MAIL}" onsubmit="return false">\n'
+    """Форма «Ваша задача» (assets/ai-task-paste.js): подхватывает текст из localStorage.tutorTask (TTL 30 мин), готовит письмо и копирование."""
+    return (f'      <form class="task-intake" id="task-intake" data-mail="{TASK_MAIL}" hidden onsubmit="return false">\n'
             '        <h3>Ваша задача</h3>\n'
-            '        <p class="muted">Вставьте условие задачи: оно останется в этой вкладке браузера и никуда не отправляется, пока вы сами не отправите письмо.</p>\n'
+            '        <p class="muted">Вставьте условие задачи: оно хранится только в вашем браузере (до 30 минут) и никуда не отправляется, пока вы сами не отправите письмо.</p>\n'
             '        <p><textarea name="task" rows="6" maxlength="2000" aria-label="Ваша задача"></textarea></p>\n'
-            '        <p class="task-actions"><a class="btn btn-primary" id="task-mail" href="mailto:' + TASK_MAIL + '">Отправить по почте</a>'
+            '        <p class="task-actions"><a class="btn btn-primary" id="task-mail">Отправить по почте</a>'
             ' <button type="button" class="btn" id="task-copy">Скопировать текст</button>'
             ' <span class="muted" id="task-copied" role="status" aria-live="polite"></span></p>\n'
+            '        <p class="muted" id="task-long" role="status" hidden></p>\n'
             '      </form>\n'
             '      <script src="/assets/ai-task-paste.js" defer></script>\n')
 
