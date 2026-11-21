@@ -44,7 +44,7 @@ def _graph_from_html():
 
 
 def test_registry_covered_by_table():
-    assert len(ALL) == 34
+    assert len(ALL) == len({a["n"] for a in ALL}) == len(S.META)
     assert [a["n"] for a in ALL if a["n"] not in S.META] == []
     assert set(S.META) == {a["n"] for a in ALL}, "в таблице лишние n"
     for n, (exam, subj, kind) in S.META.items():
@@ -119,11 +119,11 @@ def _marks(h1):
     exams = set()
     if "егэ" in t or re.search(r"\bege\b", t):
         exams.add("ege")
-    for tag, rx in (("igcse", r"igcse"), ("ib", r"\bib\b"), ("ap", r"\bap\b"), ("alevel", r"a-level")):
+    for tag, rx in (("sat", r"\bsat\b"), ("act", r"\bact\b"), ("igcse", r"igcse"), ("ib", r"\bib\b"), ("ap", r"\bap\b"), ("alevel", r"a-level")):
         if re.search(rx, t):
             exams.add(tag)
     subj = set()
-    if "физик" in t or "physics" in t:
+    if "физик" in t or "physics" in t or "science" in t:
         subj.add("physics")
     if "матем" in t or re.search(r"\bmath", t) or "calculus" in t:
         subj.add("math")
@@ -132,7 +132,7 @@ def _marks(h1):
 
 # Страницы, h1 которых явно называет НЕСКОЛЬКО экзаменов / не называет ни одного: n -> допустимый набор.
 # 404 «A-level и IB»; 407 «AP Physics и AP Calculus»; профиль репетитора (7) экзаменов в h1 не называет.
-EXAM_WHITELIST = {404: {"alevel", "ib"}}
+EXAM_WHITELIST = {404: {"alevel", "ib"}, 409: {"sat", "act"}}
 
 
 def test_meta_labels_match_registry_h1():

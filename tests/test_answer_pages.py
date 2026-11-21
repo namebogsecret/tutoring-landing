@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 35)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика + 1 IGCSE физика/математика + 1 AP Physics C + Calculus + 1 олимпиадная физика
+        self.assertEqual(len(set(URLS.values())), 36)  # 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика + 1 IGCSE физика/математика + 1 AP Physics C + Calculus + 1 олимпиадная физика + 1 SAT Math и ACT Science
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -579,7 +579,7 @@ class TestRazbor(Base):
         self.assertIn('if(a.hasAttribute("data-sb-cta")) return;', js)   # без дубля cta-calendly в «Записях»
 
 
-PHYS_QUERIES = ["Олимпиадная физика и подготовка к поступлению в технические вузы онлайн: разбор задач, программа по месяцам, типичные ошибки", "AP Physics и AP Calculus онлайн: программа, график подготовки к майским экзаменам, формат занятий", "Подготовка к IGCSE по физике и математике онлайн: программа Edexcel и Cambridge, план по месяцам, типичные ошибки, первое занятие", "Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок", "Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
+PHYS_QUERIES = ["Подготовка к SAT Math и ACT Science онлайн: что на экзамене, план на 8–12 недель, типичные ошибки", "Олимпиадная физика и подготовка к поступлению в технические вузы онлайн: разбор задач, программа по месяцам, типичные ошибки", "AP Physics и AP Calculus онлайн: программа, график подготовки к майским экзаменам, формат занятий", "Подготовка к IGCSE по физике и математике онлайн: программа Edexcel и Cambridge, план по месяцам, типичные ошибки, первое занятие", "Подготовка к A-level и IB по физике онлайн: программа, план по месяцам, разбор типичных ошибок", "Подготовка к ЕГЭ по физике 2027: план по месяцам", "AP Physics 1, 2 и C: чем отличаются и какой сдавать", "IB Physics HL или SL: чем отличаются и как готовиться",
                 "AP Physics 1 vs 2 vs C: which exam to take", "IB Physics HL vs SL: differences and how to prepare",
                 "How to choose an AP Physics 1 tutor online: 5 criteria", "How to choose an IB Physics HL tutor online: 5 criteria",
                 "Подготовка к ЕГЭ по математике (профиль) 2027: план по месяцам, типичные ошибки, как заниматься онлайн"]
@@ -587,7 +587,7 @@ PHYS_QUERIES = ["Олимпиадная физика и подготовка к 
 
 class TestPhysPages(Base):
     """Четыре страницы AP Physics 1/2/C и IB Physics HL/SL (15.11): запросы, пары, FAQPage, блок разбора с UTM, факты."""
-    PH = [a for a in AP.ANSWERS_PHYS if a["n"] not in (405, 406, 407, 408)]    # 407 (AP+Calculus, 21.11) — в TestApProgramPage; 405 (математика, 18.11) — в TestEgeMathPlanPage
+    PH = [a for a in AP.ANSWERS_PHYS if a["n"] not in (405, 406, 407, 408, 409)]    # 407 (AP+Calculus, 21.11) — в TestApProgramPage; 405 (математика, 18.11) — в TestEgeMathPlanPage
 
     def u(self, n):
         return self.src[URLS[next(a["slug"] for a in self.PH if a["n"] == n)]]
@@ -1062,8 +1062,9 @@ class TestTaskBlock(Base):
         slugs = {a["slug"] for a in self._targets()}
         self.assertIn("podgotovka-a-level-ib-fizika-onlajn", slugs)
         self.assertIn("podgotovka-igcse-fizika-matematika-onlajn", slugs)
-        self.assertEqual(len(slugs), 17)
+        self.assertEqual(len(slugs), 18)
         self.assertIn("ap-physics-calculus-onlajn-programma-grafik-mayskie-ekzameny", slugs)
+        self.assertIn("podgotovka-sat-math-act-science-onlajn", slugs)
         for a in ALL:
             if a["slug"] not in slugs:
                 self.assertNotIn("task-block", self.src[URLS[a["slug"]]], a["slug"])
@@ -1087,7 +1088,7 @@ class TestTaskBlock(Base):
             s = self.src[URLS[a["slug"]]]
             self.assertLess(s.index('id="task-block"'), s.index('data-variant="razbor"'))
             labels.add(a["slug"])
-        self.assertEqual(len(labels), 17)
+        self.assertEqual(len(labels), 18)
 
     def test_stopwords_in_block(self):
         for a in self._targets():
@@ -1229,6 +1230,76 @@ class TestOlympiadPage(Base):
                     r"\d{1,2}[./]\d{1,2}[./]20\d\d", r"проходн\w+", r"\d+\s*баллов", r"квот\w* \d", r"\d+\s*%", r"призёр\w* \w+ \d"):
             self.assertNotRegex(text, bad)
         self.assertIn("на сайте организатора", text)
+
+    def test_task_block_by_flag_with_slug_source(self):
+        self.assertTrue(AP.has_task_block(self.entry))
+        self.assertEqual(self.s.count('id="task-block"'), 1)
+        self.assertIn('data-tutor-src="%s"' % self.SLUG, self.s)
+        self.assertIn("utm_campaign=%s#razbor-zapros" % self.SLUG, self.s)
+        self.assertIn("не обещает", visible_text(self.s))
+
+    def test_stop_words_no_geo_no_employers_no_prices(self):
+        s = strip_razbor(self.s).replace('data-cta="tutor-page"', "")
+        for pat in FORBIDDEN + EXTRA_FORBIDDEN + [r"цен[аыуе]\b", r"₽|\bруб(л|\.)|€", r"\bпакет", r"I Can|Nyberg"]:
+            self.assertIsNone(re.search(pat, s, re.I), pat)
+
+    def test_in_hub_sitemap_llms(self):
+        u = "/answers/%s/" % self.SLUG
+        self.assertIn(u, self.src[HUB])
+        self.assertIn(BASE + u, open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read())
+        llms = open(os.path.join(ROOT, "llms.txt"), encoding="utf-8").read()
+        self.assertTrue(any(BASE + u in l for l in llms.splitlines()))
+
+
+class TestSatActPage(Base):
+    """Страница «Подготовка к SAT Math и ACT Science онлайн» (автопилот 21.11, n=409): формат по College Board/ACT,
+    без дат/баллов/цен, без работодателей и гео, ошибки = наблюдения, task-block по флагу, FAQPage = видимый FAQ."""
+    SLUG = "podgotovka-sat-math-act-science-onlajn"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.s = cls.src[URLS[cls.SLUG]]
+        cls.entry = next(a for a in AP.ANSWERS_PHYS if a["slug"] == cls.SLUG)
+
+    def test_page_and_direct_answer(self):
+        self.assertEqual(self.entry["n"], 409)
+        self.assertEqual(len(re.findall(r"<h1[ >]", self.s)), 1)
+        self.assertLessEqual(len(self.entry["answer"].split()), 50)
+        self.assertIn(self.entry["answer"], self.s)
+        self.assertIn(AP.QUERIES_PHYS[409], self.s)
+
+    def test_faqpage_jsonld_matches_visible(self):
+        faq = [b for b in jsonld_blocks(self.s) if b.get("@type") == "FAQPage"]
+        self.assertEqual(len(faq), 1)
+        self.assertGreaterEqual(len(self.entry["faq"]), 6)
+        self.assertEqual(len(faq[0]["mainEntity"]), len(self.entry["faq"]))
+        vis = self.s.replace("&#x27;", "'")
+        for q, (qq, aa) in zip(faq[0]["mainEntity"], self.entry["faq"]):
+            self.assertEqual((q["name"], q["acceptedAnswer"]["text"]), (qq, aa))
+            self.assertIn(htmllib.escape(qq, quote=False), vis)
+            self.assertIn(htmllib.escape(aa, quote=False), vis)
+
+    def test_sections_tables_and_facts(self):
+        text = visible_text(self.s)
+        for h in ("Что на экзамене", "План на 8–12 недель", "Формат занятий и разбор задач", "Типичные ошибки", "Официальные источники"):
+            self.assertIn(h, text)
+        rows = AP._SATACT_PLAN_TABLE_RU["rows"]
+        self.assertEqual(len(rows), 6)
+        for r in rows:
+            self.assertTrue(all(c for c in r))
+        self.assertEqual(self.s.count('<table class="spec-table">'), 2)
+        for must in ("44 задания", "35 минут", "70 минут", "40 заданий", "40 минут", "необязательн", "второй модуль",
+                     "один на один", "онлайн", "наблюдения из практики преподавания"):
+            self.assertIn(must, text.lower())
+
+    def test_no_invented_facts(self):
+        main = self.s[self.s.index('<main id="main">'):self.s.index("</main>")]
+        text = visible_text(main).replace("Обновлено: 21 ноября 2026", "")
+        for bad in (r"\d{1,2}\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)",
+                    r"\d{1,2}[./]\d{1,2}[./]20\d\d", r"проходн\w+", r"\d+\s*баллов", r"\d+\s*%", r"desmos", r"калькулятор"):
+            self.assertNotRegex(text, bad)
+        self.assertIn("на сайтах College Board и ACT", text)
 
     def test_task_block_by_flag_with_slug_source(self):
         self.assertTrue(AP.has_task_block(self.entry))

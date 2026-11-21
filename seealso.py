@@ -10,7 +10,7 @@
 import html
 import sys
 
-# n -> (exam, subjects, kind). exam: ege|igcse|ib|alevel|ap|any (профиль репетитора, без экзамена).
+# n -> (exam, subjects, kind). exam: ege|igcse|ib|alevel|ap|sat|any (профиль репетитора, без экзамена).
 # subjects — через «+»; kind: landing (страница под запрос «репетитор…») | guide (сравнение/план/«как выбрать»).
 META = {
     1: ("ege", "physics", "landing"), 2: ("ege", "physics", "landing"), 3: ("ege", "physics", "landing"),
@@ -27,6 +27,8 @@ META = {
     503: ("ap", "physics", "guide"), 504: ("ib", "physics", "guide"),
     405: ("ege", "math", "guide"), 406: ("igcse", "physics+math", "guide"),
     407: ("ap", "physics+math", "guide"),
+    408: ("any", "physics", "guide"),            # олимпиадная физика + технические вузы: конкретного экзамена нет
+    409: ("sat", "physics+math", "guide"),       # SAT Math + ACT Science (естествознание → physics); оба экзамена в одном кластере «sat»
 }
 
 # Явные исключения: n -> n, на которые страница НЕ ссылается. Стр. 407 (AP Physics C) по решению проверяющего
@@ -39,7 +41,7 @@ AVOID = {407: {401}, 201: {403, 405}}
 MIN_LINKS, MAX_LINKS = 2, 4   # цель — 4; нижняя граница инварианта — 2
 MAX_SAME_EXAM = 2            # из 4 ссылок не больше двух на тот же экзамен (больше — только если других кандидатов не хватает)
 MIN_SAME_SUBJECT = 2         # гарантия предмета: минимум столько ссылок на тот же предмет, если они есть в lang
-EXAM_ORDER = ("any", "ege", "igcse", "ib", "alevel", "ap")   # круг «следующего экзамена»
+EXAM_ORDER = ("any", "ege", "igcse", "ib", "alevel", "ap", "sat")   # круг «следующего экзамена»
 MAX_HOPS = 6                 # достижимость: см. обоснование в tests/test_seealso.py
 
 
