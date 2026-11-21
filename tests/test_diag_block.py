@@ -33,6 +33,8 @@ def expected_key(a):
     s = a["slug"]
     if "olimpiad" in s:
         return "olympiad-physics"
+    if "ucas" in s:
+        return "alevel-physics"
     if "vladimir-podlevskikh" in s:
         return "physics-general"
     if "a-level" in s:
@@ -50,7 +52,7 @@ def expected_key(a):
 
 class TestDiagBlock(unittest.TestCase):
     def test_every_answer_page_has_one_block(self):
-        self.assertEqual(len(ALL), 35)
+        self.assertEqual(len(ALL), 36)
         for a in ALL:
             s = page(a["slug"])
             self.assertEqual(s.count('id="diag-block"'), 1, a["slug"])

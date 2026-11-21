@@ -280,6 +280,8 @@ DIAG_SET_BY_SLUG = {
     "ap-physics-tutor-russian-speaking": "ap-physics", "ap-physics-1-2-c-chem-otlichayutsya": "ap-physics",
     "ap-physics-1-vs-2-vs-c-which-to-take": "ap-physics", "how-to-choose-ap-physics-1-tutor": "ap-physics",
     "ap-physics-calculus-onlajn-programma-grafik-mayskie-ekzameny": "ap-physics",
+    # UCAS/Oxford/Cambridge: ближайший набор — A-level/IB физика
+    "podgotovka-fizika-zarubezhnye-vuzy-ucas-oxford-cambridge-onlajn": "alevel-physics",
     # олимпиадная
     "olimpiadnaya-fizika-podgotovka-tehnicheskie-vuzy-onlajn": "olympiad-physics",
     # страница-профиль репетитора
