@@ -223,16 +223,23 @@ class TestPasteClickScenario(unittest.TestCase):
 
     def test_auxclick_middle_button_and_ctrl_click_save(self):
         slug = "ib-physics-hl-tutor-online"
-        pg, _ = self._open(slug)
+        ctx = self.browser.new_context()
+        ctx.route("**/exam-prep-online/**", lambda route: route.abort())      # вкладки-приёмники не должны забрать запись
+        pg = ctx.new_page()
+        pg.goto("http://127.0.0.1:%d/answers/%s/" % (self.port, slug))
+        pg.wait_for_load_state("networkidle")
         pg.evaluate("['click','auxclick'].forEach(t => document.querySelector('a[data-tutor-src]').addEventListener(t, e => e.preventDefault()))")
         pg.locator("#ai-task-paste textarea").fill("MIDDLE")
         pg.locator('a[data-tutor-src="paste-%s"]' % slug).click(button="middle")
+        pg.wait_for_function("localStorage.getItem('tutorTask') !== null", timeout=3000)
         self.assertEqual(__import__("json").loads(pg.evaluate("localStorage.getItem('tutorTask')"))["text"], "MIDDLE")
         pg.evaluate("localStorage.clear()")
         pg.locator("#ai-task-paste textarea").fill("CTRL")
         pg.locator('a[data-tutor-src="paste-%s"]' % slug).click(modifiers=["Control"])
+        pg.wait_for_function("localStorage.getItem('tutorTask') !== null", timeout=3000)
         self.assertEqual(__import__("json").loads(pg.evaluate("localStorage.getItem('tutorTask')"))["text"], "CTRL")
-        pg.evaluate("localStorage.clear()")
+        ctx.close()
+        pg, _ = self._open(slug)
         pg.locator("#ai-task-paste textarea").fill("ENTER")
         pg.locator('a[data-tutor-src="paste-%s"]' % slug).focus()
         with pg.expect_navigation():
