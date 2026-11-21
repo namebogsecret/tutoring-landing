@@ -146,9 +146,9 @@ class TestDiagBlock(unittest.TestCase):
     def test_site_js_sends_diag_event(self):
         js = open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8").read()
         self.assertIn('name="to-tutor-"+a.getAttribute("data-tutor-src")', js)
-        self.assertIn('/^diag-/', js)
+        self.assertIn('/^(diag|paste)-/', js)
         self.assertIn('name="to-tutor-answers-"+a.getAttribute("data-tutor-src")', js)   # метка answers-<slug> не тронута
-        self.assertLess(js.index("/^diag-/"), js.index('name="to-tutor-answers-"'))
+        self.assertLess(js.index('/^(diag|paste)-/'), js.index('name="to-tutor-answers-"'))
         self.assertLess(js.index('name="to-tutor-answers-"'), js.index('name="tutor-page"'))
 
     def test_ap_sets_stay_in_course_scope(self):

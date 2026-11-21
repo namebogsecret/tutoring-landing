@@ -1502,6 +1502,32 @@ def _task_block(a):
             f'<p><a class="btn btn-primary btn-lg" data-tutor-src="{a["slug"]}" href="{task_block_href(a["slug"])}">{label} →</a></p></div>\n      ')
 
 
+def paste_block_href(slug):
+    """Ссылка на страницу репетитора с меткой блока «задача из ИИ»: utm_medium=ai-task-paste, utm_campaign=paste-<slug>."""
+    return f"{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=ai-task-paste&amp;utm_campaign=paste-{slug}#razbor-zapros"
+
+
+_PASTE_TEXT = {
+    "ru": ("Разобрать задачу из ИИ", "Вставьте условие задачи, с которой не справился ИИ-чат или в решении которой вы сомневаетесь. "
+           "Текст останется только в этой вкладке браузера: в адрес страницы и в статистику он не попадает.",
+           "Условие задачи", "К репетитору"),
+    "en": ("Work through a problem from an AI chat", "Paste the statement of a problem an AI chat could not solve, or whose solution you doubt. "
+           "The text stays in this browser tab only: it does not go into the page address or the statistics.",
+           "Problem statement", "To the tutor (page in Russian)"),
+}
+
+
+def _paste_block(a):
+    """Блок «Разобрать задачу из ИИ»: textarea (maxlength 2000) + ссылка к репетитору. assets/ai-task-paste.js кладёт текст
+    в sessionStorage (ключ tutorTask), а не в URL; на /exam-prep-online/ его подхватывает форма #task-intake.
+    Скрыт (hidden), пока JS не включит. data-tutor-src="paste-<slug>" → site.js шлёт cta-to-tutor-paste-<slug> (без текста)."""
+    title, lead, label, cta = _PASTE_TEXT[a["lang"]]
+    return (f'<div class="paste-block" id="ai-task-paste" data-slug="{a["slug"]}" hidden><h2>{title}</h2><p>{lead}</p>'
+            f'<p><textarea class="paste-text" rows="6" maxlength="2000" aria-label="{label}"></textarea></p>'
+            f'<p><a class="btn btn-primary btn-lg" data-tutor-src="paste-{a["slug"]}" href="{paste_block_href(a["slug"])}">{cta} →</a></p></div>\n'
+            f'      <script src="/assets/ai-task-paste.js" defer></script>\n      ')
+
+
 def diag_block_href(slug):
     """Ссылка на страницу репетитора с меткой источника блока диагностики: utm_campaign=diag-<slug>."""
     return f"{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=diag-block&amp;utm_campaign=diag-{slug}#razbor-zapros"
@@ -1612,7 +1638,7 @@ def render_body(a):
 {tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
-      {_diag_block(a)}{_task_block(a)}{_razbor_block(a)}
+      {_diag_block(a)}{_paste_block(a)}{_task_block(a)}{_razbor_block(a)}
       {_links_block(a['lang'])}
     </div>
   </div>
