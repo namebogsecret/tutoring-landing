@@ -15,9 +15,13 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LD_RE = re.compile(r'<script\s+type="application/ld\+json"\s*>(.*?)</script>', re.S)
+LD_RE = re.compile(r'<script\b[^>]*\btype\s*=\s*["\']?application/ld\+json["\']?[^>]*>(.*?)</script>', re.I | re.S)
 FAQ_VISIBLE_RE = re.compile(r'class="[^"]*\bfaq-(?:list|item)\b[^"]*"|id="faq"')
-SCHEMA_CTX = ("https://schema.org", "http://schema.org", "https://schema.org/", "http://schema.org/")
+COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+HIDDEN_RE = re.compile(
+    r"<(\w+)\b[^>]*(?:\shidden(?=[\s>/=])|aria-hidden\s*=\s*[\"']?true|"
+    r"style\s*=\s*[\"'][^\"']*display\s*:\s*none)[^>]*>.*?</\1\s*>", re.I | re.S)
+SCHEMA_CTX = ("https://schema.org", "http://schema.org")
 
 
 def _types(node):
@@ -25,6 +29,37 @@ def _types(node):
     if t is None:
         return []
     return [str(x) for x in t] if isinstance(t, list) else [str(t)]
+
+
+def ctx_ok(ctx):
+    """@context: строка, список или объект (@vocab и пр.), где встречается schema.org."""
+    if isinstance(ctx, str):
+        return ctx.strip().rstrip("/") in SCHEMA_CTX
+    if isinstance(ctx, list):
+        return any(ctx_ok(x) for x in ctx)
+    if isinstance(ctx, dict):
+        return any(ctx_ok(x) for x in ctx.values())
+    return False
+
+
+def walk_nodes(obj):
+    """Все dict-узлы на любой глубине (mainEntity, @graph, вложенные списки)."""
+    if isinstance(obj, dict):
+        yield obj
+        for v in obj.values():
+            yield from walk_nodes(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            yield from walk_nodes(v)
+
+
+def visible_faq(html):
+    """FAQ-маркер вне HTML-комментариев и hidden-секций."""
+    h = COMMENT_RE.sub("", html)
+    prev = None
+    while prev != h:  # вложенные hidden
+        prev, h = h, HIDDEN_RE.sub("", h)
+    return bool(FAQ_VISIBLE_RE.search(h))
 
 
 def top_nodes(block):
@@ -45,6 +80,9 @@ def check_html(html):
     """Список строк-нарушений для одного HTML."""
     errs = []
     raws = [r.strip() for r in LD_RE.findall(html)]
+    mentions = html.lower().count("application/ld+json")
+    if mentions != len(raws):
+        errs.append("упоминаний application/ld+json %d, распознанных script-блоков %d" % (mentions, len(raws)))
     parsed, nodes = [], []
     for i, raw in enumerate(raws, 1):
         try:
@@ -54,20 +92,23 @@ def check_html(html):
             continue
         parsed.append(b)
         ctxs = [b] if isinstance(b, dict) else [x for x in b if isinstance(x, dict)] if isinstance(b, list) else []
-        if not ctxs or any(c.get("@context") not in SCHEMA_CTX for c in ctxs):
+        if not ctxs or any(not ctx_ok(c.get("@context")) for c in ctxs):
             errs.append("блок #%d: нет @context schema.org" % i)
         nodes.extend(top_nodes(b))
     canon = [json.dumps(b, sort_keys=True, ensure_ascii=False) for b in parsed]
     for c in sorted({c for c in canon if canon.count(c) > 1}):
         errs.append("дубль идентичных script-блоков x%d: %s" % (canon.count(c), c[:60]))
     all_types = [t for n in nodes for t in _types(n)]
-    for t in sorted({t for t in all_types if all_types.count(t) > 1}):
+    for t in sorted({t for t in all_types if all_types.count(t) > 1 and t != "FAQPage"}):
         errs.append("повтор top-level @type %s x%d" % (t, all_types.count(t)))
     ids = [n["@id"] for n in nodes if isinstance(n.get("@id"), str)]
     for i in sorted({i for i in ids if ids.count(i) > 1}):
         errs.append("повтор top-level @id %s x%d" % (i, ids.count(i)))
-    has_faq_ld = "FAQPage" in all_types
-    faq_visible = bool(FAQ_VISIBLE_RE.search(html))
+    faq_n = sum(t == "FAQPage" for b in parsed for n in walk_nodes(b) for t in _types(n))
+    if faq_n > 1:
+        errs.append("повтор FAQPage x%d (включая вложенные)" % faq_n)
+    has_faq_ld = faq_n > 0
+    faq_visible = visible_faq(html)
     if faq_visible and not has_faq_ld:
         errs.append("FAQ виден на странице, но FAQPage нет")
     if has_faq_ld and not faq_visible:
