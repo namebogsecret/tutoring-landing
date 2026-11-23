@@ -30,6 +30,9 @@ META = {
     # 408 (олимпиадная физика, техвузы) и 410 (UCAS/Oxford/Cambridge): h1 не называет экзамен → any
     # (тест test_meta_labels_match_registry_h1 сверяет метку с h1).
     408: ("any", "physics", "guide"), 410: ("any", "physics", "guide"),
+    # 411/412: AP (математика); 413 (ОГЭ) и 414 (GCSE): h1 не называет ни один из экзаменов EXAM_ORDER → any
+    411: ("ap", "math", "landing"), 412: ("ap", "math", "landing"),
+    413: ("any", "physics", "landing"), 414: ("any", "physics", "landing"),
 }
 
 # Явные исключения: n -> n, на которые страница НЕ ссылается. Стр. 407 (AP Physics C) по решению проверяющего

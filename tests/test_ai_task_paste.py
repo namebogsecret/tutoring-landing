@@ -32,7 +32,7 @@ def page(slug):
 
 class TestPasteBlock(unittest.TestCase):
     def test_every_answer_page_has_one_block(self):
-        self.assertEqual(len(ALL), 36)
+        self.assertEqual(len(ALL), 40)
         for a in ALL:
             s = page(a["slug"])
             self.assertEqual(s.count('id="ai-task-paste"'), 1, a["slug"])
