@@ -253,9 +253,11 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
 <link rel="stylesheet" href="/assets/site.css" />
 <link rel="stylesheet" href="/assets/content.css" />
+<style>.reveal{opacity:1;transform:none;transition:none}.top-cta{display:none}@media(max-width:680px){.top-cta{display:inline-flex;margin-left:auto;white-space:nowrap}.nav-inner{gap:10px}.brand-name{font-size:13px}}</style>
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 </head>
 <body>
@@ -270,6 +272,7 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
       <a href="/#method">Method</a>
       <a href="/blog/">Blog</a>
     </nav>
+    <a class="btn btn-primary btn-sm top-cta" data-tutor-src="top-a-level-further-maths-edexcel-9fm0-tutor-online" href="/exam-prep-online/?utm_source=answers&amp;utm_medium=top-cta&amp;utm_campaign=top-a-level-further-maths-edexcel-9fm0-tutor-online#razbor-zapros">К репетитору →</a>
   </div>
 </header>
 
@@ -409,7 +412,7 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
   </div>
 </footer>
 
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js" defer></script>
 
 <!-- RR-SNIPPET: session-replay (клики / время на странице). Неблокирующий: грузится
      после window.load, ошибки проглатываются, готовность страницы от него не зависит.
