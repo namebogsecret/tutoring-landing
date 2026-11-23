@@ -33,6 +33,9 @@ META = {
     # 411/412: AP (математика); 413 (ОГЭ) и 414 (GCSE): h1 не называет ни один из экзаменов EXAM_ORDER → any
     411: ("ap", "math", "landing"), 412: ("ap", "math", "landing"),
     413: ("any", "physics", "landing"), 414: ("any", "physics", "landing"),
+    # 415/418: A-level (математика); 416 (STEP): h1 экзамен из EXAM_ORDER не называет → any; 417: AP (математика)
+    415: ("alevel", "math", "landing"), 416: ("any", "math", "landing"),
+    417: ("ap", "math", "landing"), 418: ("alevel", "math", "landing"),
 }
 
 # Явные исключения: n -> n, на которые страница НЕ ссылается. Стр. 407 (AP Physics C) по решению проверяющего

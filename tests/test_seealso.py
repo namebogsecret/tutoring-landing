@@ -44,7 +44,7 @@ def _graph_from_html():
 
 
 def test_registry_covered_by_table():
-    assert len(ALL) == 40
+    assert len(ALL) == 44
     assert [a["n"] for a in ALL if a["n"] not in S.META] == []
     assert set(S.META) == {a["n"] for a in ALL}, "в таблице лишние n"
     for n, (exam, subj, kind) in S.META.items():

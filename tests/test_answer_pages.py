@@ -51,7 +51,7 @@ class TestRegistry(unittest.TestCase):
     def test_one_page_per_failed_query(self):
         # 11 запросов замера 11.11 без «Кипр»-запроса (#12, запрещён решением 06.11)
         self.assertEqual(sorted(a["n"] for a in AP.ANSWERS), list(range(1, 12)))
-        self.assertEqual(len(set(URLS.values())), 40)  # 4 страницы 24.11 (AP Calculus AB, AP Statistics, ОГЭ физика, GCSE Physics) + 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика + 1 IGCSE физика/математика + 1 AP Physics C + Calculus + 1 олимпиадная физика + 1 UCAS/Oxford/Cambridge
+        self.assertEqual(len(set(URLS.values())), 44)  # 4 страницы 24.11 (AP Calculus AB, AP Statistics, ОГЭ физика, GCSE Physics) + 11 + 6 EN-пар + 6 математических + 4 AP/IB Physics + 1 план ЕГЭ физика + 2 «как выбрать» + 1 A-level/IB + 1 план ЕГЭ математика + 1 IGCSE физика/математика + 1 AP Physics C + Calculus + 1 олимпиадная физика + 1 UCAS/Oxford/Cambridge
 
     def test_queries_match_measurement_file(self):
         path = os.path.expanduser("~/воронка-репетитор/ЗАМЕРЫ-ИИ.md")
@@ -418,7 +418,7 @@ class TestMathPages(Base):
     def test_six_queries_covered(self):
         self.assertEqual(len(MATH_RU), 3)
         self.assertEqual(len(MATH_EN), 3)
-        self.assertEqual(sorted(v for k, v in AP.QUERIES_MATH.items() if k not in (411, 412)), sorted(MATH_QUERIES))
+        self.assertEqual(sorted(v for k, v in AP.QUERIES_MATH.items() if k not in (411, 412, 415, 416, 417, 418)), sorted(MATH_QUERIES))
         for a in MATH_OLD:
             self.assertIn(AP.QUERIES_MATH[a["n"]], self.src[URLS[a["slug"]]], a["slug"])   # запрос в eyebrow
 
@@ -1063,7 +1063,7 @@ class TestTaskBlock(Base):
         slugs = {a["slug"] for a in self._targets()}
         self.assertIn("podgotovka-a-level-ib-fizika-onlajn", slugs)
         self.assertIn("podgotovka-igcse-fizika-matematika-onlajn", slugs)
-        self.assertEqual(len(slugs), 22)
+        self.assertEqual(len(slugs), 26)
         self.assertIn("ap-physics-calculus-onlajn-programma-grafik-mayskie-ekzameny", slugs)
         for a in ALL:
             if a["slug"] not in slugs:
@@ -1088,7 +1088,7 @@ class TestTaskBlock(Base):
             s = self.src[URLS[a["slug"]]]
             self.assertLess(s.index('id="task-block"'), s.index('data-variant="razbor"'))
             labels.add(a["slug"])
-        self.assertEqual(len(labels), 22)
+        self.assertEqual(len(labels), 26)
 
     def test_stopwords_in_block(self):
         for a in self._targets():
@@ -1328,6 +1328,10 @@ class TestNewAnswers20261124(Base):
         "ap-statistics-tutor-online": (412, "ap-physics-tutor", ("11 мая", "вторая сессия", "42 вопроса", "1 ч 30 мин", "4 вопроса", "50%", "Bluebook", "2026–27", "Inference")),
         "oge-fizika-podgotovka-onlajn": (413, "physics-tutor-online", ("22 задания", "180 минут", "39", "16 заданий", "14", "непрограммируемый калькулятор", "линейка", "пятибалльной шкале")),
         "gcse-physics-aqa-8463-tutor-online": (414, "igcse-physics-0625", ("Paper 1", "Paper 2", "1 ч 45 мин", "100", "50%", "Foundation", "Higher", "1–9", "AQA")),
+        "a-level-further-maths-edexcel-9fm0-tutor-online": (415, "exam-prep-online", ("9FM0", "Issue 4", "Paper 1", "Paper 2", "Core Pure", "1 ч 30 мин", "25%", "75 баллов", "Further Pure", "Decision Mathematics", "десять", "мае–июне")),
+        "step-maths-cambridge-tutor-online": (416, "exam-prep-online", ("STEP 2", "STEP 3", "OCR", "3 часа", "12 вопросов", "20 баллов", "шесть лучших", "S, 1, 2, 3", "14 июня", "21 июня", "4 мая", "12 августа", "Mathematics with Physics")),
+        "ap-precalculus-tutor-online": (417, "ap-physics-tutor", ("11 мая", "первая сессия", "42 вопроса", "1 ч 45 мин", "62,5%", "29 вопросов", "65 мин", "13 вопросов", "40 мин", "1 ч 10 мин", "37,5%", "35 мин", "Symbolic Manipulations", "от руки")),
+        "a-level-maths-edexcel-9ma0-tutor-online": (418, "exam-prep-online", ("9MA0", "Issue 4", "2 часа", "33,33%", "100 баллов", "300", "A*–E", "Statistics and Mechanics", "десять тем")),
     }
 
     def _entry(self, slug):
@@ -1343,7 +1347,7 @@ class TestNewAnswers20261124(Base):
             self.assertIn(a["h1"], visible_text(s))
             self.assertIn(a["answer"], visible_text(s).replace(" ", " "))
             self.assertLessEqual(len(a["answer"].split()), 50, slug)
-            q = (AP.QUERIES_MATH if n in (411, 412) else AP.QUERIES_PHYS)[n]
+            q = (AP.QUERIES_PHYS if n in (413, 414) else AP.QUERIES_MATH)[n]
             self.assertIn(q, s)
             sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
             self.assertIn(BASE + URLS[slug], sm)
@@ -1405,6 +1409,16 @@ class TestNewAnswers20261124(Base):
             self.assertNotRegex(t[slug], r"от 1 до 5|1–5|\b5 баллов")   # шкала итогового балла AP в файле фактов не найдена
         self.assertNotRegex(t["oge-fizika-podgotovka-onlajn"], r"\d+\s*[-–]\s*\d+\s*баллов|порог\w*\s+(?:для|на)\s+(?:отметк|оценк)\w*\s*[:—]")   # порогов ОГЭ нет в спецификации
         self.assertNotRegex(t["gcse-physics-aqa-8463-tutor-online"], r"калькулятор\w*\s+(?:разрешён|разрешен|можно|не разрешён)")   # правила калькулятора GCSE не проверены
+
+    def test_claims_not_beyond_facts_415_418(self):
+        t = {slug: visible_text(self.src[URLS[slug]]) for slug in self.PAGES}
+        self.assertNotIn("admissionstesting", self.src[URLS["step-maths-cambridge-tutor-online"]])
+        self.assertNotRegex(t["step-maths-cambridge-tutor-online"], r"граничн\w+\s+балл\w*\s*[:—]\s*\d")   # граничных баллов в файле фактов нет
+        self.assertNotRegex(t["ap-precalculus-tutor-online"], r"от 1 до 5|1–5")   # шкалы итогового балла AP в файле фактов нет
+        self.assertNotRegex(t["a-level-maths-edexcel-9ma0-tutor-online"], r"экзамен\w*\s+(?:пройд|состо)\w*[^.]*2027")   # дат Edexcel 2027 в файле нет
+        self.assertNotRegex(t["a-level-further-maths-edexcel-9fm0-tutor-online"], r"экзамен\w*\s+(?:пройд|состо)\w*[^.]*2027")
+        for slug in ("a-level-further-maths-edexcel-9fm0-tutor-online", "a-level-maths-edexcel-9ma0-tutor-online"):
+            self.assertRegex(t[slug], r"Issue 4")
 
     def test_stop_words(self):
         for slug in self.PAGES:
