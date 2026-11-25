@@ -31,6 +31,12 @@ def page(slug):
 def expected_key(a):
     """Независимое от DIAG_SET_BY_SLUG ожидание: предмет/экзамен из slug и заголовка страницы."""
     s = a["slug"]
+    for tok, key in (("ap-calculus-ab", "ap-calc-ab"), ("ap-statistics", "ap-statistics"),
+                     ("oge-fizika", "oge-physics"), ("gcse-physics", "gcse-physics"),
+                     ("a-level-further", "alevel-further"), ("step-maths", "step-maths"),
+                     ("ap-precalculus", "ap-precalc"), ("a-level-maths", "alevel-maths")):   # страницы 24.11.2026
+        if re.search(r"(^|-)%s" % tok, s):
+            return key
     if "olimpiad" in s:
         return "olympiad-physics"
     if "ucas" in s:
@@ -52,7 +58,7 @@ def expected_key(a):
 
 class TestDiagBlock(unittest.TestCase):
     def test_every_answer_page_has_one_block(self):
-        self.assertEqual(len(ALL), 36)
+        self.assertEqual(len(ALL), 44)
         for a in ALL:
             s = page(a["slug"])
             self.assertEqual(s.count('id="diag-block"'), 1, a["slug"])

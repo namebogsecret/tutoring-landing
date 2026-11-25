@@ -299,6 +299,54 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/igcse-maths-0580-tutor-russian-speaking/"/>
   </url>
   <url>
+    <loc>https://tutor.podlevskikh.com/answers/ap-calculus-ab-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ap-calculus-ab-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-calculus-ab-tutor-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ap-statistics-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ap-statistics-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-statistics-tutor-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/a-level-further-maths-edexcel-9fm0-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/a-level-further-maths-edexcel-9fm0-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/a-level-further-maths-edexcel-9fm0-tutor-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/step-maths-cambridge-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/step-maths-cambridge-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/step-maths-cambridge-tutor-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/ap-precalculus-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/ap-precalculus-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/ap-precalculus-tutor-online/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/a-level-maths-edexcel-9ma0-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/a-level-maths-edexcel-9ma0-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/a-level-maths-edexcel-9ma0-tutor-online/"/>
+  </url>
+  <url>
     <loc>https://tutor.podlevskikh.com/answers/ap-physics-1-2-c-chem-otlichayutsya/</loc>
     <lastmod>2026-11-15</lastmod>
     <changefreq>monthly</changefreq>
@@ -405,5 +453,21 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/podgotovka-fizika-zarubezhnye-vuzy-ucas-oxford-cambridge-onlajn/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/podgotovka-fizika-zarubezhnye-vuzy-ucas-oxford-cambridge-onlajn/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/oge-fizika-podgotovka-onlajn/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/oge-fizika-podgotovka-onlajn/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/oge-fizika-podgotovka-onlajn/"/>
+  </url>
+  <url>
+    <loc>https://tutor.podlevskikh.com/answers/gcse-physics-aqa-8463-tutor-online/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tutor.podlevskikh.com/answers/gcse-physics-aqa-8463-tutor-online/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tutor.podlevskikh.com/answers/gcse-physics-aqa-8463-tutor-online/"/>
   </url>
 </urlset>
