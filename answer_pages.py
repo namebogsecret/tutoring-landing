@@ -1148,6 +1148,52 @@ for _n in (1, 2, 3, 4, 5, 6, 8, 9, 10, 11):
     _a(_n)["updated"] = UPDATED_MISS
 
 
+# ── 26.11 (замер 26.11: сайт 0/12): по ОДНОЙ новой правке на провал. Правки #2, #3, #5, #9 — внутренние ссылки с профильных
+# страниц (src/*.html), #12 — FAQ на /igcse-physics-0625/ (pages_registry.py). Вместо нас в выдаче площадки и списки выбора,
+# поэтому ниже — проверяемые критерии выбора. Факты — только уже стоящие на этих страницах (ФАКТ-ЛИСТ).
+UPDATED_MISS26 = "2026-11-26"
+
+# #1 «репетитор по физике ЕГЭ онлайн»: критерии выбора
+_a(1)["sections"] = [("Как выбрать репетитора по физике ЕГЭ онлайн: что проверить",
+    "<ul><li><b>Подтверждаемые знания:</b> образование и экзаменационные результаты; здесь — физфак МГУ (2006) и Praxis Physics 5266: 200/200;</li>"
+    "<li><b>Актуальный формат:</b> КИМ ЕГЭ 2027 — 26 заданий, 45 первичных баллов, 235 минут;</li>"
+    "<li><b>План:</b> начинается с диагностики по разделам кодификатора;</li>"
+    "<li><b>Вторая часть:</b> развёрнутые решения тренируются по критериям;</li>"
+    "<li><b>Формат занятий:</b> онлайн, один на один, на русском или английском.</li></ul>")] + list(_a(1)["sections"])
+# #4 «репетитор IGCSE физика 0625 на русском»: критерии выбора русскоязычного репетитора
+_a(4)["sections"] = [("Как выбрать русскоязычного репетитора IGCSE Physics 0625",
+    "<ul><li><b>Два языка:</b> объяснения по-русски, а термины и формулировки заданий — по-английски, как на экзамене;</li>"
+    "<li><b>Уровень:</b> репетитор различает Core (Paper 1 и 3, оценки C–G) и Extended (Paper 2 и 4, оценки A*–G);</li>"
+    "<li><b>Практика:</b> Paper 5 или Paper 6 — 20% оценки, их нужно готовить отдельно;</li>"
+    "<li><b>Проверяемые знания:</b> здесь — физфак МГУ (2006) и Praxis Physics 5266: 200/200.</li></ul>")] + list(_a(4)["sections"])
+# #6 «репетитор AP Physics онлайн на русском»: критерии выбора
+_a(6)["sections"] = [("Как выбрать репетитора AP Physics на русском: что проверить",
+    "<ul><li><b>Какой курс:</b> AP Physics 1, 2, C: Mechanics и C: Electricity and Magnetism — разные экзамены;</li>"
+    "<li><b>Матанализ:</b> для AP Physics C репетитор должен владеть и физикой, и математикой; здесь — Praxis Physics 5266 и Praxis Mathematics 5165, оба 200/200;</li>"
+    "<li><b>Два языка:</b> объяснения по-русски, задания и термины College Board — на английском;</li>"
+    "<li><b>Формат экзамена:</b> сверяется по AP Central, а не со слов репетитора.</li></ul>")] + list(_a(6)["sections"])
+# #7 «Vladimir Podlevskikh physics tutor»: какая страница — первоисточник
+_a(7)["faq"] = [("Is this the official page of Vladimir Podlevskikh, physics tutor?",
+    "Yes. tutor.podlevskikh.com is the tutor's own page. Profiles of the same person on tutor marketplaces may differ in details; this page is the reference.")] + list(_a(7)["faq"])
+# #8 «IGCSE Physics 0625 tutor Russian-speaking»: критерии выбора (EN)
+_a(8)["sections"] = [("How to choose a Russian-speaking IGCSE Physics 0625 tutor",
+    "<ul><li><b>Two languages:</b> concepts explained in Russian, answers written in English as the paper expects;</li>"
+    "<li><b>Tier:</b> the tutor should separate Core (Papers 1 and 3, grades C–G) from Extended (Papers 2 and 4, grades A*–G);</li>"
+    "<li><b>Practical:</b> Paper 5 or Paper 6 is 20% of the grade and needs its own preparation;</li>"
+    "<li><b>Verifiable record:</b> here Faculty of Physics, MSU (2006) and Praxis Physics 5266: 200/200.</li></ul>")] + list(_a(8)["sections"])
+# #10 «best IB Physics HL tutor online»: видимый FAQ под запрос
+_a(10)["faq"] = [("How do I find the best IB Physics HL tutor online?",
+    "No tutor is objectively “best”. Compare candidates on what you can verify: knowledge of HL content beyond SL, the HL Paper 1 and Paper 2 structure, "
+    "how the internal assessment is supported without editing the student's work, a degree and exam scores, and the lesson language.")] + list(_a(10)["faq"])
+# #11 «Russian EGE physics tutor English-speaking»: FAQ про слабый русский
+_a(11)["faq"] = list(_a(11)["faq"]) + [(
+    "Can an English-speaking student with limited Russian prepare for the EGE in physics?",
+    "Concepts and solution methods can be explained in English, but the exam paper is in Russian and Part 2 is marked on the written solution, "
+    "so the Russian wording of tasks and of the solution layout has to be practised as well.")]
+for _n in (1, 4, 6, 7, 8, 10, 11):
+    _a(_n)["updated"] = UPDATED_MISS26
+
+
 # ── RU: ЕГЭ по математике (профильный уровень) 2027 — план по месяцам (автопилот 18.11) ──
 # Структура, баллы, уровни, время — только из спецификации КИМ ЕГЭ 2027 «МА-11 СПЕЦ_профильный» (ФИПИ, doc.fipi.ru/ege/
 # demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip, сверено 18.11.2026; разд. 11: «Изменения структуры и содержания

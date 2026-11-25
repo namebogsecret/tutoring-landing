@@ -75,7 +75,7 @@ PAGES = [
 # ═══════════════════════ PILLAR 1 — IB Physics (EN) ═══════════════════════
 {
   "url": "/ib-physics-tutor/", "lang": "en", "body": "src/ib-physics-tutor.html",
-  "no_cta": True, "lastmod": "2026-11-08",
+  "no_cta": True, "lastmod": "2026-11-26",
   "title": "IB Physics Tutor Online (SL & HL) — Syllabus 2025, 1:1",
   "desc": "Online one-to-one IB Physics SL and HL tutor: five themes, Paper 1A/1B and 2, the scientific investigation and AO1-AO3. MSU physicist, Praxis 200/200.",
   "og_title": "IB Physics Tutor (SL/HL) Online — Vladimir Podlevskikh",
@@ -101,7 +101,7 @@ PAGES = [
 # ═══════════════════════ PILLAR 2 — AP Physics C (EN) ═══════════════════════
 {
   "url": "/ap-physics-tutor/", "lang": "en", "body": "src/ap-physics-tutor.html",
-  "no_cta": True, "lastmod": "2026-11-08",
+  "no_cta": True, "lastmod": "2026-11-26",
   "title": "AP Physics C Tutor Online — Mechanics and E&M, 1:1",
   "desc": "Online 1:1 AP Physics C tutor: Mechanics and Electricity & Magnetism, 42 multiple-choice and 4 free-response questions, calculus. MSU physicist, Praxis 200/200.",
   "og_title": "AP Physics C Tutor (Mechanics, E&M) Online — Vladimir Podlevskikh",
@@ -151,7 +151,7 @@ PAGES = [
 # ═══════════════ PILLAR 4 — Подготовка к ЕГЭ по физике (RU) ═══════════════
 {
   "url": "/ege-physics/", "lang": "ru", "body": "src/ege-physics.html",
-  "no_cta": True, "lastmod": "2026-11-08",
+  "no_cta": True, "lastmod": "2026-11-26",
   "title": "ЕГЭ по физике 2027 онлайн: репетитор, физик МГУ, из любой страны",
   "desc": "Репетитор по физике для ЕГЭ 2027: онлайн 1:1 из любой страны, русский или английский. Структура КИМ (26 заданий, 45 баллов), ДВИ. Физик МГУ, Praxis 200/200.",
   "og_title": "Подготовка к ЕГЭ по физике 2027 онлайн — Владимир Подлевских",
@@ -181,7 +181,7 @@ PAGES = [
 # ═══════════════ PILLAR 5 — Cambridge IGCSE Physics 0625 (EN) ═══════════════
 {
   "url": "/igcse-physics-0625/", "lang": "en", "body": "src/igcse-physics-0625.html",
-  "no_cta": True, "lastmod": "2026-11-08",
+  "no_cta": True, "lastmod": "2026-11-26",
   "title": "IGCSE Physics 0625 Tutor Online — Russian or English, 1:1",
   "desc": "Russian-speaking Cambridge IGCSE Physics 0625 tutor, online 1:1 (репетитор на русском или English): Core vs Extended, Paper 1-6. MSU physicist, Praxis 200/200.",
   "og_title": "IGCSE Physics 0625 Tutor Online — Vladimir Podlevskikh",
@@ -201,6 +201,8 @@ PAGES = [
      "The main differences are in format and expectations: IGCSE combines multiple-choice and theory papers, treats practical skills as a separate 20% of the grade, and orders and weights topics differently from the Russian programme. A student with a strong Russian maths and physics base usually has an advantage, and a diagnostic shows which topics are already covered."),
     ("Can IGCSE Physics 0625 be taught in Russian? / Можно ли заниматься по IGCSE Physics на русском?",
      "Yes. Lessons can be in Russian, English or a mix: Russian for explanations and English for the exam terminology and command words that appear on the papers. Да: объяснения на русском, термины и формулировки экзамена — на английском, как удобнее ученику. Lessons are online, one to one."),
+    ("Можно ли заниматься, если рядом нет русскоязычного репетитора IGCSE по физике?",
+     "Да. Занятия идут онлайн по всему миру (GMT+2/+3), один на один, на русском или английском: объяснения можно вести по-русски, а термины и формулировки заданий — по-английски, как на экзамене."),
     ("How are the lessons run, and in which language?",
      "Lessons are online, one to one, in English or Russian, worldwide (GMT+2/+3). They follow the six syllabus topics, with exam-style practice, regular work on Paper 5 or Paper 6 skills and timed papers before the exam series."),
   ],
@@ -209,6 +211,7 @@ PAGES = [
 # ═══════════════ SEGMENT 1 — Русскоязычным за рубежом (RU) ════════════════
 {
   "url": "/russian-tutor-abroad/", "lang": "ru", "body": "src/russian-tutor-abroad.html",
+  "lastmod": "2026-11-26",
   "title": "Репетитор по физике и математике для русскоязычных за рубежом",
   "desc": "Репетитор по физике и математике для русскоязычных семей за границей. Поможет ребёнку в международной школе: IB, AP, A-Level, IGCSE — на русском и английском. Любой часовой пояс, оплата в USD/EUR.",
   "og_title": "Репетитор для русскоязычных за рубежом — физика и математика",

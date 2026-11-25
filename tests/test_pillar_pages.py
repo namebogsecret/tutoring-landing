@@ -17,7 +17,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://tutor.podlevskikh.com"
 PAGES = {"/ege-physics/": "ru", "/igcse-physics-0625/": "en",
          "/ap-physics-tutor/": "en", "/ib-physics-tutor/": "en"}
-LASTMOD = "2026-11-08"
+LASTMOD = "2026-11-26"  # 26.11: правки по замеру ИИ на всех четырёх pillar
 
 # Запретные слова/паттерны (регистронезависимо, кроме помеченных (?-i:)).
 FORBIDDEN = [

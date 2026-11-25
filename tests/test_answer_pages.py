@@ -96,8 +96,8 @@ class TestUpgraded(Base):
             s = self.src["/answers/%s/" % slug]
             self.assertIn('<table class="spec-table">', s, slug)
             # 19.11 страница правилась повторно (TestMissFix1119) — дата 13.11 или 19.11
-            self.assertRegex(s, r'<time datetime="2026-11-(13|19)">', slug)
-            self.assertRegex(s, r'"dateModified": "2026-11-(13|19)"', slug)
+            self.assertRegex(s, r'<time datetime="2026-11-(13|19|26)">', slug)
+            self.assertRegex(s, r'"dateModified": "2026-11-(13|19|26)"', slug)
             self.assertIn('"@type": "FAQPage"', s, slug)
             self.assertIn("<lastmod>2026-11-13</lastmod>", open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read())
             # таблица стоит до FAQ и после lead
@@ -117,8 +117,8 @@ class TestReprobeTables(Base):
         for slug in REPROBE_SLUGS:
             s = self.src["/answers/%s/" % slug]
             self.assertIn('<table class="spec-table">', s, slug)
-            self.assertRegex(s, r'<time datetime="2026-11-(16|19)">', slug)
-            self.assertRegex(s, r'"dateModified": "2026-11-(16|19)"', slug)
+            self.assertRegex(s, r'<time datetime="2026-11-(16|19|26)">', slug)
+            self.assertRegex(s, r'"dateModified": "2026-11-(16|19|26)"', slug)
             self.assertIn('"@type": "FAQPage"', s, slug)
             self.assertLess(s.index('class="lead'), s.index("<table"), slug)
             # таблица до «Кто преподаёт» и до разделов-пояснений
