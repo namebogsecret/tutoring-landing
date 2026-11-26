@@ -936,6 +936,14 @@ SMOKE-TEST — three result states and how to trigger them manually:
 window.addEventListener("load",function(){try{window.goatcounter=window.goatcounter||{};window.goatcounter.path=function(p){return location.host+(p==="/"?"/index":p)};var s=document.createElement("script");s.async=true;s.src="https://stats.podlevskikh.com/count.js";s.setAttribute("data-goatcounter","https://stats.podlevskikh.com/count");s.onerror=function(){};document.body.appendChild(s)}catch(e){}});
 </script>
 <script>/* CTA-события: неблокирующий пиксель, не мешает переходу по ссылке */
+/* источник визита (first-touch): cookie pdl_ft (общая для сети), один раз за визит; уходит в &r= только у /cta-* */
+var __pdlSrc=(function(){try{var K="pdl_ft",N="podlevskikh.com";
+function inN(h){h=String(h||"").toLowerCase();return h===N||h.slice(-(N.length+1))==="."+N}
+function rd(){try{if(inN(location.hostname)){var m=(document.cookie||"").match(/(?:^|;\s*)pdl_ft=([^;]*)/);return m?decodeURIComponent(m[1]):null}var v=window.sessionStorage.getItem(K);return v===null||v===undefined?null:String(v)}catch(e){return null}}
+function wr(v){try{v=String(v).slice(0,200);if(inN(location.hostname)){document.cookie=K+"="+encodeURIComponent(v)+"; Path=/; SameSite=Lax"+(location.protocol==="https:"?"; Secure":"")+"; Domain=."+N}else{window.sessionStorage.setItem(K,v)}}catch(e){}}
+function det(){try{var m=(location.search||"").match(/[?&]utm_source=([^&#]*)/);if(m){var u=decodeURIComponent(m[1].replace(/\+/g," ")).trim().toLowerCase();if(u)return u}
+var ref=document.referrer||"",r=ref.match(/^https?:\/\/([^\/?#]*)([^?#]*)/i);if(r){var h=r[1].replace(/^.*@/,"").replace(/:\d+$/,"").toLowerCase();if(h&&!inN(h)&&h!==String(location.hostname).toLowerCase())return ref.match(/^https?:\/\/[^\/?#]*/i)[0]+r[2]}}catch(e){}return ""}
+var s=rd();if(s===null){s=det();wr(s)}return s}catch(e){return ""}})();
 document.addEventListener("click",function(ev){try{
   var a=ev.target.closest("a"); if(!a||!a.href) return;
   var href=a.href, name=null;
@@ -947,6 +955,7 @@ document.addEventListener("click",function(ev){try{
   else if(a.hostname&&a.hostname!==location.hostname&&(a.protocol==="http:"||a.protocol==="https:")){path="/out-"+a.hostname;}
   else return;
   var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(location.host+path)+"&e=true";
+  if(name&&__pdlSrc){u+="&r="+encodeURIComponent(__pdlSrc)}
   if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
 }catch(e){}},true);
 </script>
