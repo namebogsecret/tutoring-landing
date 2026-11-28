@@ -386,7 +386,9 @@ class TestApIbDiscoveryRegression(unittest.TestCase):
             self.assertTrue(raw, u)
             blocks = [json.loads(r) for r in raw]  # каждый блок — валидный JSON
             types = [b.get("@type") for b in blocks]
-            self.assertEqual(sorted(types), ["BreadcrumbList", "Course", "FAQPage"], u)
+            # 28.11: рядом с Course добавлен Service (контракт tests/test_ai_seo.py)
+            self.assertEqual(sorted(types), ["BreadcrumbList", "Course", "FAQPage", "Service"], u)
+            self.assertEqual(blocks[types.index("Service")]["provider"], {"@id": self.PERSON_ID}, u)
             course = blocks[types.index("Course")]
             # граф сущности main: provider — полный Person-узел с @id, instructor — ссылка по @id
             self.assertEqual(course["provider"]["@id"], self.PERSON_ID, u)

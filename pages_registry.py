@@ -63,6 +63,15 @@ def course(name, desc, lang=("en", "ru")):
         "inLanguage": list(lang),
     }
 
+def service_of(c):
+    """Узел Service из названия и описания Course той же страницы (новых фактов нет)."""
+    return {"@context": "https://schema.org", "@type": "Service", "name": c["name"],
+            "description": c["description"], "provider": PERSON_REF}
+
+def course_service(name, desc, lang=("en", "ru")):
+    c = course(name, desc, lang)
+    return [c, service_of(c)]
+
 def service(name, desc, area="Worldwide"):
     return {
         "@context": "https://schema.org", "@type": "Service", "serviceType": "Online tutoring",
@@ -80,9 +89,9 @@ PAGES = [
   "desc": "Online one-to-one IB Physics SL and HL tutor: five themes, Paper 1A/1B and 2, the scientific investigation and AO1-AO3. MSU physicist, Praxis 200/200.",
   "og_title": "IB Physics Tutor (SL/HL) Online — Vladimir Podlevskikh",
   "crumbs": [("Home", "/"), ("IB Physics Tutor", None)],
-  "jsonld": [course("IB Physics SL & HL — online one-to-one tutoring",
+  "jsonld": course_service("IB Physics SL & HL — online one-to-one tutoring",
                     "One-to-one online preparation for IB Diploma Physics SL and HL, Physics guide first assessment 2025: five themes, Paper 1A/1B and Paper 2 technique, data-based questions and support for the scientific investigation.",
-                    lang=("en",))],
+                    lang=("en",)),
   "faq_heading": "IB Physics tutoring — common questions",
   "faq": [
     ("Do you teach both IB Physics SL and HL?",
@@ -106,9 +115,9 @@ PAGES = [
   "desc": "Online 1:1 AP Physics C tutor: Mechanics and Electricity & Magnetism, 42 multiple-choice and 4 free-response questions, calculus. MSU physicist, Praxis 200/200.",
   "og_title": "AP Physics C Tutor (Mechanics, E&M) Online — Vladimir Podlevskikh",
   "crumbs": [("Home", "/"), ("AP Physics Tutor", None)],
-  "jsonld": [course("AP Physics C: Mechanics and E&M — online one-to-one tutoring",
+  "jsonld": course_service("AP Physics C: Mechanics and E&M — online one-to-one tutoring",
                     "One-to-one online preparation for AP Physics C: Mechanics and Electricity and Magnetism: the units of each course, the exam format (Section I multiple choice, Section II free response), calculus in physics and free-response technique.",
-                    lang=("en",))],
+                    lang=("en",)),
   "faq_heading": "AP Physics C tutoring — common questions",
   "faq": [
     ("Which AP Physics courses do you cover?",
@@ -128,7 +137,7 @@ PAGES = [
 {
   "url": "/physics-tutor-online/", "lang": "ru", "body": "src/physics-tutor-online.html",
   "title": "Репетитор по физике онлайн — физик МГУ, 23 года, 350+ учеников",
-  "desc": "Репетитор по физике онлайн: физик МГУ, 23 года опыта, 350+ учеников. Подготовка к ЕГЭ, ОГЭ, ДВИ, олимпиадам, IB, AP, A-Level. Структурный план к экзамену. Бесплатная диагностика.",
+  "desc": "Репетитор по физике онлайн: физик МГУ, 23 года опыта, 350+ учеников. Подготовка к ЕГЭ, ОГЭ, ДВИ, олимпиадам, IB, AP, A-Level. Бесплатная диагностика.",
   "og_title": "Репетитор по физике онлайн — Владимир Подлевских (физик МГУ)",
   "crumbs": [("Главная", "/"), ("Репетитор по физике онлайн", None)],
   "jsonld": [service("Репетитор по физике онлайн",
@@ -156,9 +165,9 @@ PAGES = [
   "desc": "Репетитор по физике для ЕГЭ 2027: онлайн 1:1 из любой страны, русский или английский. Структура КИМ (26 заданий, 45 баллов), ДВИ. Физик МГУ, Praxis 200/200.",
   "og_title": "Подготовка к ЕГЭ по физике 2027 онлайн — Владимир Подлевских",
   "crumbs": [("Главная", "/"), ("Подготовка к ЕГЭ по физике", None)],
-  "jsonld": [course("Подготовка к ЕГЭ по физике (онлайн, 1:1)",
+  "jsonld": course_service("Подготовка к ЕГЭ по физике (онлайн, 1:1)",
                     "Онлайн-подготовка к ЕГЭ по физике по спецификации КИМ ЕГЭ 2027: 26 заданий, две части, 45 первичных баллов; разбор типов заданий, тренировка развёрнутых решений по критериям, варианты в условиях экзамена.",
-                    lang=("ru",))],
+                    lang=("ru",)),
   "faq_heading": "Подготовка к ЕГЭ по физике — частые вопросы",
   "faq": [
     ("Когда начинать подготовку к ЕГЭ по физике?",
@@ -186,9 +195,9 @@ PAGES = [
   "desc": "Russian-speaking Cambridge IGCSE Physics 0625 tutor, online 1:1 (репетитор на русском или English): Core vs Extended, Paper 1-6. MSU physicist, Praxis 200/200.",
   "og_title": "IGCSE Physics 0625 Tutor Online — Vladimir Podlevskikh",
   "crumbs": [("Home", "/"), ("IGCSE Physics 0625", None)],
-  "jsonld": [course("Cambridge IGCSE Physics 0625 — online one-to-one tutoring",
+  "jsonld": course_service("Cambridge IGCSE Physics 0625 — online one-to-one tutoring",
                     "One-to-one online preparation for Cambridge IGCSE Physics (0625), syllabus 2026-2028: six topics, Core and Extended tiers, Paper 1-6 technique, practical skills and timed papers.",
-                    lang=("en",))],
+                    lang=("en",)),
   "faq_heading": "IGCSE Physics 0625 — common questions",
   "faq": [
     ("Should my child enter Core or Extended?",
@@ -213,7 +222,7 @@ PAGES = [
   "url": "/russian-tutor-abroad/", "lang": "ru", "body": "src/russian-tutor-abroad.html",
   "lastmod": "2026-11-26",
   "title": "Репетитор по физике и математике для русскоязычных за рубежом",
-  "desc": "Репетитор по физике и математике для русскоязычных семей за границей. Поможет ребёнку в международной школе: IB, AP, A-Level, IGCSE — на русском и английском. Любой часовой пояс, оплата в USD/EUR.",
+  "desc": "Репетитор по физике и математике для русскоязычных семей за границей: IB, AP, A-Level, IGCSE на русском и английском. Любой часовой пояс.",
   "og_title": "Репетитор для русскоязычных за рубежом — физика и математика",
   "crumbs": [("Главная", "/"), ("Русскоязычным за рубежом", None)],
   "jsonld": [service("Репетитор по физике и математике для русскоязычных за рубежом",
@@ -237,11 +246,11 @@ PAGES = [
 {
   "url": "/olympiad-physics/", "lang": "ru", "body": "src/olympiad-physics.html",
   "title": "Подготовка к олимпиадам по физике и математике — онлайн",
-  "desc": "Подготовка к олимпиадам по физике и математике онлайн: Всероссийская олимпиада, перечневые олимпиады, Physics Olympiad. Физик МГУ, 23 года частного преподавания. Нестандартные задачи и техника решения.",
+  "desc": "Подготовка к олимпиадам по физике и математике онлайн: Всероссийская, перечневые, Physics Olympiad. Физик МГУ, 23 года частного преподавания.",
   "og_title": "Подготовка к олимпиадам по физике и математике — Владимир Подлевских",
   "crumbs": [("Главная", "/"), ("Подготовка к олимпиадам", None)],
-  "jsonld": [course("Подготовка к олимпиадам по физике и математике",
-                    "Онлайн-подготовка к олимпиадам по физике и математике: Всероссийская и перечневые олимпиады, международные Physics Olympiad. Нестандартные задачи, техника решения, разбор прошлых лет.")],
+  "jsonld": course_service("Подготовка к олимпиадам по физике и математике",
+                    "Онлайн-подготовка к олимпиадам по физике и математике: Всероссийская и перечневые олимпиады, международные Physics Olympiad. Нестандартные задачи, техника решения, разбор прошлых лет."),
   "faq_heading": "Подготовка к олимпиадам — частые вопросы",
   "faq": [
     ("К каким олимпиадам вы готовите?",
@@ -333,11 +342,11 @@ PAGES = [
 {
   "url": "/exam-prep-online/", "lang": "ru", "body": "src/exam-prep-online.html", "lastmod": "2026-11-14",
   "title": "Подготовка к экзаменам онлайн — репетитор по физике и математике, физик МГУ",
-  "desc": "Подготовка к ЕГЭ, ОГЭ, ДВИ, IB, AP, SAT, A-Level и IGCSE онлайн 1:1. Физик МГУ, 23 года частного преподавания, 350+ учеников. Ответы на частые вопросы родителей и школьников.",
+  "desc": "Подготовка к ЕГЭ, ОГЭ, ДВИ, IB, AP, SAT, A-Level и IGCSE онлайн 1:1. Физик МГУ, 23 года частного преподавания, 350+ учеников.",
   "og_title": "Подготовка к экзаменам онлайн — страница репетитора Владимира Подлевских",
   "crumbs": [("Главная", "/"), ("Подготовка к экзаменам онлайн", None)],
-  "jsonld": [course("Подготовка к экзаменам по физике и математике онлайн",
-                    "Индивидуальные онлайн-занятия 1:1 по физике и математике: ЕГЭ, ОГЭ, ДВИ, олимпиады, IB, AP, SAT, A-Level, IGCSE. План от текущего уровня до даты экзамена, русский и английский.")],
+  "jsonld": course_service("Подготовка к экзаменам по физике и математике онлайн",
+                    "Индивидуальные онлайн-занятия 1:1 по физике и математике: ЕГЭ, ОГЭ, ДВИ, олимпиады, IB, AP, SAT, A-Level, IGCSE. План от текущего уровня до даты экзамена, русский и английский."),
   "faq_heading": "Как выбрать репетитора для подготовки к экзамену онлайн — частые вопросы",
   "faq": [
     ("Как выбрать репетитора по физике или математике для экзамена?",

@@ -219,6 +219,11 @@ def tutor_block(lang):
   </div><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="/exam-prep-online/">Страница репетитора</a></div>
 </div></section>""")
 
+# Страницы, где тело обёрнуто в <main> (семантика для краулеров; CSS по main нет).
+# /answers/ сюда не добавлять: это страницы замеров.
+MAIN_PAGES = {"/ap-physics-tutor/", "/ib-physics-tutor/", "/igcse-physics-0625/", "/ege-physics/",
+              "/olympiad-physics/", "/physics-tutor-online/", "/russian-tutor-abroad/"}
+
 # ── page assembly ────────────────────────────────────────────────────────
 def build_page(p):
     body = p["body_html"] if "body_html" in p else open(os.path.join(HERE, p["body"]), encoding="utf-8").read()
@@ -255,6 +260,9 @@ def build_page(p):
                 '.top-cta{display:none}'
                 '@media(max-width:680px){.top-cta{display:inline-flex;margin-left:auto;white-space:nowrap}'
                 '.nav-inner{gap:10px}.brand-name{font-size:13px}}</style>\n') if fast_head else ""
+    content = f'{body}\n\n{"" if p["url"] == "/exam-prep-online/" else tutor_block(p["lang"])}'
+    if p["url"] in MAIN_PAGES:
+        content = f"<main>\n{content}\n</main>"
     canonical = BASE + p["url"]
     html_lang = p["lang"]
     no_cta = bool(p.get("no_cta"))
@@ -307,9 +315,7 @@ def build_page(p):
 
 {render_crumbs(p['crumbs'])}
 
-{body}
-
-{"" if p["url"] == "/exam-prep-online/" else tutor_block(html_lang)}
+{content}
 
 {footer(html_lang, no_cta, p.get("lastmod"))}
 
