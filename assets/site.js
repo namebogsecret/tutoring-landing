@@ -91,6 +91,13 @@ document.addEventListener("click",function(ev){try{
   if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
 }catch(e){}},true);
 
+/* событие из других скриптов (заявка из формы #task-intake): тот же формат пути и источника, что у CTA выше */
+window.pdlCta=function(name){try{
+  var u="https://stats.podlevskikh.com/count?p="+encodeURIComponent(location.host+"/cta-"+name)+"&e=true";
+  if(__pdlSrc){u+="&r="+encodeURIComponent(__pdlSrc)}
+  if(navigator.sendBeacon){navigator.sendBeacon(u)}else{(new Image()).src=u}
+}catch(e){}};
+
 /* AI-рефереры: отдельное событие в GoatCounter, когда визит пришёл из ChatGPT / Claude
    (document.referrer или utm_source). Обычные рефереры GoatCounter пишет сам; это событие
    даёт готовую строку /ai-ref-<источник> для сводки. Неблокирующе, ошибки глотаются. */

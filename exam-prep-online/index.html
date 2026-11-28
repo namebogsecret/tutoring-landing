@@ -375,10 +375,11 @@ window.addEventListener("unhandledrejection",function(ev){var r=ev.reason;p({typ
       <p>Выберите запрос, который ближе всего к вашему: ниже готовый план на четыре недели. На разборе мы подстроим его под ваш уровень, дату экзамена и число занятий в неделю.</p>
       <form class="task-intake" id="task-intake" data-mail="vladimir@podlevskikh.com" hidden onsubmit="return false">
         <h3>Ваша задача</h3>
-        <p class="muted">Вставьте условие задачи: оно хранится только в вашем браузере, недолго, и никуда не отправляется, пока вы сами не отправите письмо.</p>
+        <p class="muted" id="task-intro">Вставьте условие задачи: оно хранится только в вашем браузере, недолго, и никуда не отправляется, пока вы сами не отправите письмо.</p>
         <p><textarea name="task" rows="6" maxlength="2000" aria-label="Ваша задача"></textarea></p>
         <p class="task-actions"><a class="btn btn-primary" id="task-mail">Отправить по почте</a> <button type="button" class="btn" id="task-copy">Скопировать текст</button> <span class="muted" id="task-copied" role="status" aria-live="polite"></span></p>
         <p class="muted" id="task-long" role="status" hidden></p>
+        <p class="muted" id="task-addr">Адрес для заявки: <strong>vladimir@podlevskikh.com</strong>. Если почтовая программа не открылась, скопируйте текст и отправьте его на этот адрес со своей почты: ответ придёт на неё.</p>
       </form>
       <script src="/assets/ai-task-paste.js" defer></script>
 <article class="razbor-card" id="zapros-ege-fizika" data-razbor-slug="zapros-ege-fizika">
