@@ -1150,7 +1150,7 @@ class TestApProgramPage(Base):
             self.assertTrue(all(c for c in r))
         self.assertIn("Месяц 7 (май, до экзамена)", self.s)
         main = self.s[self.s.index('<main id="main">'):self.s.index("</main>")]
-        text = visible_text(main).replace("Обновлено: 21 ноября 2026", "")
+        text = visible_text(main).replace("Обновлено: 28 ноября 2026", "")
         for bad in (r"\d{1,2}\s+(мая|июня|апреля|ноября|декабря)", r"\d{1,2}[./]\d{1,2}[./]20\d\d", r"проходн", r"шкал\w* 1"):
             self.assertNotRegex(text, bad)
         self.assertIn("College Board", text)
@@ -1225,7 +1225,7 @@ class TestOlympiadPage(Base):
 
     def test_no_invented_facts(self):
         main = self.s[self.s.index('<main id="main">'):self.s.index("</main>")]
-        text = visible_text(main).replace("Обновлено: 21 ноября 2026", "")
+        text = visible_text(main).replace("Обновлено: 28 ноября 2026", "")
         for bad in (r"\d{1,2}\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)",
                     r"\d{1,2}[./]\d{1,2}[./]20\d\d", r"проходн\w+", r"\d+\s*баллов", r"квот\w* \d", r"\d+\s*%", r"призёр\w* \w+ \d"):
             self.assertNotRegex(text, bad)
