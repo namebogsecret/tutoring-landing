@@ -1,9 +1,12 @@
 """Префикс slug «top-» зарезервирован: site.js шлёт cta-to-tutor-answers-<slug>, а кнопка вверху страницы —
 answers-top-<slug> (build.py). cta-report воронки считает всё answers-top-* верхней кнопкой, поэтому страница
 со slug «top-…» увела бы свою обычную кнопку в чужую таблицу."""
+import os
+import sys
 import unittest
 
-import answer_pages as AP
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import answer_pages as AP  # noqa: E402
 
 
 class TestSlugTopReserved(unittest.TestCase):
