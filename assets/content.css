@@ -41,6 +41,8 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
 .prose p, .prose li { color: var(--ink-soft); font-size: 17px; line-height: 1.7; }
 .prose a { color: var(--accent); border-bottom: 1px solid var(--accent-line); transition: border-color .2s; }
 .prose a:hover { border-bottom-color: var(--accent); }
+/* кнопка внутри статьи: цвет и бордер как у обычной .btn-primary, а не как у ссылки в тексте */
+.prose a.btn-primary, .prose a.btn-primary:hover { color: var(--accent-ink); border-color: transparent; }
 .prose strong, .prose b { color: var(--ink); font-weight: 600; }
 .prose ul, .prose ol { padding-left: 22px; margin-top: var(--stack); }
 .prose li { margin-top: 8px; }
