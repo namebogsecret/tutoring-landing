@@ -229,3 +229,8 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
 .paste-block h2, .task-intake h3 { margin-top: 0; }
 .paste-text, .task-intake textarea { width: 100%; box-sizing: border-box; min-height: 8em; padding: 10px 12px; font: inherit; color: inherit; background: transparent; border: 1px solid var(--accent-line, rgba(128,128,128,.4)); border-radius: 10px; resize: vertical; }
 .task-intake .task-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: .8em 0 0; }
+
+/* таблицы формата экзамена (/ege-math/, /oge-math/): все колонки видны на 360px без прокрутки */
+@media (max-width: 480px) {
+  .spec-table.spec-fit th, .spec-table.spec-fit td { padding: 10px 5px; font-size: 13px; letter-spacing: 0; text-transform: none; overflow-wrap: break-word; hyphens: auto; }
+}

@@ -54,22 +54,25 @@ PROVIDER = {
 # Лёгкая ссылка на ту же сущность по @id (для author/provider/instructor на дочерних страницах).
 PERSON_REF = {"@id": PERSON_ID}
 
-def course(name, desc, lang=("en", "ru")):
-    return {
+def course(name, desc, lang=("en", "ru"), workload="PT1H"):
+    c = {
         "@context": "https://schema.org", "@type": "Course", "name": name, "description": desc,
         "provider": PROVIDER,
         "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online",
                               "courseWorkload": "PT1H", "instructor": PERSON_REF},
         "inLanguage": list(lang),
     }
+    if workload is None:
+        del c["hasCourseInstance"]["courseWorkload"]
+    return c
 
 def service_of(c):
     """Узел Service из названия и описания Course той же страницы (новых фактов нет)."""
     return {"@context": "https://schema.org", "@type": "Service", "name": c["name"],
             "description": c["description"], "provider": PERSON_REF}
 
-def course_service(name, desc, lang=("en", "ru")):
-    c = course(name, desc, lang)
+def course_service(name, desc, lang=("en", "ru"), workload="PT1H"):
+    c = course(name, desc, lang, workload)
     return [c, service_of(c)]
 
 def service(name, desc, area="Worldwide"):
@@ -84,7 +87,7 @@ PAGES = [
 # ═══════════════════════ PILLAR 1 — IB Physics (EN) ═══════════════════════
 {
   "url": "/ib-physics-tutor/", "lang": "en", "body": "src/ib-physics-tutor.html",
-  "no_cta": True, "lastmod": "2026-11-26",
+  "no_cta": True, "lastmod": "2026-11-28",
   "title": "IB Physics Tutor Online (SL & HL) — Syllabus 2025, 1:1",
   "desc": "Online one-to-one IB Physics SL and HL tutor: five themes, Paper 1A/1B and 2, the scientific investigation and AO1-AO3. MSU physicist, Praxis 200/200.",
   "og_title": "IB Physics Tutor (SL/HL) Online — Vladimir Podlevskikh",
@@ -110,7 +113,7 @@ PAGES = [
 # ═══════════════════════ PILLAR 2 — AP Physics C (EN) ═══════════════════════
 {
   "url": "/ap-physics-tutor/", "lang": "en", "body": "src/ap-physics-tutor.html",
-  "no_cta": True, "lastmod": "2026-11-26",
+  "no_cta": True, "lastmod": "2026-11-28",
   "title": "AP Physics C Tutor Online — Mechanics and E&M, 1:1",
   "desc": "Online 1:1 AP Physics C tutor: Mechanics and Electricity & Magnetism, 42 multiple-choice and 4 free-response questions, calculus. MSU physicist, Praxis 200/200.",
   "og_title": "AP Physics C Tutor (Mechanics, E&M) Online — Vladimir Podlevskikh",
@@ -135,7 +138,7 @@ PAGES = [
 
 # ═══════════════ PILLAR 3 — Репетитор по физике онлайн (RU) ═══════════════
 {
-  "url": "/physics-tutor-online/", "lang": "ru", "body": "src/physics-tutor-online.html",
+  "url": "/physics-tutor-online/", "lang": "ru", "body": "src/physics-tutor-online.html", "lastmod": "2026-11-28",
   "title": "Репетитор по физике онлайн — физик МГУ, 23 года, 350+ учеников",
   "desc": "Репетитор по физике онлайн: физик МГУ, 23 года опыта, 350+ учеников. Подготовка к ЕГЭ, ОГЭ, ДВИ, олимпиадам, IB, AP, A-Level. Бесплатная диагностика.",
   "og_title": "Репетитор по физике онлайн — Владимир Подлевских (физик МГУ)",
@@ -157,10 +160,66 @@ PAGES = [
   ],
 },
 
+# ═══════════════ PILLAR — ЕГЭ и ОГЭ по математике (RU) ════════════════════
+# Цифры формата — из спецификаций КИМ 2027 (doc.fipi.ru, ссылки на страницах).
+{
+  "url": "/ege-math/", "lang": "ru", "body": "src/ege-math.html",
+  "no_cta": True, "lastmod": "2026-11-28",
+  "title": "ЕГЭ по математике 2027: база и профиль, репетитор онлайн",
+  "desc": "Подготовка к ЕГЭ по математике 2027 онлайн 1:1: база (21 задание) и профиль (19 заданий, 32 балла). Выпускник физфака МГУ, Praxis Mathematics 200/200.",
+  "og_title": "Подготовка к ЕГЭ по математике 2027: база и профиль — Владимир Подлевских",
+  "crumbs": [("Главная", "/"), ("Подготовка к ЕГЭ по математике", None)],
+  "jsonld": course_service("Подготовка к ЕГЭ по математике, базовый и профильный уровни (онлайн, 1:1)",
+                    "Онлайн-подготовка к ЕГЭ по математике по спецификациям КИМ ЕГЭ 2027: базовый уровень (21 задание, 21 первичный балл) и профильный уровень (19 заданий, две части, 32 первичных балла).",
+                    lang=("ru",), workload=None),
+  "faq_heading": "Подготовка к ЕГЭ по математике — частые вопросы",
+  "faq": [
+    ("Чем отличается базовый ЕГЭ по математике от профильного?",
+     "Это разные экзамены с разными спецификациями. Базовый уровень 2027 года — 21 задание с кратким ответом, максимум 21 первичный балл, 180 минут. Профильный — 19 заданий в двух частях, максимум 32 первичных балла, 235 минут, во второй части нужна полная обоснованная запись решения."),
+    ("Какой уровень выбрать?",
+     "По спецификации базовый уровень предназначен для тех, кто не планирует продолжать образование в профессиях со специальными требованиями к математической подготовке. Если вузу нужен профильный уровень, готовиться нужно к нему: требования конкретных программ проверяйте на сайте вуза."),
+    ("Сколько баллов даёт вторая часть профильного ЕГЭ?",
+     "Часть 2 — это 7 заданий (13–19) с развёрнутым ответом и 20 первичных баллов из 32, то есть 62,5% максимума. Задания 13, 15 и 16 стоят по 2 балла, 14 и 17 — по 3, 18 и 19 — по 4."),
+    ("Изменился ли ЕГЭ по математике в 2027 году?",
+     "Согласно спецификациям КИМ ЕГЭ 2027 года базового и профильного уровней, изменений структуры и содержания по сравнению с 2026 годом нет. Перед экзаменом сверяйтесь с актуальной версией документов на сайте ФИПИ."),
+    ("Кто ведёт занятия и на каком языке?",
+     "Занятия веду я, Владимир Подлевских: выпускник физического факультета МГУ, Praxis Mathematics 200/200, 23 года частного преподавания, 350+ учеников. Формат — онлайн, один на один, на русском или английском языке, по всему миру (GMT+2/+3)."),
+    ("Можно ли прислать задачу, которая не получается?",
+     "Да. Откройте блок «Разберём вашу задачу» на этой странице: он ведёт к форме на странице репетитора, где можно отправить условие письмом."),
+  ],
+},
+
+{
+  "url": "/oge-math/", "lang": "ru", "body": "src/oge-math.html",
+  "no_cta": True, "lastmod": "2026-11-28",
+  "title": "ОГЭ по математике 2027: репетитор онлайн, выпускник МГУ",
+  "desc": "Подготовка к ОГЭ по математике 2027 онлайн 1:1: 25 заданий, 31 первичный балл, 235 минут. Выпускник физфака МГУ, Praxis Mathematics 200/200.",
+  "og_title": "Подготовка к ОГЭ по математике 2027 онлайн — Владимир Подлевских",
+  "crumbs": [("Главная", "/"), ("Подготовка к ОГЭ по математике", None)],
+  "jsonld": course_service("Подготовка к ОГЭ по математике (онлайн, 1:1)",
+                    "Онлайн-подготовка к ОГЭ по математике по спецификации КИМ ОГЭ 2027: 25 заданий, две части, 31 первичный балл, разбор заданий и развёрнутых решений.",
+                    lang=("ru",), workload=None),
+  "faq_heading": "Подготовка к ОГЭ по математике — частые вопросы",
+  "faq": [
+    ("Сколько заданий в ОГЭ по математике 2027 и сколько длится экзамен?",
+     "По спецификации КИМ ОГЭ 2027 года — 25 заданий: 19 с кратким ответом в первой части и 6 с развёрнутым ответом во второй. Максимальный первичный балл — 31, время — 3 часа 55 минут (235 минут)."),
+    ("Что можно взять с собой на ОГЭ по математике?",
+     "По спецификации разрешается использовать линейку для построения чертежей и рисунков и справочные материалы с основными формулами курса математики основного общего образования. Полный перечень разрешённого утверждается приказом Минпросвещения России и Рособрнадзора."),
+    ("Как оценивается вторая часть?",
+     "Каждое из заданий 20–25 оценивается до 2 баллов, всего до 12. Максимум ставится за верный путь решения, понятный ход рассуждений и верный ответ; за ошибку, не имеющую принципиального характера и не влияющую на правильность хода решения, ставится 1 балл."),
+    ("Изменился ли ОГЭ по математике в 2027 году?",
+     "Согласно спецификации КИМ ОГЭ 2027 года, изменений структуры и содержания по сравнению с 2026 годом нет. Перед экзаменом сверяйтесь с актуальной версией документов на сайте ФИПИ."),
+    ("Кто ведёт занятия и на каком языке?",
+     "Занятия веду я, Владимир Подлевских: выпускник физического факультета МГУ, Praxis Mathematics 200/200, 23 года частного преподавания, 350+ учеников. Формат — онлайн, один на один, на русском или английском языке, по всему миру (GMT+2/+3)."),
+    ("Можно ли прислать задачу, которая не получается?",
+     "Да. Откройте блок «Разберём вашу задачу» на этой странице: он ведёт к форме на странице репетитора, где можно отправить условие письмом."),
+  ],
+},
+
 # ═══════════════ PILLAR 4 — Подготовка к ЕГЭ по физике (RU) ═══════════════
 {
   "url": "/ege-physics/", "lang": "ru", "body": "src/ege-physics.html",
-  "no_cta": True, "lastmod": "2026-11-26",
+  "no_cta": True, "lastmod": "2026-11-28",
   "title": "ЕГЭ по физике 2027 онлайн: репетитор, физик МГУ, из любой страны",
   "desc": "Репетитор по физике для ЕГЭ 2027: онлайн 1:1 из любой страны, русский или английский. Структура КИМ (26 заданий, 45 баллов), ДВИ. Физик МГУ, Praxis 200/200.",
   "og_title": "Подготовка к ЕГЭ по физике 2027 онлайн — Владимир Подлевских",
@@ -190,7 +249,7 @@ PAGES = [
 # ═══════════════ PILLAR 5 — Cambridge IGCSE Physics 0625 (EN) ═══════════════
 {
   "url": "/igcse-physics-0625/", "lang": "en", "body": "src/igcse-physics-0625.html",
-  "no_cta": True, "lastmod": "2026-11-26",
+  "no_cta": True, "lastmod": "2026-11-28",
   "title": "IGCSE Physics 0625 Tutor Online — Russian or English, 1:1",
   "desc": "Russian-speaking Cambridge IGCSE Physics 0625 tutor, online 1:1 (репетитор на русском или English): Core vs Extended, Paper 1-6. MSU physicist, Praxis 200/200.",
   "og_title": "IGCSE Physics 0625 Tutor Online — Vladimir Podlevskikh",
@@ -220,7 +279,7 @@ PAGES = [
 # ═══════════════ SEGMENT 1 — Русскоязычным за рубежом (RU) ════════════════
 {
   "url": "/russian-tutor-abroad/", "lang": "ru", "body": "src/russian-tutor-abroad.html",
-  "lastmod": "2026-11-26",
+  "lastmod": "2026-11-28",
   "title": "Репетитор по физике и математике для русскоязычных за рубежом",
   "desc": "Репетитор по физике и математике для русскоязычных семей за границей: IB, AP, A-Level, IGCSE на русском и английском. Любой часовой пояс.",
   "og_title": "Репетитор для русскоязычных за рубежом — физика и математика",
@@ -244,7 +303,7 @@ PAGES = [
 
 # ═══════════════ SEGMENT 2 — Подготовка к олимпиадам (RU) ═════════════════
 {
-  "url": "/olympiad-physics/", "lang": "ru", "body": "src/olympiad-physics.html",
+  "url": "/olympiad-physics/", "lang": "ru", "body": "src/olympiad-physics.html", "lastmod": "2026-11-28",
   "title": "Подготовка к олимпиадам по физике и математике — онлайн",
   "desc": "Подготовка к олимпиадам по физике и математике онлайн: Всероссийская, перечневые, Physics Olympiad. Физик МГУ, 23 года частного преподавания.",
   "og_title": "Подготовка к олимпиадам по физике и математике — Владимир Подлевских",
@@ -268,7 +327,7 @@ PAGES = [
 
 # ═══════════════════════════ BLOG INDEX ══════════════════════════════════
 {
-  "url": "/blog/", "lang": "en", "body": "src/blog-index.html",
+  "url": "/blog/", "lang": "en", "body": "src/blog-index.html", "lastmod": "2026-11-28",
   "title": "Physics & Maths Method Blog — worked problems, exam technique",
   "desc": "Worked-problem walkthroughs and exam-technique notes for IB, AP, SAT, A-Level and ЕГЭ physics and maths — from an MSU physicist. Each article links to free calculators and the olympiad knowledge base.",
   "og_title": "Method Blog — physics & maths worked problems and exam technique",
@@ -285,7 +344,7 @@ PAGES = [
 
 # ════════════════════ BLOG POST 1 — kinematics graphs (RU) ════════════════
 {
-  "url": "/blog/kinematics-grafiki/", "lang": "ru", "body": "src/post-kinematics-grafiki.html",
+  "url": "/blog/kinematics-grafiki/", "lang": "ru", "body": "src/post-kinematics-grafiki.html", "lastmod": "2026-11-28",
   "title": "Как читать графики движения: разбор типовых задач кинематики",
   "desc": "Графики x(t), v(t), a(t) в задачах по кинематике: как переходить от одного к другому, где наклон, а где площадь, и какие ловушки встречаются на ЕГЭ, ОГЭ и IB/AP. Разбор с примерами.",
   "og_title": "Как читать графики движения — кинематика по шагам",
@@ -303,7 +362,7 @@ PAGES = [
 
 # ═══════════════════ BLOG POST 2 — Newton's laws (RU) ═════════════════════
 {
-  "url": "/blog/newton-zakony-zadachi/", "lang": "ru", "body": "src/post-newton-zakony.html",
+  "url": "/blog/newton-zakony-zadachi/", "lang": "ru", "body": "src/post-newton-zakony.html", "lastmod": "2026-11-28",
   "title": "Второй закон Ньютона: типовые задачи и частые ошибки",
   "desc": "Второй закон Ньютона на практике: как правильно расставлять силы, выбирать оси и решать задачи с наклонной плоскостью, связанными телами и трением. Разбор типовых ошибок для ЕГЭ, A-Level, AP.",
   "og_title": "Второй закон Ньютона — типовые задачи и ошибки",
@@ -321,7 +380,7 @@ PAGES = [
 
 # ═════════════════ BLOG POST 3 — IB Paper 2 technique (EN) ════════════════
 {
-  "url": "/blog/ib-physics-paper-2/", "lang": "en", "body": "src/post-ib-paper-2.html",
+  "url": "/blog/ib-physics-paper-2/", "lang": "en", "body": "src/post-ib-paper-2.html", "lastmod": "2026-11-28",
   "title": "IB Physics Paper 2: how to structure long-answer questions",
   "desc": "IB Physics Paper 2 technique: decode command terms, structure extended-response answers, handle data and uncertainties, and stop losing marks you already know. A worked method from an MSU physicist.",
   "og_title": "IB Physics Paper 2 — structuring long-answer questions",
@@ -340,7 +399,7 @@ PAGES = [
 
 # ═══════ Страница репетитора для AI-выдачи (ChatGPT/Claude): ответы на вопросы выбирающих ═══════
 {
-  "url": "/exam-prep-online/", "lang": "ru", "body": "src/exam-prep-online.html", "lastmod": "2026-11-14",
+  "url": "/exam-prep-online/", "lang": "ru", "body": "src/exam-prep-online.html", "lastmod": "2026-11-28",
   "title": "Подготовка к экзаменам онлайн — репетитор по физике и математике, физик МГУ",
   "desc": "Подготовка к ЕГЭ, ОГЭ, ДВИ, IB, AP, SAT, A-Level и IGCSE онлайн 1:1. Физик МГУ, 23 года частного преподавания, 350+ учеников.",
   "og_title": "Подготовка к экзаменам онлайн — страница репетитора Владимира Подлевских",

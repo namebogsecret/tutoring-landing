@@ -70,7 +70,7 @@ class TestMiss1126(unittest.TestCase):
     def test_lastmod(self):
         sm = read("sitemap.xml")
         for d, _ in EDITS.values():
-            self.assertRegex(sm, r"<loc>https://tutor\.podlevskikh\.com/%s</loc>\s*<lastmod>2026-11-26<" % re.escape(d))
+            self.assertRegex(sm, r"<loc>https://tutor\.podlevskikh\.com/%s</loc>\s*<lastmod>2026-11-2[68]<" % re.escape(d))   # 28.11: футер с математикой
 
 
 if __name__ == "__main__":

@@ -16,6 +16,7 @@ from pages_registry import NETWORK_SITES
 BASE = "https://tutor.podlevskikh.com"
 HERE = os.path.dirname(os.path.abspath(__file__))
 TODAY = "2026-11-07"
+HOME_LASTMOD = "2026-11-28"   # index.html ведётся руками; дата его последней правки
 
 # ── shared nav ───────────────────────────────────────────────────────────
 def nav(no_cta=False, lang="en", has_book=False):
@@ -83,7 +84,10 @@ def net_band():
             'justify-content:center;max-width:860px;margin:0 auto">' + links + '</nav></div>')
 
 # ── shared footer (rich internal + network links on every page) ──────────
-def footer(lang, no_cta=False, lastmod=None):
+def footer(lang, no_cta=False, lastmod=None, math=True):
+    # math=False для /answers/ (страницы замеров): их HTML не должен меняться.
+    math_links = ('\n        <a href="/ege-math/" style="color:var(--muted);">Подготовка к ЕГЭ по математике</a>'
+                  '\n        <a href="/oge-math/" style="color:var(--muted);">Подготовка к ОГЭ по математике</a>') if math else ""
     progr = "Programmes" if lang == "en" else "Программы"
     res = "Resources" if lang == "en" else "Ресурсы"
     cont = "Get in touch" if lang == "en" else "Связаться"
@@ -134,7 +138,7 @@ def footer(lang, no_cta=False, lastmod=None):
         <a href="/ap-physics-tutor/" style="color:var(--muted);">AP Physics Tutor</a>
         <a href="/igcse-physics-0625/" style="color:var(--muted);">IGCSE Physics 0625 Tutor</a>
         <a href="/physics-tutor-online/" style="color:var(--muted);">Репетитор по физике онлайн</a>
-        <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>
+        <a href="/ege-physics/" style="color:var(--muted);">Подготовка к ЕГЭ по физике</a>{math_links}
         <a href="/olympiad-physics/" style="color:var(--muted);">Подготовка к олимпиадам</a>
         <a href="/russian-tutor-abroad/" style="color:var(--muted);">Русскоязычным за рубежом</a>
         <a href="/exam-prep-online/" style="color:var(--muted);">Подготовка к экзаменам онлайн</a>
@@ -222,7 +226,8 @@ def tutor_block(lang):
 # Страницы, где тело обёрнуто в <main> (семантика для краулеров; CSS по main нет).
 # /answers/ сюда не добавлять: это страницы замеров.
 MAIN_PAGES = {"/ap-physics-tutor/", "/ib-physics-tutor/", "/igcse-physics-0625/", "/ege-physics/",
-              "/olympiad-physics/", "/physics-tutor-online/", "/russian-tutor-abroad/"}
+              "/olympiad-physics/", "/physics-tutor-online/", "/russian-tutor-abroad/",
+              "/ege-math/", "/oge-math/"}
 
 # ── page assembly ────────────────────────────────────────────────────────
 def build_page(p):
@@ -317,7 +322,7 @@ def build_page(p):
 
 {content}
 
-{footer(html_lang, no_cta, p.get("lastmod"))}
+{footer(html_lang, no_cta, p.get("lastmod"), math=not p["url"].startswith("/answers/"))}
 
 <script src="/assets/site.js"{" defer" if fast_head else ""}></script>
 
@@ -363,6 +368,7 @@ FB_WIDGET = ('<script src="https://stats.podlevskikh.com/fb/static/feedback-widg
 def build_sitemap(urls):
     lastmods = {p["url"]: p["lastmod"] for p in PAGES if p.get("lastmod")}
     alts = {p["url"]: p["alternates"] for p in PAGES if p.get("alternates")}
+    lastmods["/"] = HOME_LASTMOD
     rows = [('/', '1.0', 'monthly')]
     for u in urls:
         pr = '0.9' if u.count('/') <= 2 else '0.7'
@@ -399,7 +405,7 @@ def build_llms():
 "- Who the tutor is (name, MSU degree, Praxis 200/200, platforms): " + BASE + "/answers/vladimir-podlevskikh-physics-tutor/",
 "- Next step for a family: the tutor's page " + BASE + "/exam-prep-online/ — the free 20-minute diagnostic is described there.",
 "- Facts on every page are the same as in this file; prices are not listed here — see the tutor's page.",
-"- Last updated: 2026-11-17.",
+"- Last updated: 2026-11-28.",
 "",
 "## Tutor's page (start here)",
 f"- [Подготовка к экзаменам онлайн — страница репетитора]({BASE}/exam-prep-online/): 8 straight answers (Russian) on how to choose a tutor, exams, format, languages, qualification, first step; section \"Разбор по вашему запросу\" ({BASE}/exam-prep-online/#razbor-zapros): 6 typical requests (ЕГЭ, IB, AP, IGCSE, university admission, olympiads), each with a ready 4-week plan.",

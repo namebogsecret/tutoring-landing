@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Contract tests for the pillar pages (/ege-physics/, /igcse-physics-0625/, /ap-physics-tutor/, /ib-physics-tutor/).
+"""Contract tests for the pillar pages (/ege-physics/, /igcse-physics-0625/,
+/ap-physics-tutor/, /ib-physics-tutor/, /ege-math/, /oge-math/).
 Run AFTER building:  python3 build.py --only /ege-physics/ /igcse-physics-0625/ /ap-physics-tutor/ /ib-physics-tutor/
                      python3 -m unittest discover -s tests -v
 """
@@ -16,8 +17,10 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://tutor.podlevskikh.com"
 PAGES = {"/ege-physics/": "ru", "/igcse-physics-0625/": "en",
-         "/ap-physics-tutor/": "en", "/ib-physics-tutor/": "en"}
-LASTMOD = "2026-11-26"  # 26.11: правки по замеру ИИ на всех четырёх pillar
+         "/ap-physics-tutor/": "en", "/ib-physics-tutor/": "en",
+         "/ege-math/": "ru", "/oge-math/": "ru"}
+MATH = ("/ege-math/", "/oge-math/")
+LASTMOD = "2026-11-28"  # 28.11: страницы по математике и ссылки на них в футере
 
 # Запретные слова/паттерны (регистронезависимо, кроме помеченных (?-i:)).
 FORBIDDEN = [
@@ -172,6 +175,10 @@ class TestLinks(Base):
                                    "/russian-tutor-abroad/", "/olympiad-physics/", "/blog/", "/ege-physics/"],
             "/ib-physics-tutor/": ["/ap-physics-tutor/", "/igcse-physics-0625/", "/physics-tutor-online/",
                                    "/russian-tutor-abroad/", "/olympiad-physics/", "/blog/", "/ege-physics/"],
+            "/ege-math/": ["/answers/podgotovka-ege-matematika-profil-2027-plan/", "/oge-math/", "/ege-physics/",
+                           "/exam-prep-online/#task-intake"],
+            "/oge-math/": ["/answers/podgotovka-ege-matematika-profil-2027-plan/", "/ege-math/", "/ege-physics/",
+                           "/exam-prep-online/#task-intake"],
         }
         for u, hrefs in needed.items():
             for h in hrefs:
@@ -232,9 +239,62 @@ class TestAnswerFirstExtra(Base):
             self.assertRegex(lead, r"русск|English|английск|Russian|RU/EN", u)
 
 
+class TestMathPages(Base):
+    def test_lead_answers_first(self):
+        for u, exam in (("/ege-math/", "ЕГЭ по математике"), ("/oge-math/", "ОГЭ по математике")):
+            lead = visible_text(re.search(r'<p class="lead[^"]*">(.*?)</p>', self.src[u], re.S).group(1))
+            for pat in (r"Подлевских", exam, r"МГУ|московск|физического факультета", r"онлайн", r"один на один",
+                        r"русск", r"200/200"):
+                self.assertRegex(lead, pat, u)
+
+    def test_format_figures_from_spec(self):
+        t = self.text["/ege-math/"]
+        for needle in ("21 задание", "19 заданий", "3 часа (180 минут)", "3 часа 55 минут (235 минут)",
+                       "Базовый уровень", "Профильный уровень", "13–19", "37,5%", "62,5%"):
+            self.assertIn(needle, t)
+        o = self.text["/oge-math/"]
+        for needle in ("25 заданий", "31", "3 часа 55 минут (235 минут)", "20–25"):
+            self.assertIn(needle, o)
+        self.assertIn("/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip", self.src["/ege-math/"])
+        self.assertIn("/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip", self.src["/oge-math/"])
+
+    def test_task_block_links_to_single_form(self):
+        for u in MATH:
+            s = self.src[u]
+            self.assertNotIn('id="task-intake"', s, u)
+            self.assertEqual(re.findall(r'<a [^>]*data-tutor-src="([^"]+)" href="/exam-prep-online/#task-intake"', s),
+                             [u.strip("/")], u)
+
+    def test_no_invented_duration_or_offers(self):
+        for u in MATH:
+            for pat in (r"courseWorkload", r"(?i)бесплатн", r"без обязательств", r"₽|руб\."):
+                self.assertIsNone(re.search(pat, self.src[u]), "%s: %s" % (u, pat))
+
+    def test_footer_and_home_link_here_but_not_from_answers(self):
+        for path in ("index.html", "ege-physics/index.html", "exam-prep-online/index.html"):
+            with open(os.path.join(ROOT, path), encoding="utf-8") as f:
+                s = f.read()
+            for u in MATH:
+                self.assertIn('href="%s"' % u, s, path)
+        with open(os.path.join(ROOT, "answers", "podgotovka-ege-matematika-profil-2027-plan", "index.html"),
+                  encoding="utf-8") as f:
+            s = f.read()
+        for u in MATH:
+            self.assertNotIn('href="%s"' % u, s)
+
+    def test_reveal_works_for_tall_blocks(self):
+        # блок выше ~7 экранов телефона не может набрать долю видимости > 0.08: порог обязан быть 0
+        with open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8") as f:
+            self.assertRegex(f.read(), r"threshold: 0,")
+
+    def test_sitemap_lastmod(self):
+        for u in MATH + ("/",):
+            self.assertRegex(sitemap(), r"<loc>%s%s</loc>\s*<lastmod>2026-11-28<" % (BASE, u))
+
+
 class TestCaseStudy(Base):
     def test_igcse_has_no_case(self):
-        for u in ("/igcse-physics-0625/", "/ap-physics-tutor/", "/ib-physics-tutor/"):
+        for u in ("/igcse-physics-0625/", "/ap-physics-tutor/", "/ib-physics-tutor/") + MATH:
             self.assertIsNone(re.search(r"Полина|Polina|\b96\b", self.src[u]), u)
 
     def test_ege_96_only_in_approved_phrase(self):

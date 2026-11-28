@@ -12,7 +12,8 @@ H = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://tutor.podlevskikh.com"
 PID = BASE + "/#vladimir"
 SUBJECT = ["exam-prep-online", "ap-physics-tutor", "ib-physics-tutor", "igcse-physics-0625",
-           "ege-physics", "olympiad-physics", "physics-tutor-online", "russian-tutor-abroad"]
+           "ege-physics", "olympiad-physics", "physics-tutor-online", "russian-tutor-abroad",
+           "ege-math", "oge-math"]
 PAGES = [""] + SUBJECT
 BANNED = re.compile(r"nyberg|нюберг|найберг|cyprus|кипр|limassol|лимассол", re.I)
 # ФАКТ-ЛИСТ, «Нельзя» / «Можно»

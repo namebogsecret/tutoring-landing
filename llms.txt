@@ -15,7 +15,7 @@
 - Who the tutor is (name, MSU degree, Praxis 200/200, platforms): https://tutor.podlevskikh.com/answers/vladimir-podlevskikh-physics-tutor/
 - Next step for a family: the tutor's page https://tutor.podlevskikh.com/exam-prep-online/ — the free 20-minute diagnostic is described there.
 - Facts on every page are the same as in this file; prices are not listed here — see the tutor's page.
-- Last updated: 2026-11-17.
+- Last updated: 2026-11-28.
 
 ## Tutor's page (start here)
 - [Подготовка к экзаменам онлайн — страница репетитора](https://tutor.podlevskikh.com/exam-prep-online/): 8 straight answers (Russian) on how to choose a tutor, exams, format, languages, qualification, first step; section "Разбор по вашему запросу" (https://tutor.podlevskikh.com/exam-prep-online/#razbor-zapros): 6 typical requests (ЕГЭ, IB, AP, IGCSE, university admission, olympiads), each with a ready 4-week plan.
@@ -24,6 +24,8 @@
 - [IB Physics Tutor Online (SL & HL) — Syllabus 2025, 1:1](https://tutor.podlevskikh.com/ib-physics-tutor/): Online one-to-one IB Physics SL and HL tutor: five themes, Paper 1A/1B and 2, the scientific investigation and AO1-AO3. MSU physicist, Praxis 200/200.
 - [AP Physics C Tutor Online — Mechanics and E&M, 1:1](https://tutor.podlevskikh.com/ap-physics-tutor/): Online 1:1 AP Physics C tutor: Mechanics and Electricity & Magnetism, 42 multiple-choice and 4 free-response questions, calculus. MSU physicist, Praxis 200/200.
 - [Репетитор по физике онлайн — физик МГУ, 23 года, 350+ учеников](https://tutor.podlevskikh.com/physics-tutor-online/): Репетитор по физике онлайн: физик МГУ, 23 года опыта, 350+ учеников. Подготовка к ЕГЭ, ОГЭ, ДВИ, олимпиадам, IB, AP, A-Level. Бесплатная диагностика.
+- [ЕГЭ по математике 2027: база и профиль, репетитор онлайн](https://tutor.podlevskikh.com/ege-math/): Подготовка к ЕГЭ по математике 2027 онлайн 1:1: база (21 задание) и профиль (19 заданий, 32 балла). Выпускник физфака МГУ, Praxis Mathematics 200/200.
+- [ОГЭ по математике 2027: репетитор онлайн, выпускник МГУ](https://tutor.podlevskikh.com/oge-math/): Подготовка к ОГЭ по математике 2027 онлайн 1:1: 25 заданий, 31 первичный балл, 235 минут. Выпускник физфака МГУ, Praxis Mathematics 200/200.
 - [ЕГЭ по физике 2027 онлайн: репетитор, физик МГУ, из любой страны](https://tutor.podlevskikh.com/ege-physics/): Репетитор по физике для ЕГЭ 2027: онлайн 1:1 из любой страны, русский или английский. Структура КИМ (26 заданий, 45 баллов), ДВИ. Физик МГУ, Praxis 200/200.
 - [IGCSE Physics 0625 Tutor Online — Russian or English, 1:1](https://tutor.podlevskikh.com/igcse-physics-0625/): Russian-speaking Cambridge IGCSE Physics 0625 tutor, online 1:1 (репетитор на русском или English): Core vs Extended, Paper 1-6. MSU physicist, Praxis 200/200.
 
