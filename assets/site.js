@@ -79,6 +79,7 @@ document.addEventListener("click",function(ev){try{
   else if(/t\.me\/VladimirPodlevskikh/.test(href)) name="telegram-personal";
   else if(/calendly\.com/.test(href)) name="calendly";
   else if(a.hasAttribute("data-tutor-src") && /^(diag|paste)-/.test(a.getAttribute("data-tutor-src"))) name="to-tutor-"+a.getAttribute("data-tutor-src"); /* блок «диагностика за 10 минут»: data-tutor-src="diag-<slug>" → cta-to-tutor-diag-<slug>; блок «задача из ИИ»: paste-<slug> → cta-to-tutor-paste-<slug> (текст задачи в событие не идёт) */
+  else if(a.hasAttribute("data-tutor-src") && /^pillar-/.test(a.getAttribute("data-tutor-src"))) name="to-tutor-"+a.getAttribute("data-tutor-src"); /* страницы экзаменов: pillar-<slug> → cta-to-tutor-pillar-<slug>, не в корзине answers */
   else if(a.hasAttribute("data-tutor-src")) name="to-tutor-answers-"+a.getAttribute("data-tutor-src"); /* блок «разберём вашу задачу»: источник = slug страницы-ответа */
   else if(/\/exam-prep-online\/?($|[?#])/.test(href) && a.hostname===location.hostname) name="tutor-page";
   else if(/tutor\.podlevskikh\.com/.test(href) && location.host!=="tutor.podlevskikh.com") name="to-tutor";

@@ -263,7 +263,14 @@ class TestMathPages(Base):
             s = self.src[u]
             self.assertNotIn('id="task-intake"', s, u)
             self.assertEqual(re.findall(r'<a [^>]*data-tutor-src="([^"]+)" href="/exam-prep-online/#task-intake"', s),
-                             [u.strip("/")], u)
+                             ["pillar-" + u.strip("/")], u)
+
+    def test_task_click_event_is_not_in_answers_bucket(self):
+        with open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8") as f:
+            js = f.read()
+        branch = '/^pillar-/.test(a.getAttribute("data-tutor-src"))) name="to-tutor-"+a.getAttribute("data-tutor-src")'
+        self.assertIn(branch, js)
+        self.assertLess(js.index(branch), js.index('name="to-tutor-answers-"'))
 
     def test_no_invented_duration_or_offers(self):
         for u in MATH:
