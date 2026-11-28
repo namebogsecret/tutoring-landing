@@ -204,3 +204,26 @@ html[data-font="grotesk"] .subhero h1 em { font-style: normal; }
 .razbor-plan summary { cursor: pointer; font-weight: 600; color: var(--ink); }
 .razbor-plan > ol { margin-top: 12px; }
 .razbor-plan > ol > li > ul { margin-top: 4px; }
+
+/* Блок «Диагностика за 10 минут» на страницах-ответах (assets/diag.js; без JS скрыт атрибутом hidden) */
+.diag-block { border: 1px solid var(--accent-line, rgba(128,128,128,.3)); border-radius: 14px; padding: 20px 24px; margin: calc(var(--stack, 16px) * 1.4) 0; }
+.diag-block[hidden], .diag-block [hidden] { display: none; }
+.diag-block h2 { margin-top: 0; }
+.diag-list { padding-left: 1.2em; }
+.diag-q { margin-top: 1.1em; }
+.diag-qt { font-weight: 600; margin-bottom: .4em; }
+.diag-opt { display: block; padding: 6px 0; cursor: pointer; }
+.diag-opt input { margin-right: 8px; }
+.diag-mark { font-size: .9em; margin: .3em 0 0; }
+.diag-ok .diag-mark::before { content: "\2713\00a0"; }
+.diag-bad .diag-mark::before { content: "\2717\00a0"; }
+.diag-actions { margin: 1em 0 0; }
+.diag-show[disabled] { opacity: .5; cursor: not-allowed; }
+.diag-score { font-size: 1.25em; font-weight: 700; }
+
+/* Блок «Разобрать задачу из ИИ» (assets/ai-task-paste.js; без JS скрыт атрибутом hidden) и форма #task-intake на /exam-prep-online/ */
+.paste-block, .task-intake { border: 1px solid var(--accent-line, rgba(128,128,128,.3)); border-radius: 14px; padding: 20px 24px; margin: calc(var(--stack, 16px) * 1.4) 0; }
+.paste-block[hidden], .task-intake[hidden] { display: none; }
+.paste-block h2, .task-intake h3 { margin-top: 0; }
+.paste-text, .task-intake textarea { width: 100%; box-sizing: border-box; min-height: 8em; padding: 10px 12px; font: inherit; color: inherit; background: transparent; border: 1px solid var(--accent-line, rgba(128,128,128,.4)); border-radius: 10px; resize: vertical; }
+.task-intake .task-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: .8em 0 0; }

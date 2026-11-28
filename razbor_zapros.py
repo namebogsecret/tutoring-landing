@@ -123,8 +123,25 @@ def _card(r):
             f'  {block}\n</article>')
 
 
+TASK_MAIL = "vladimir@podlevskikh.com"
+
+
+def _task_intake():
+    """Форма «Ваша задача» (assets/ai-task-paste.js): подхватывает текст из localStorage.tutorTask (TTL 30 мин), готовит письмо и копирование."""
+    return (f'      <form class="task-intake" id="task-intake" data-mail="{TASK_MAIL}" hidden onsubmit="return false">\n'
+            '        <h3>Ваша задача</h3>\n'
+            '        <p class="muted">Вставьте условие задачи: оно хранится только в вашем браузере, недолго, и никуда не отправляется, пока вы сами не отправите письмо.</p>\n'
+            '        <p><textarea name="task" rows="6" maxlength="2000" aria-label="Ваша задача"></textarea></p>\n'
+            '        <p class="task-actions"><a class="btn btn-primary" id="task-mail">Отправить по почте</a>'
+            ' <button type="button" class="btn" id="task-copy">Скопировать текст</button>'
+            ' <span class="muted" id="task-copied" role="status" aria-live="polite"></span></p>\n'
+            '        <p class="muted" id="task-long" role="status" hidden></p>\n'
+            '      </form>\n'
+            '      <script src="/assets/ai-task-paste.js" defer></script>\n')
+
+
 def render_section():
     cards = "\n".join(_card(r) for r in REQUESTS)
     return (f'<section class="section" id="{SECTION_ID}">\n  <div class="wrap">\n    <div class="prose reveal razbor-zapros">\n'
-            f'      <h2>{SECTION_TITLE}</h2>\n      <p>{LEAD}</p>\n{cards}\n'
+            f'      <h2>{SECTION_TITLE}</h2>\n      <p>{LEAD}</p>\n{_task_intake()}{cards}\n'
             f'      <script src="/assets/start-block.js" defer></script>\n    </div>\n  </div>\n</section>')

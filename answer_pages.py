@@ -11,6 +11,8 @@ FAQ (+ JSON-LD FAQPage из pages_registry/build), перелинковка с p
 Правка текста — здесь; затем `python3 build.py`.
 """
 from pages_registry import course, service, PERSON_REF
+from html import escape as html_escape
+from diag_sets import diag_set
 import seealso
 
 BASE_URL = "https://tutor.podlevskikh.com"
@@ -1147,6 +1149,52 @@ for _n in (1, 2, 3, 4, 5, 6, 8, 9, 10, 11):
     _a(_n)["updated"] = UPDATED_MISS
 
 
+# ── 26.11 (замер 26.11: сайт 0/12): по ОДНОЙ новой правке на провал. Правки #2, #3, #5, #9 — внутренние ссылки с профильных
+# страниц (src/*.html), #12 — FAQ на /igcse-physics-0625/ (pages_registry.py). Вместо нас в выдаче площадки и списки выбора,
+# поэтому ниже — проверяемые критерии выбора. Факты — только уже стоящие на этих страницах (ФАКТ-ЛИСТ).
+UPDATED_MISS26 = "2026-11-26"
+
+# #1 «репетитор по физике ЕГЭ онлайн»: критерии выбора
+_a(1)["sections"] = [("Как выбрать репетитора по физике ЕГЭ онлайн: что проверить",
+    "<ul><li><b>Подтверждаемые знания:</b> образование и экзаменационные результаты; здесь — физфак МГУ (2006) и Praxis Physics 5266: 200/200;</li>"
+    "<li><b>Актуальный формат:</b> КИМ ЕГЭ 2027 — 26 заданий, 45 первичных баллов, 235 минут;</li>"
+    "<li><b>План:</b> начинается с диагностики по разделам кодификатора;</li>"
+    "<li><b>Вторая часть:</b> развёрнутые решения тренируются по критериям;</li>"
+    "<li><b>Формат занятий:</b> онлайн, один на один, на русском или английском.</li></ul>")] + list(_a(1)["sections"])
+# #4 «репетитор IGCSE физика 0625 на русском»: критерии выбора русскоязычного репетитора
+_a(4)["sections"] = [("Как выбрать русскоязычного репетитора IGCSE Physics 0625",
+    "<ul><li><b>Два языка:</b> объяснения по-русски, а термины и формулировки заданий — по-английски, как на экзамене;</li>"
+    "<li><b>Уровень:</b> репетитор различает Core (Paper 1 и 3, оценки C–G) и Extended (Paper 2 и 4, оценки A*–G);</li>"
+    "<li><b>Практика:</b> Paper 5 или Paper 6 — 20% оценки, их нужно готовить отдельно;</li>"
+    "<li><b>Проверяемые знания:</b> здесь — физфак МГУ (2006) и Praxis Physics 5266: 200/200.</li></ul>")] + list(_a(4)["sections"])
+# #6 «репетитор AP Physics онлайн на русском»: критерии выбора
+_a(6)["sections"] = [("Как выбрать репетитора AP Physics на русском: что проверить",
+    "<ul><li><b>Какой курс:</b> AP Physics 1, 2, C: Mechanics и C: Electricity and Magnetism — разные экзамены;</li>"
+    "<li><b>Матанализ:</b> для AP Physics C репетитор должен владеть и физикой, и математикой; здесь — Praxis Physics 5266 и Praxis Mathematics 5165, оба 200/200;</li>"
+    "<li><b>Два языка:</b> объяснения по-русски, задания и термины College Board — на английском;</li>"
+    "<li><b>Формат экзамена:</b> сверяется по AP Central, а не со слов репетитора.</li></ul>")] + list(_a(6)["sections"])
+# #7 «Vladimir Podlevskikh physics tutor»: какая страница — первоисточник
+_a(7)["faq"] = [("Is this the official page of Vladimir Podlevskikh, physics tutor?",
+    "Yes. tutor.podlevskikh.com is the tutor's own page. Profiles of the same person on tutor marketplaces may differ in details; this page is the reference.")] + list(_a(7)["faq"])
+# #8 «IGCSE Physics 0625 tutor Russian-speaking»: критерии выбора (EN)
+_a(8)["sections"] = [("How to choose a Russian-speaking IGCSE Physics 0625 tutor",
+    "<ul><li><b>Two languages:</b> concepts explained in Russian, answers written in English as the paper expects;</li>"
+    "<li><b>Tier:</b> the tutor should separate Core (Papers 1 and 3, grades C–G) from Extended (Papers 2 and 4, grades A*–G);</li>"
+    "<li><b>Practical:</b> Paper 5 or Paper 6 is 20% of the grade and needs its own preparation;</li>"
+    "<li><b>Verifiable record:</b> here Faculty of Physics, MSU (2006) and Praxis Physics 5266: 200/200.</li></ul>")] + list(_a(8)["sections"])
+# #10 «best IB Physics HL tutor online»: видимый FAQ под запрос
+_a(10)["faq"] = [("How do I find the best IB Physics HL tutor online?",
+    "No tutor is objectively “best”. Compare candidates on what you can verify: knowledge of HL content beyond SL, the HL Paper 1 and Paper 2 structure, "
+    "how the internal assessment is supported without editing the student's work, a degree and exam scores, and the lesson language.")] + list(_a(10)["faq"])
+# #11 «Russian EGE physics tutor English-speaking»: FAQ про слабый русский
+_a(11)["faq"] = list(_a(11)["faq"]) + [(
+    "Can an English-speaking student with limited Russian prepare for the EGE in physics?",
+    "Concepts and solution methods can be explained in English, but the exam paper is in Russian and Part 2 is marked on the written solution, "
+    "so the Russian wording of tasks and of the solution layout has to be practised as well.")]
+for _n in (1, 4, 6, 7, 8, 10, 11):
+    _a(_n)["updated"] = UPDATED_MISS26
+
+
 # ── RU: ЕГЭ по математике (профильный уровень) 2027 — план по месяцам (автопилот 18.11) ──
 # Структура, баллы, уровни, время — только из спецификации КИМ ЕГЭ 2027 «МА-11 СПЕЦ_профильный» (ФИПИ, doc.fipi.ru/ege/
 # demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip, сверено 18.11.2026; разд. 11: «Изменения структуры и содержания
@@ -1430,17 +1478,17 @@ ANSWERS_PHYS.append(_OLYMP_ENTRY_RU)
 
 
 # ── RU: SAT Math и ACT Science онлайн (автопилот 21.11, n=409) ──
-# Источники (проверены 21.11.2026): College Board, satsuite.collegeboard.org/sat/whats-on-the-test/structure — Digital SAT, Math: 2 равных модуля,
-# 44 задания, 35 минут на модуль (70 всего), второй модуль легче или сложнее по результату первого; .../math/overview — задания с выбором ответа и
-# с самостоятельным ответом, 4 области (Algebra 13–15, Advanced Math 13–15, Problem-Solving and Data Analysis 5–7, Geometry and Trigonometry 5–7).
-# ACT: act.org/.../act-exam-sections-and-structure.html — Science (Optional): 40 заданий (34 оцениваются), 40 минут; тексты по биологии, химии,
-# наукам о Земле и космосе, физике; таблицы/графики/диаграммы; три формата (data representation, research summaries, conflicting viewpoints) — по описанию act.org.
-# Часть страниц act.org ещё называет 35 минут — берём 40 минут по странице структуры. НЕ подтверждено и потому НЕ пишем: калькулятор Desmos, баллы, даты сессий, цены.
+# Источники (проверены 28.11.2026):
+# https://satsuite.collegeboard.org/sat/whats-on-the-test/structure — Digital SAT, Math: два модуля по 35 минут, 70 минут, 44 задания, второй модуль легче или сложнее по результату первого;
+# https://satsuite.collegeboard.org/sat/whats-on-the-test/math/overview — задания с выбором ответа и student-produced response, часть в контексте, 4 области (Algebra, Advanced Math, Problem-Solving and Data Analysis, Geometry and Trigonometry);
+# https://www.act.org/content/act/en/products-and-services/the-act.html — Science: optional add-on, не влияет на Composite, 40 минут, 40 вопросов;
+# https://www.act.org/content/act/en/products-and-services/the-act/test-preparation/description-of-science-test.html — научные сценарии с multiple-choice; биология, химия, Earth/space sciences, физика; могут требоваться базовые знания; Data Representation, Research Summaries, Conflicting Viewpoints.
+# НЕ подтверждено и потому НЕ пишем: число оцениваемых заданий ACT Science и (не)адаптивность ACT; на странице также нет баллов, дат сессий и цен.
 _SATACT_TABLE_RU = {'title': 'Что на экзамене: SAT Math и ACT Science (по College Board и ACT)',
  'head': ['Параметр', 'SAT Math (цифровой)', 'ACT Science'],
- 'rows': [['Объём', '44 задания в двух равных модулях', '40 заданий, из них 34 оцениваются'],
+ 'rows': [['Объём', '44 задания в двух равных модулях', '40 заданий'],
           ['Время', '35 минут на модуль, 70 минут всего', '40 минут'],
-          ['Адаптивность', 'Второй модуль легче или сложнее — по результату первого', 'Не адаптивный: один набор текстов'],
+          ['Устройство', 'Два модуля; второй легче или сложнее — по результату первого', 'Несколько научных сценариев, после каждого — задания с выбором ответа'],
           ['Формат ответа', 'Выбор ответа и самостоятельно записанный ответ', 'Задания к научным текстам, таблицам, графикам и диаграммам'],
           ['Содержание', 'Algebra, Advanced Math, Problem-Solving and Data Analysis, Geometry and Trigonometry', 'Биология, химия, науки о Земле и космосе, физика'],
           ['Типы текстов', 'Часть заданий дана в контексте, часть — «чистая» математика', 'Данные и графики, описание экспериментов, конфликтующие точки зрения'],
@@ -1462,7 +1510,7 @@ _SATACT_ENTRY_RU = {"n": 409, "slug": "podgotovka-sat-math-act-science-onlajn", 
  "answer": "В цифровом SAT Math 44 задания в двух модулях по 35 минут, второй подстраивается под результат первого; в ACT Science 40 заданий за 40 минут, раздел необязательный. Подготовка онлайн идёт 8–12 относительных недель: диагностика, разбор по областям, работа на время. Занятия один на один ведёт физик МГУ.",
  "facts": ["Цифровой SAT Math: два равных модуля, 44 задания, 35 минут на модуль (70 минут всего); второй модуль легче или сложнее — по результату первого (College Board)",
            "Задания SAT Math — с выбором ответа и с самостоятельно записанным ответом; четыре области: Algebra, Advanced Math, Problem-Solving and Data Analysis, Geometry and Trigonometry",
-           "ACT Science: 40 заданий (34 оцениваются), 40 минут, раздел необязательный; тексты по биологии, химии, наукам о Земле и космосе и физике (ACT)",
+           "ACT Science: 40 заданий, 40 минут, раздел необязательный; тексты по биологии, химии, наукам о Земле и космосе и физике (ACT)",
            "Форматы ACT Science: данные и графики, описания экспериментов, конфликтующие точки зрения",
            "Даты сессий, баллы, требования и условия приёма на странице намеренно не приводятся: их публикуют College Board, ACT и сами вузы",
            "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
@@ -1491,14 +1539,14 @@ _SATACT_ENTRY_RU = {"n": 409, "slug": "podgotovka-sat-math-act-science-onlajn", 
    ("Как подготовиться к SAT Math онлайн?", "Нужны диагностика по четырём областям, разбор заданий по порядку, работа на время и разбор каждой ошибки. Занятия идут онлайн один на один."),
    ("Сколько заданий и минут в цифровом SAT Math?", "44 задания в двух равных модулях, 35 минут на модуль, 70 минут всего. Второй модуль легче или сложнее — в зависимости от результата в первом (College Board)."),
    ("Чем ACT Science отличается от курса физики или биологии?", "ACT Science проверяет умение читать таблицы, графики и описания экспериментов и делать выводы. Основной упор на чтение данных; часть заданий может требовать базовых внешних знаний. Тексты по биологии, химии, наукам о Земле и космосе и физике поставляют материал."),
-   ("Сколько заданий и минут в ACT Science?", "40 заданий, из них 34 оцениваются, 40 минут. Раздел необязательный (ACT)."),
+   ("Сколько заданий и минут в ACT Science?", "40 заданий, 40 минут. Раздел необязательный (ACT)."),
    ("Сколько недель нужно на подготовку?", "В графике на странице 8–12 относительных недель. Срок зависит от уровня на диагностике и числа занятий в неделю; если нужен один из двух экзаменов, график соответственно сжимается."),
    ("Как проходят занятия?", "Онлайн, один на один, на общей интерактивной доске. Разбираем задания по областям, тренируем темп по времени, работаем над ошибками."),
    ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает."),
    ("Где смотреть даты и условия экзаменов и приёма?", "На сайтах College Board и ACT и на сайтах вузов. На этой странице они намеренно не приводятся."),
    ("Какие ошибки мешают на SAT Math и ACT Science?", "По наблюдениям из практики преподавания (не статистика): решение в лоб вместо проверки, неверное чтение условия, паника из-за адаптивного модуля, чтение всего текста подряд, работа без времени."),
  ],
- "updated": "2026-11-21",
+ "updated": "2026-11-28",
  "table": _SATACT_TABLE_RU,
  "who": _RU_WHO,
  "course": ("SAT Math и ACT Science онлайн (1:1)", "Индивидуальная онлайн-подготовка к SAT Math и ACT Science: структура экзаменов, график на 8–12 недель, разбор задач."),
@@ -1579,6 +1627,89 @@ def _task_block(a):
             f'<p><a class="btn btn-primary btn-lg" data-tutor-src="{a["slug"]}" href="{task_block_href(a["slug"])}">{label} →</a></p></div>\n      ')
 
 
+def paste_block_href(slug):
+    """Ссылка на страницу репетитора с меткой блока «задача из ИИ»: utm_medium=ai-task-paste, utm_campaign=paste-<slug>."""
+    return f"{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=ai-task-paste&amp;utm_campaign=paste-{slug}#razbor-zapros"
+
+
+_PASTE_TEXT = {
+    "ru": ("Разобрать задачу из ИИ", "Вставьте условие задачи, с которой не справился ИИ-чат или в решении которой вы сомневаетесь. "
+           "Текст останется только в этой вкладке браузера: в адрес страницы и в статистику он не попадает.",
+           "Условие задачи", "К репетитору"),
+    "en": ("Work through a problem from an AI chat", "Paste the statement of a problem an AI chat could not solve, or whose solution you doubt. "
+           "The text stays in this browser tab only: it does not go into the page address or the statistics.",
+           "Problem statement", "To the tutor (page in Russian)"),
+}
+
+
+def _paste_block(a):
+    """Блок «Разобрать задачу из ИИ»: textarea (maxlength 2000) + ссылка к репетитору. assets/ai-task-paste.js кладёт текст
+    в sessionStorage (ключ tutorTask), а не в URL; на /exam-prep-online/ его подхватывает форма #task-intake.
+    Скрыт (hidden), пока JS не включит. data-tutor-src="paste-<slug>" → site.js шлёт cta-to-tutor-paste-<slug> (без текста)."""
+    title, lead, label, cta = _PASTE_TEXT[a["lang"]]
+    return (f'<div class="paste-block" id="ai-task-paste" data-slug="{a["slug"]}" hidden><h2>{title}</h2><p>{lead}</p>'
+            f'<p><textarea class="paste-text" rows="6" maxlength="2000" aria-label="{label}"></textarea></p>'
+            f'<p><a class="btn btn-primary btn-lg" data-tutor-src="paste-{a["slug"]}" href="{paste_block_href(a["slug"])}">{cta} →</a></p></div>\n'
+            f'      <script src="/assets/ai-task-paste.js" defer></script>\n      ')
+
+
+def diag_block_href(slug):
+    """Ссылка на страницу репетитора с меткой источника блока диагностики: utm_campaign=diag-<slug>."""
+    return f"{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=diag-block&amp;utm_campaign=diag-{slug}#razbor-zapros"
+
+
+_DIAG_TEXT = {
+    "ru": {
+        "title": "Диагностика за 10 минут",
+        "lead": "Пять вопросов по теме этой страницы, у каждого один верный ответ из четырёх. Ответы можно менять; результат покажет кнопка, когда отвечены все пять; это ориентир по базовым темам, а не прогноз экзаменационного балла.",
+        "q": "Вопрос", "score": "Верно: {n} из 5", "right": "верно", "wrong": "неверно",
+        "levels": ["Основы пока нетвёрдые: в таком случае полезно спокойно пройти базовые темы по порядку и найти, где именно возникает путаница.",
+                   "Основа есть, но часть тем держится нетвёрдо. Следующий шаг — понять, какие именно темы и типы заданий дают ошибки.",
+                   "Уверенная база. Дальше важны задачи повышенной сложности, оформление решений и работа со временем."],
+        "cta": "Разобрать результат с репетитором",
+        "hint": "Ответьте на все пять вопросов, затем нажмите кнопку.", "show": "Показать результат",
+    },
+    "en": {
+        "title": "10-minute diagnostic",
+        "lead": "Five questions on the topic of this page, one correct answer out of four each. Answers can be changed; the button shows the result once all five are answered; it is a guide to core topics, not a prediction of an exam grade.",
+        "q": "Question", "score": "Correct: {n} out of 5", "right": "correct", "wrong": "incorrect",
+        "levels": ["The basics are not yet secure: it helps to go through the core topics in order and find where exactly the confusion starts.",
+                   "There is a base, but some topics are shaky. The next step is to find which topics and question types produce the mistakes.",
+                   "A solid base. From here, harder problems, the way solutions are written up and working to time matter most."],
+        "cta": "Go through the result with the tutor (page in Russian)",
+        "hint": "Answer all five questions, then press the button.", "show": "Show result",
+    },
+}
+
+
+def _diag_block(a):
+    """Блок «Диагностика за 10 минут»: 5 вопросов набора по предмету/экзамену страницы (diag_sets.py), подсчёт на клиенте
+    (assets/diag.js, без запросов наружу). Скрыт (hidden), пока JS не включит его. Кнопка результата ведёт к репетитору:
+    utm_campaign=diag-<slug>, data-tutor-src="diag-<slug>" → assets/site.js шлёт событие cta-to-tutor-diag-<slug>."""
+    found = diag_set(a["slug"], a["lang"])
+    if not found:
+        return ""
+    key, qs = found
+    t = _DIAG_TEXT[a["lang"]]
+    esc = html_escape
+    items = ""
+    for i, (q, opts, correct) in enumerate(qs):
+        radios = "".join(
+            f'<label class="diag-opt"><input type="radio" name="diag-q{i}" value="{j}"> <span>{esc(o)}</span></label>'
+            for j, o in enumerate(opts))
+        items += (f'<li class="diag-q" data-correct="{correct}"><p class="diag-qt">{esc(q)}</p>'
+                  f'<div class="diag-opts">{radios}</div><p class="diag-mark" hidden></p></li>')
+    levels = "".join(f'<p class="diag-level" data-levels="{k}" hidden>{esc(x)}</p>' for k, x in enumerate(t["levels"]))
+    return (f'<div class="diag-block" id="diag-block" data-diag="{key}" data-right="{t["right"]}" data-wrong="{t["wrong"]}" '
+            f'data-score="{esc(t["score"])}" hidden>'
+            f'<h2>{t["title"]}</h2><p>{t["lead"]}</p><ol class="diag-list">{items}</ol>'
+            f'<p class="diag-hint muted">{t["hint"]}</p>'
+            f'<p class="diag-actions"><button type="button" class="btn btn-primary diag-show" disabled>{t["show"]}</button></p>'
+            f'<div class="diag-result" aria-live="polite"><p class="diag-score"></p>{levels}'
+            f'<p class="diag-cta" hidden><a class="btn btn-primary btn-lg" data-tutor-src="diag-{a["slug"]}" href="{diag_block_href(a["slug"])}">{t["cta"]} →</a></p></div></div>\n'
+            f'      <script src="/assets/diag.js" defer></script>\n      ')
+
+
 def _tutor_cta(lang):
     if lang == "ru":
         return (f'<p><a class="btn btn-ghost btn-lg" data-cta="tutor-page" href="{TUTOR_PAGE}">'
@@ -1637,7 +1768,7 @@ def render_body(a):
 {tbl}      {secs}
       <h2 id="who">{"Кто преподаёт" if ru else "Who teaches"}</h2>
       <p>{who}</p>
-      {_task_block(a)}{_razbor_block(a)}
+      {_diag_block(a)}{_paste_block(a)}{_task_block(a)}{_razbor_block(a)}
       {_seealso_block(a)}
       {_links_block(a['lang'])}
     </div>
@@ -1775,3 +1906,506 @@ def _hub_en():
 
 def answer_pages():
     return [_hub(), _hub_en()] + [_page(a) for a in ANSWERS] + [_page(a) for a in ANSWERS_EN] + [_page(a) for a in ANSWERS_MATH] + [_page(a) for a in ANSWERS_PHYS]
+
+
+# ── RU: физика для поступления в зарубежные вузы (UCAS, Oxford, Cambridge, ESAT) онлайн (автопилот 21.11) ──
+# Факты сверены 21.11.2026 по первоисточникам: physics.ox.ac.uk/study/undergraduates/how-apply/physics-aptitude-test-pat
+# (все поступающие на Physics и Physics and Philosophy сдают ESAT; прежний PAT не используется; двухчасовой тест по физике и математике),
+# undergraduate.study.cam.ac.uk/apply/how/science-engineering-admission-test (курсы с ESAT; Engineering = Mathematics 1, Mathematics 2, Physics;
+# Natural Sciences = Mathematics 1 + два из Biology/Chemistry/Physics/Mathematics 2; 120 минут), esat-tmua.ac.uk/about-the-tests/esat-test/
+# (пять модулей, по 27 вопросов и 40 минут, без калькулятора, шкала 1–9, нет проходного балла), ucas.com / ox.ac.uk / cam.ac.uk
+# (срок Оксфорд/Кембридж — 15 октября, 18:00 по Великобритании), undergraduate.study.cam.ac.uk/courses/engineering (Engineering: типичное A*A*A; IB 41–42, 776 на HL; Mathematics и Physics обязательны).
+# Не приводим: даты сессий и регистрации (меняются ежегодно), оценки Оксфорда (формулировки на страницах расходятся), статистику приёма.
+UCAS_SLUG = "podgotovka-fizika-zarubezhnye-vuzy-ucas-oxford-cambridge-onlajn"
+QUERIES_PHYS[410] = "Физика для поступления в зарубежные вузы онлайн: UCAS, Oxford PAT, Cambridge, план подготовки"
+_UCAS_RELATED = [("podgotovka-a-level-ib-fizika-onlajn", "Подготовка к A-level и IB по физике онлайн: программа и план по месяцам"),
+                 ("ib-physics-hl-ili-sl-chto-vybrat", "IB Physics HL или SL: чем отличаются и как выбрать"),
+                 ("ap-physics-calculus-onlajn-programma-grafik-mayskie-ekzameny", "AP Physics и AP Calculus онлайн: программа и график к майским экзаменам"),
+                 ("olimpiadnaya-fizika-podgotovka-tehnicheskie-vuzy-onlajn", "Олимпиадная физика и подготовка в технические вузы онлайн"),
+                 ("podgotovka-ege-fizika-za-rubezhom", "Подготовка к ЕГЭ по физике для живущих за рубежом")]
+
+_UCAS_TABLE_RU = {'title': 'Что и куда: от подачи до собеседования',
+ 'head': ['Этап', 'Что происходит', 'Что проверить на сайте вуза или организатора'],
+ 'rows': [['Подача через UCAS', 'Единая заявка в британские вузы; для Оксфорда и Кембриджа срок подачи — 15 октября, 18:00 по британскому времени', 'Срок для вашего года поступления и список курсов с ранним сроком — на ucas.com'],
+          ['Вступительный тест', 'Оксфорд, физика: ESAT у всех поступающих на Physics и Physics and Philosophy, прежний PAT не используется. Кембридж: ESAT на Engineering, Natural Sciences и некоторых других курсах', 'Какие модули нужны вашему курсу, даты сессий и срок регистрации — на esat-tmua.ac.uk и странице курса'],
+          ['Собеседование', 'У Оксфорда на физике на собеседование приглашают по результату ESAT, информации в заявке UCAS и контекстной информации; приглашённые затем идут на собеседования', 'Формат и сроки собеседований — на странице физического факультета и колледжа'],
+          ['Требования по оценкам', 'Кембридж, Engineering: типичное предложение A*A*A по A-level или 41–42 балла по IB, 776 на Higher Level; обязательны Mathematics и Physics', 'Актуальное предложение вашего курса — на странице курса: оно может меняться по годам']]}
+
+_UCAS_PLAN_TABLE_RU = {'title': 'План подготовки по этапам: до дедлайна подачи и теста, затем собеседование',
+ 'head': ['Этап', 'Фокус', 'Чем проверяем'],
+ 'rows': [['Месяцы 1–2', 'Диагностика; выбор вуза и курса; математика уровня A-level или IB HL: алгебра, функции, тригонометрия', 'Диагностика на 20 минут; письменный разбор нескольких задач'],
+          ['Месяцы 3–5', 'Механика, колебания, электричество на глубоком уровне; начала анализа', 'Подборки задач нарастающей сложности; разбор каждого решения'],
+          ['Месяцы 6–8', 'Остальные разделы физики; методы: оценки, размерности, графики, предельные случаи; Mathematics 2', 'Задачи без калькулятора; работа над ошибками'],
+          ['Месяцы 9–10', 'Формат ESAT: 27 вопросов и 40 минут на модуль; пробные модули на время; параллельно заявка UCAS и личное заявление, чтобы подать до дедлайна', 'Пробные модули по времени; разбор каждого неверного ответа; черновик личного заявления'],
+          ['Месяцы 11–12', 'Подготовка к собеседованию (оно проходит уже после подачи и теста): рассуждение вслух, задачи по физике и математике', 'Пробное собеседование; письменный план рассуждения']]}
+
+_UCAS_ENTRY_RU = {"n": 410, "slug": UCAS_SLUG, "lang": "ru", "task": True,
+ "title": "Физика для UCAS, Oxford и Cambridge онлайн: план подготовки",
+ "desc": "Физика для поступления в вузы Великобритании онлайн: UCAS, ESAT вместо Oxford PAT, Cambridge, интервью, план по месяцам. Физик МГУ, 1:1.",
+ "h1": "Физика для поступления в зарубежные вузы онлайн: UCAS, Oxford, Cambridge и план подготовки",
+ "answer": "Физика в Оксфорде, а в Кембридже Natural Sciences или Engineering: подача через UCAS (срок — 15 октября), тест ESAT (прежний Oxford PAT не используется), собеседование, оценки A-level или IB. Онлайн один на один с физиком МГУ: диагностика, математика, физика, пробные модули.",
+ "facts": ["Оксфорд, физика: все поступающие на Physics и Physics and Philosophy сдают ESAT; прежний PAT не используется (physics.ox.ac.uk)",
+           "ESAT — пять модулей (Mathematics 1, Mathematics 2, Physics, Chemistry, Biology), в каждом 27 вопросов и 40 минут, калькулятор не разрешён, результат по шкале от 1 до 9 (esat-tmua.ac.uk)",
+           "Кембридж: Engineering — Mathematics 1, Mathematics 2 и Physics; Natural Sciences — Mathematics 1 и два из Biology, Chemistry, Physics, Mathematics 2 (undergraduate.study.cam.ac.uk)",
+           "Срок UCAS для Оксфорда и Кембриджа — 15 октября, 18:00 по британскому времени; даты тестов, регистрация и оценки — на сайтах вузов и организатора",
+           "Занятия: онлайн, 1:1, русский или английский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Что нужно для физики в Великобритании", "<p>Для физики и инженерных курсов британские вузы ожидают сильную математику и физику на уровне A-level, IB Higher Level или близкой программы (например, AP). Например, на странице Cambridge Engineering обязательными названы Mathematics и Physics, а для IB — Analysis and Approaches. Если вы ещё выбираете между программами, начните со страниц про A-level и IB и про AP, ссылки ниже.</p>"
+    "<p>Единой учебной программы у вступительного теста нет: ESAT проверяет математику и физику на глубину, а не набор формул. Поэтому основной темой подготовки становится умение решать незнакомые задачи без калькулятора.</p>"),
+   ("Что и куда: подача, тест, собеседование, оценки", "<p>Ниже — общий каркас. Даты сессий теста, сроки регистрации и предложения по оценкам меняются от года к году, поэтому на странице они приведены только там, где подтверждены сайтами вузов; остальное сверяйте с официальными страницами.</p>"
+    "<p>Таблица со сравнением этапов — выше, в блоке со спецификацией.</p>"),
+   ("PAT, ESAT и ЕГЭ или олимпиады: в чём разница", "<p>Oxford PAT — прежний тест физического факультета Оксфорда; сейчас Оксфорд принимает на физику по результатам ESAT, и старые материалы PAT полезны разве что как задачи для тренировки рассуждений. ESAT — тест с выбором ответа на компьютере: модуль Mathematics 1 обязателен для всех, остальные модули зависят от курса.</p>"
+    "<p>От ЕГЭ он отличается тем, что нет развёрнутого решения с оформлением: нужен верный выбор ответа за 40 минут на модуль и без калькулятора, значит, нужны быстрые оценки и вычисления в уме. От олимпиады — тем, что задачи короче и на время, но те же методы (размерности, предельные случаи, оценки) работают и там. Программа ЕГЭ не покрывает формат полностью; <a href=\"/answers/olimpiadnaya-fizika-podgotovka-tehnicheskie-vuzy-onlajn/\">олимпиадная подготовка</a> помогает с нестандартными задачами.</p>"),
+   ("План подготовки по этапам", "<p>План относительный: месяцы считаются от начала занятий до подачи и теста, без привязки к датам. Если вы начинаете ближе к сроку, разделы, где диагностика показала уверенный результат, сжимаются. Даты сессий и регистрации — на сайте организатора теста.</p>"
+    "<h3>" + _UCAS_PLAN_TABLE_RU["title"] + "</h3><table class=\"spec-table\"><thead><tr>" + "".join("<th>%s</th>" % c for c in _UCAS_PLAN_TABLE_RU["head"]) + "</tr></thead><tbody>"
+    + "".join("<tr>" + "".join("<td>%s</td>" % c for c in r) + "</tr>" for r in _UCAS_PLAN_TABLE_RU["rows"]) + "</tbody></table>"),
+   ("Типичные ошибки", "<p>Это наблюдения из практики преподавания, а не статистика приёма.</p><ul>"
+    "<li><b>Опора на старые материалы PAT.</b> Тест сменился на ESAT: формат и состав модулей другие, поэтому сверяйте подготовку с описанием ESAT.</li>"
+    "<li><b>Калькулятор в голове не тренируется.</b> На ESAT его нет, а ученик привык считать на нём.</li>"
+    "<li><b>Работа без времени.</b> На модуль даётся 40 минут: темп приходит только с пробными модулями на время.</li>"
+    "<li><b>Слабая математика при сильной физике.</b> Модуль Mathematics 1 обязателен для всех, и физику без математики не вытянуть.</li>"
+    "<li><b>Поздний старт.</b> Заявку, личное заявление и тест нужно готовить параллельно и до дедлайна подачи, а не друг за другом.</li>"
+    "<li><b>Решение молча на собеседовании.</b> Интервьюер оценивает ход рассуждения, поэтому рассуждать нужно вслух.</li></ul>"),
+   ("Как проходят занятия", "<p>Занятия проходят онлайн, один на один, на общей интерактивной доске; язык — русский или английский, термины экзаменов остаются английскими; время подстраиваем под ваш часовой пояс. Ведёт занятия физик, выпускник физического факультета МГУ (2006).</p>"
+    "<ul><li><b>Диагностика на 20 минут</b> в начале: уровень, пробелы, цель и реалистичный план.</li>"
+    "<li><b>Разбор задач по теме</b>: сначала вместе, затем самостоятельно с обсуждением.</li>"
+    "<li><b>Пробные модули на время</b> и работа над ошибками.</li>"
+    "<li><b>Рассуждение вслух</b> для собеседования.</li>"
+    "<li><b>Своя задача</b>: пришлите условие, и мы разберём её на занятии. Результат этот разбор не обещает: его цель — понять, где рассуждение ломается.</li></ul>"),
+   ("Связанные ответы", "<ul>" + "".join('<li><a href="/answers/%s/">%s</a></li>' % (s, t) for s, t in _UCAS_RELATED) + "</ul>"),
+   ("Официальные документы", "<p>Условия поступления публикуют вузы и организатор теста: ucas.com, physics.ox.ac.uk, undergraduate.study.cam.ac.uk, esat-tmua.ac.uk. Перед планированием сверяйтесь с ними: даты сессий, регистрация, модули и предложения по оценкам меняются, поэтому любую цифру с этой страницы проверяйте на официальном сайте.</p>"),
+ ],
+ "faq": [
+   ("Как подготовиться к физике для поступления в Оксфорд и Кембридж онлайн?", "Нужны диагностика, математика и физика на глубоком уровне, задачи без калькулятора, пробные модули ESAT на время и тренировка рассуждений вслух для собеседования. Занятия идут онлайн один на один."),
+   ("Oxford PAT ещё существует?", "Для физики Оксфорд сейчас использует ESAT, прежний PAT не используется: все поступающие на Physics и Physics and Philosophy сдают ESAT. Проверяйте страницу физического факультета."),
+   ("Что такое ESAT и какие модули нужны?", "Это компьютерный тест из пяти модулей: Mathematics 1, Mathematics 2, Physics, Chemistry, Biology. В каждом 27 вопросов и 40 минут, калькулятор не разрешён. Mathematics 1 обязателен, остальное зависит от курса."),
+   ("Какой срок подачи через UCAS для Оксфорда и Кембриджа?", "15 октября, 18:00 по британскому времени. Сверяйте срок для своего года поступления на ucas.com и на сайтах вузов."),
+   ("Какие оценки нужны для Cambridge Engineering?", "На странице курса типичное предложение — A*A*A по A-level или 41–42 балла по IB с 776 на Higher Level; обязательны Mathematics и Physics. Предложение может меняться: проверяйте страницу курса."),
+   ("Чем ESAT отличается от ЕГЭ и олимпиад?", "ESAT — компьютерный тест с выбором ответа, 40 минут на модуль и без калькулятора. В ЕГЭ нужно развёрнутое решение, в олимпиаде — нестандартные длинные задачи; методы оценок и предельных случаев помогают везде."),
+   ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает."),
+   ("Где смотреть даты тестов, регистрацию и условия вуза?", "На сайтах организатора теста esat-tmua.ac.uk, UCAS и вузов. На этой странице даты сессий и регистрации намеренно не приводятся: они меняются."),
+ ],
+ "updated": "2026-11-21",
+ "table": _UCAS_TABLE_RU,
+ "who": _RU_WHO,
+ "course": ("Физика для поступления в вузы Великобритании онлайн (1:1)", "Индивидуальная онлайн-подготовка по физике и математике к UCAS, ESAT и собеседованию в Оксфорд и Кембридж: план по этапам, пробные модули, разбор задач."),
+}
+ANSWERS_PHYS.append(_UCAS_ENTRY_RU)
+
+
+# ── RU: четыре страницы по экзаменам (автопилот 24.11.2026, n=411–414) ──
+# Факты — ТОЛЬКО из ФАКТЫ-ЭКЗАМЕНЫ 24.11.2026 (разделы 1, 2, 4, 5); каждое утверждение привязано к строке файла.
+# Не приводим: шкалу итогового балла AP, перечень моделей калькуляторов, веса всех юнитов AP Statistics,
+# пороги перевода баллов ОГЭ в отметки, правила про калькулятор GCSE, состав листа формул GCSE.
+UPDATED_NEWANS = "2026-11-24"
+_AP_STAT_URL = "https://apcentral.collegeboard.org/courses/ap-statistics/exam"
+_AP_AB_COURSE_URL = "https://apcentral.collegeboard.org/courses/ap-calculus-ab"
+_AP_AB_CLARIF_URL = "https://apcentral.collegeboard.org/media/pdf/ap-calculus-ab-bc-course-and-exam-description-clarifications.pdf"
+_FIPI_URL = "https://fipi.ru/oge/demoversii-specifikacii-kodifikatory"
+_AQA_SPEC_URL = "https://filestore.aqa.org.uk/resources/physics/specifications/AQA-8463-SP-2016.PDF"
+_AQA_GLANCE_URL = "https://www.aqa.org.uk/subjects/science/gcse/physics-8463/specification/specification-at-a-glance"
+_LESSONS_NEWANS = ("<p>Занятия проходят онлайн, один на один, на общей интерактивной доске, на русском языке; подстраиваемся под ваш часовой пояс. "
+                   "Ведёт занятия физик, выпускник физического факультета МГУ (2006).</p>"
+                   "<ul><li><b>Диагностика на 20 минут</b> в начале: уровень, пробелы, с чего начать.</li>"
+                   "<li><b>Разбор задач по теме</b>: сначала вместе, затем самостоятельно с обсуждением.</li>"
+                   "<li><b>Своя задача</b>: пришлите условие, и мы разберём её на занятии. Результат этот разбор не обещает: его цель — понять, где рассуждение ломается.</li></ul>")
+
+# 411 — AP Calculus AB
+QUERIES_MATH[411] = "AP Calculus AB онлайн на русском: что на экзамене и как готовиться"
+_APAB_TABLE_RU = {'title': 'Формат экзамена AP Calculus AB (по AP Central)',
+ 'head': ['Часть', 'Вопросы', 'Время', 'Калькулятор', 'Доля оценки'],
+ 'rows': [['Секция I (тест)', '42', '1 ч 40 мин', 'по частям, ниже', '50%'],
+          ['Секция I, часть A', '29', '62 мин', 'не разрешён', 'в составе секции I'],
+          ['Секция I, часть B', '13', '38 мин', 'нужен графический', 'в составе секции I'],
+          ['Секция II (развёрнутые ответы)', '6', '1 ч 30 мин', 'по частям, ниже', '50%'],
+          ['Секция II, часть A', '2', '30 мин', 'нужен графический', 'в составе секции II'],
+          ['Секция II, часть B', '4', '60 мин', 'не разрешён', 'в составе секции II']]}
+_APAB_ENTRY_RU = {"n": 411, "slug": "ap-calculus-ab-tutor-online", "lang": "ru", "task": True,
+ "title": "AP Calculus AB онлайн на русском: экзамен и подготовка",
+ "desc": "AP Calculus AB онлайн на русском: экзамен 10 мая 2027, 42 вопроса теста и 6 развёрнутых, 1 ч 40 мин и 1 ч 30 мин. Физик МГУ, 1:1.",
+ "h1": "AP Calculus AB онлайн на русском: что на экзамене и как готовиться",
+ "answer": "Экзамен AP Calculus AB в 2027 году — понедельник, 10 мая, первая сессия: тест из 42 вопросов (1 ч 40 мин) и 6 развёрнутых заданий (1 ч 30 мин), по 50% оценки каждая секция. Онлайн один на один с физиком МГУ: формат, юниты и ваши задачи.",
+ "facts": ["Дата экзамена AP Calculus AB в 2027 году — понедельник, 10 мая, первая сессия (AP Central)",
+           "Секция I (тест): 42 вопроса, 1 ч 40 мин, 50% оценки; секция II (развёрнутые ответы): 6 вопросов, 1 ч 30 мин, 50% оценки",
+           "Секция I, часть A: 29 вопросов, 62 мин, без калькулятора; часть B: 13 вопросов, 38 мин, нужен графический калькулятор",
+           "Секция II, часть A: 2 вопроса, 30 мин, нужен графический калькулятор; часть B: 4 вопроса, 60 мин, без калькулятора",
+           "С мая 2027 изменились число вопросов и время тестовой части: было 30 + 15 вопросов и 60 + 45 мин, стало 29 + 13 и 62 + 38; содержание курса не менялось",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Что изменилось с мая 2027", "<p>По разъяснениям College Board, с экзамена мая 2027 года изменились число вопросов и время в тестовой секции. Часть A: было 30 вопросов и 60 минут, стало 29 вопросов и 62 минуты. Часть B: было 15 вопросов и 45 минут, стало 13 вопросов и 38 минут. Страница экзамена на AP Central уже показывает новый формат; содержание курса не менялось. Если вы готовитесь по старым материалам, сверяйте числа с таблицей выше.</p>"),
+   ("Темы курса и их веса", "<p>По странице курса AP Calculus AB вес юнита в тестовой секции задан диапазоном. Вот некоторые из них:</p><ul>"
+    "<li>Unit 5 (Analytical Applications of Differentiation) и Unit 6 (Integration and Accumulation of Change) — по 15–20%;</li>"
+    "<li>Unit 1, Unit 2, Unit 4 и Unit 8 — по 10–15%;</li>"
+    "<li>Unit 3 и Unit 7 — по 5–10%.</li></ul>"
+    "<p>Полный список юнитов и их названия — на " + _ext(_AP_AB_COURSE_URL, "странице курса") + ".</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Что на странице не приводится", "<p>Шкала итогового балла и перечень разрешённых моделей калькуляторов на этой странице намеренно не приводятся: смотрите их на " + _ext("https://apcentral.collegeboard.org/", "AP Central") + ".</p>"),
+   ("Официальные документы", "<p>Формат, даты и состав курса публикует College Board: " + _ext(_AP_AB_URL, "страница экзамена AP Calculus AB") + ", " + _ext(_AP_AB_COURSE_URL, "страница курса") + ", " + _ext(_AP_AB_CLARIF_URL, "разъяснения по изменению формата (PDF)") + ". Данные сверены 24.11.2026; перед планированием проверьте их на официальном сайте.</p>"),
+ ],
+ "faq": [
+   ("Когда экзамен AP Calculus AB в 2027 году?", "В понедельник, 10 мая 2027 года, первая сессия — по странице экзамена на AP Central."),
+   ("Из каких частей состоит экзамен?", "Из двух секций по 50% оценки. Секция I — тест, 42 вопроса, 1 ч 40 мин. Секция II — развёрнутые ответы, 6 вопросов, 1 ч 30 мин."),
+   ("В каких частях нужен калькулятор?", "Графический калькулятор нужен в части B секции I (13 вопросов, 38 мин) и в части A секции II (2 вопроса, 30 мин). В части A секции I (29 вопросов, 62 мин) и части B секции II (4 вопроса, 60 мин) калькулятор не разрешён."),
+   ("Что изменилось в формате с мая 2027?", "Изменились число вопросов и время тестовой секции: в части A стало 29 вопросов и 62 минуты вместо 30 и 60, в части B — 13 вопросов и 38 минут вместо 15 и 45. Содержание курса не менялось."),
+   ("Какие темы весят больше всего в тестовой секции?", "Unit 5 (аналитические применения производной) и Unit 6 (интегрирование и накопление) — по 15–20%. Unit 1, 2, 4 и 8 — по 10–15%, Unit 3 и 7 — по 5–10%."),
+   ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает."),
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _APAB_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("AP Calculus AB онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к экзамену AP Calculus AB: формат College Board, юниты, разбор задач на русском."),
+}
+ANSWERS_MATH.append(_APAB_ENTRY_RU)
+
+# 412 — AP Statistics
+QUERIES_MATH[412] = "AP Statistics онлайн на русском: формат экзамена в Bluebook и подготовка"
+_APSTAT_TABLE_RU = {'title': 'Формат экзамена AP Statistics (по AP Central)',
+ 'head': ['Секция', 'Вопросы', 'Время', 'Доля оценки', 'Что за вопросы'],
+ 'rows': [['Секция I (тест)', '42', '1 ч 30 мин', '50%', 'одиночные вопросы и наборы вопросов по общему тексту'],
+          ['Секция II (развёрнутые ответы)', '4', '1 ч 30 мин', '50%', 'вопросы 1, 2 и 4 — multi-focus; вопрос 3 — Inference']]}
+_APSTAT_ENTRY_RU = {"n": 412, "slug": "ap-statistics-tutor-online", "lang": "ru", "task": True,
+ "title": "AP Statistics онлайн на русском: Bluebook и подготовка",
+ "desc": "AP Statistics онлайн на русском: экзамен 11 мая 2027 в Bluebook, 42 вопроса теста и 4 развёрнутых, курс пересмотрен. Физик МГУ, 1:1.",
+ "h1": "AP Statistics онлайн на русском: формат экзамена в Bluebook и подготовка",
+ "answer": "Экзамен AP Statistics в 2027 году — вторник, 11 мая, вторая сессия, полностью цифровой, в приложении Bluebook: тест из 42 вопросов (1 ч 30 мин) и 4 развёрнутых задания (1 ч 30 мин), по 50% оценки. Онлайн один на один с физиком МГУ.",
+ "facts": ["Дата экзамена AP Statistics в 2027 году — вторник, 11 мая, вторая сессия (AP Central)",
+           "Секция I (тест): 42 вопроса, 1 ч 30 мин, 50% оценки; секция II (развёрнутые ответы): 4 вопроса, 1 ч 30 мин, 50% оценки",
+           "Тестовые вопросы бывают одиночные и наборами по общему тексту; в развёрнутой секции вопрос 3 — Inference, вопросы 1, 2 и 4 — multi-focus",
+           "Экзамен полностью цифровой, в приложении Bluebook; калькуляторы разрешены",
+           "Курс пересмотрен на 2026–27 учебный год, чтобы соответствовать современным вводным университетским курсам статистики",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Цифровой экзамен в Bluebook", "<p>AP Statistics сдаётся полностью в цифровом виде, в приложении Bluebook: так написано на странице экзамена AP Central. Калькуляторы на экзамене разрешены. Перечень допустимых моделей на этой странице не приводится — его смотрят на сайте College Board.</p>"),
+   ("Курс пересмотрен к 2026–27 учебному году", "<p>College Board пересмотрел AP Statistics на 2026–27 учебный год, чтобы курс соответствовал современным вводным университетским курсам статистики. Полные веса всех тем после пересмотра на этой странице не приводятся: сверяйтесь со " + _ext("https://apcentral.collegeboard.org/courses/ap-statistics", "страницей курса") + ".</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Официальные документы", "<p>Формат, даты и состав курса публикует College Board: " + _ext(_AP_STAT_URL, "страница экзамена AP Statistics") + ". Данные сверены 24.11.2026; шкала итогового балла и модели калькуляторов на этой странице намеренно не приводятся — проверьте их на официальном сайте.</p>"),
+ ],
+ "faq": [
+   ("Когда экзамен AP Statistics в 2027 году?", "Во вторник, 11 мая 2027 года, вторая сессия — по странице экзамена на AP Central."),
+   ("Как устроен экзамен AP Statistics?", "Две секции по 50% оценки: тест из 42 вопросов (1 ч 30 мин) и 4 развёрнутых вопроса (1 ч 30 мин). В тесте бывают одиночные вопросы и наборы по общему тексту."),
+   ("В каком виде проходит экзамен?", "Экзамен полностью цифровой, в приложении Bluebook. Калькуляторы разрешены."),
+   ("Что нового в курсе AP Statistics?", "Курс пересмотрен на 2026–27 учебный год, чтобы соответствовать современным вводным университетским курсам статистики."),
+   ("Что за вопросы в развёрнутой секции?", "Вопросы 1, 2 и 4 описаны на странице экзамена как multi-focus (на разных практиках), вопрос 3 — как Inference."),
+   ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает."),
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _APSTAT_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("AP Statistics онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к экзамену AP Statistics: цифровой формат Bluebook, разбор задач на русском."),
+}
+ANSWERS_MATH.append(_APSTAT_ENTRY_RU)
+
+# 413 — ОГЭ по физике
+QUERIES_PHYS[413] = "ОГЭ по физике: структура экзамена, баллы, что можно взять с собой и как готовиться"
+_OGE_TABLE_RU = {'title': 'Структура экзамена ОГЭ по физике (спецификация КИМ ОГЭ 2027, ФИПИ)',
+ 'head': ['Параметр', 'Значение'],
+ 'rows': [['Число заданий', '22 задания, различающиеся формой и уровнем сложности'],
+          ['Время на работу', '180 минут (3 часа)'],
+          ['Максимальный первичный балл', '39'],
+          ['По типу ответа', '16 заданий с кратким ответом и 6 заданий с развёрнутым ответом (17–22)'],
+          ['По уровню сложности', 'базовых 14, повышенных 5, высоких 3'],
+          ['Баллы за развёрнутые задания', 'задания 18 и 19 — по 2 балла; задания 17 и 20–22 — по 3 балла'],
+          ['Что разрешено', 'непрограммируемый калькулятор и линейка']]}
+_OGE_ENTRY_RU = {"n": 413, "slug": "oge-fizika-podgotovka-onlajn", "lang": "ru", "task": True,
+ "title": "ОГЭ по физике: структура, баллы, что можно взять с собой",
+ "desc": "ОГЭ по физике: 22 задания, 180 минут, максимум 39 первичных баллов, калькулятор и линейка. Структура по спецификации ФИПИ. Физик МГУ, 1:1.",
+ "h1": "ОГЭ по физике: структура экзамена, баллы, что можно взять с собой и как готовиться",
+ "answer": "В варианте ОГЭ по физике 22 задания, на работу даётся 180 минут, максимальный первичный балл — 39; разрешены непрограммируемый калькулятор и линейка. Данные — из спецификации КИМ ОГЭ 2027. Онлайн один на один с физиком МГУ: структура, типы заданий, разбор ваших задач.",
+ "facts": ["В каждом варианте 22 задания, различающихся формой и уровнем сложности; время на работу — 180 минут; максимальный первичный балл — 39",
+           "16 заданий с кратким ответом и 6 с развёрнутым ответом (задания 17–22); распределение баллов: 3 + 6 + 14 (краткие) и 16 (развёрнутые)",
+           "По уровню сложности: базовых заданий 14, повышенных 5, высоких 3",
+           "Развёрнутые: задания 18 и 19 — по 2 балла, задания 17 и 20–22 — по 3 балла; проверяют два эксперта",
+           "Разрешены непрограммируемый калькулятор и линейка; калькулятор должен считать тригонометрические функции (cos, sin, tg)",
+           "Для экспериментальных заданий используются наборы лабораторного оборудования; первичный балл переводится в отметку по пятибалльной шкале",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Структура работы", "<p>Структура — по спецификации КИМ ОГЭ 2027 года по физике, которую ФИПИ публикует в архиве на странице " + _ext(_FIPI_URL, "демоверсий, спецификаций и кодификаторов") + ". Работа состоит из 22 заданий: 16 с кратким ответом и 6 с развёрнутым (задания 17–22). По уровню сложности это 14 базовых, 5 повышенных и 3 высоких задания. На всю работу даётся 180 минут, максимальный первичный балл — 39.</p>"),
+   ("Баллы и проверка", "<p>За развёрнутые задания 18 и 19 даётся по 2 балла, за задания 17 и 20–22 — по 3 балла; такие работы проверяют два эксперта. Первичный балл за всю работу переводится в отметку по пятибалльной шкале. Пороги перевода на этой странице не приводятся: смотрите официальные документы.</p>"),
+   ("Что можно взять с собой", "<p>Разрешены непрограммируемый калькулятор и линейка для построения чертежей и рисунков. Калькулятор должен позволять вычислять тригонометрические функции (cos, sin, tg). В экзамене используются наборы лабораторного оборудования.</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Официальные документы", "<p>Структуру работы публикует ФИПИ: " + _ext(_FIPI_URL, "fipi.ru — демоверсии, спецификации, кодификаторы") + ". Данные сверены 24.11.2026 по спецификации КИМ ОГЭ 2027 года по физике; перед планированием проверьте их на официальном сайте.</p>"),
+ ],
+ "faq": [
+   ("Сколько заданий в ОГЭ по физике?", "В каждом варианте 22 задания: 16 с кратким ответом и 6 с развёрнутым ответом (задания 17–22)."),
+   ("Сколько времени даётся на ОГЭ по физике?", "На выполнение работы предоставляется 180 минут (3 часа)."),
+   ("Какой максимальный балл за ОГЭ по физике?", "Максимальный первичный балл за работу — 39. Первичный балл переводится в отметку по пятибалльной шкале; пороги перевода на этой странице не приводятся."),
+   ("Что можно взять на ОГЭ по физике?", "Непрограммируемый калькулятор и линейку для построения чертежей и рисунков. Калькулятор должен считать тригонометрические функции (cos, sin, tg)."),
+   ("Сколько баллов даётся за развёрнутые задания?", "Задания 18 и 19 — по 2 балла, задания 17 и 20–22 — по 3 балла; всего 16 баллов. Проверяют два эксперта."),
+   ("Есть ли в ОГЭ по физике экспериментальные задания?", "Да, для экспериментальных заданий используются наборы лабораторного оборудования."),
+   ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает."),
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _OGE_TABLE_RU,
+ "who": _RU_WHO,
+ "course": ("Подготовка к ОГЭ по физике онлайн (1:1)", "Индивидуальная онлайн-подготовка к ОГЭ по физике: структура работы по спецификации ФИПИ, типы заданий, разбор задач."),
+}
+ANSWERS_PHYS.append(_OGE_ENTRY_RU)
+
+# 414 — GCSE Physics AQA 8463
+QUERIES_PHYS[414] = "GCSE Physics (AQA 8463) онлайн на русском: две работы, темы и подготовка"
+_GCSE_TABLE_RU = {'title': 'GCSE Physics AQA 8463: две письменные работы (по спецификации AQA)',
+ 'head': ['Работа', 'Темы', 'Время', 'Баллы', 'Доля оценки'],
+ 'rows': [['Paper 1', 'темы 1–4: энергия; электричество; модель вещества; атомная структура', '1 ч 45 мин', '100', '50%'],
+          ['Paper 2', 'темы 5–8: силы; волны; магнетизм и электромагнетизм; космос', '1 ч 45 мин', '100', '50%']]}
+_GCSE_ENTRY_RU = {"n": 414, "slug": "gcse-physics-aqa-8463-tutor-online", "lang": "ru", "task": True,
+ "title": "GCSE Physics AQA 8463 онлайн на русском: две работы",
+ "desc": "GCSE Physics (AQA 8463) онлайн на русском: две письменные работы по 1 ч 45 мин и 100 баллов, темы 1–8, шкала 1–9. Физик МГУ, 1:1.",
+ "h1": "GCSE Physics (AQA 8463) онлайн на русском: две работы, темы и подготовка",
+ "answer": "GCSE Physics по спецификации AQA 8463 — две письменные работы: Paper 1 (темы 1–4) и Paper 2 (темы 5–8), у каждой 1 ч 45 мин, 100 баллов и 50% оценки; есть Foundation и Higher. Онлайн один на один с физиком МГУ: темы, формат, ваши задачи.",
+ "facts": ["Две письменные работы — Paper 1 и Paper 2; каждая: 1 ч 45 мин, 100 баллов, 50% оценки; есть Foundation и Higher (спецификация AQA 8463)",
+           "Paper 1 охватывает темы 1–4: энергия, электричество, модель вещества, атомная структура",
+           "Paper 2 охватывает темы 5–8: силы, волны, магнетизм и электромагнетизм, космос",
+           "Типы вопросов: с выбором ответа, структурированные, короткие закрытые и открытые развёрнутые",
+           "Квалификация линейная: все экзамены сдаются в конце курса; шкала оценок 1–9; Foundation даёт оценки 1–5, Higher — 4–9",
+           "Практические работы в процессе не оцениваются, но вопросы по ним есть в письменных экзаменах",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Две работы и темы", "<p>По спецификации AQA GCSE Physics 8463 экзамен состоит из двух письменных работ. Paper 1 охватывает темы 1–4: энергия, электричество, модель вещества и атомная структура. Paper 2 охватывает темы 5–8: силы, волны, магнетизм и электромагнетизм, космос. Вопросы Paper 2 могут опираться на понимание превращений и передачи энергии и на электричество из Paper 1.</p>"),
+   ("Формат и оценки", "<p>Каждая работа длится 1 ч 45 мин, в ней 100 баллов, это 50% оценки. Типы вопросов: с выбором ответа, структурированные, короткие закрытые и открытые развёрнутые. Работы бывают двух уровней, Foundation и Higher. Оценки идут по шкале 1–9: Foundation даёт оценки от 1 до 5, Higher — от 4 до 9. Квалификация линейная: все экзамены сдаются в конце курса.</p>"),
+   ("Практические работы", "<p>Практические работы в процессе выполнения не оцениваются, но письменные экзамены включают вопросы по ним.</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Официальные документы", "<p>Состав и формат экзамена публикует AQA: " + _ext(_AQA_SPEC_URL, "спецификация GCSE Physics 8463 (PDF)") + ", " + _ext(_AQA_GLANCE_URL, "страница specification at a glance") + ". Данные сверены 24.11.2026. Правила про калькулятор и состав листа формул на этой странице не приводятся — проверьте их в спецификации.</p>"),
+ ],
+ "faq": [
+   ("Из чего состоит экзамен GCSE Physics AQA 8463?", "Из двух письменных работ, Paper 1 и Paper 2. Каждая длится 1 ч 45 мин, в ней 100 баллов, это 50% оценки."),
+   ("Какие темы в Paper 1 и Paper 2?", "Paper 1 — темы 1–4: энергия, электричество, модель вещества, атомная структура. Paper 2 — темы 5–8: силы, волны, магнетизм и электромагнетизм, космос."),
+   ("Чем отличаются Foundation и Higher?", "Это два уровня работ. Foundation даёт оценки от 1 до 5, Higher — от 4 до 9 по шкале 1–9."),
+   ("Какие бывают вопросы в работах?", "С выбором ответа, структурированные, короткие закрытые и открытые развёрнутые."),
+   ("Когда сдаются экзамены?", "Квалификация линейная: все экзамены сдаются в конце курса."),
+   ("Оцениваются ли практические работы?", "В процессе выполнения не оцениваются, но письменные экзамены включают вопросы по ним."),
+   ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает."),
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _GCSE_TABLE_RU,
+ "who": _RU_WHO,
+ "course": ("GCSE Physics (AQA 8463) онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к GCSE Physics по спецификации AQA 8463: две работы, темы 1–8, разбор задач на русском."),
+}
+ANSWERS_PHYS.append(_GCSE_ENTRY_RU)
+
+
+# ── RU: ещё четыре страницы (автопилот 24.11.2026, n=415–418) ──
+# Факты — ТОЛЬКО из ФАКТЫ-ЭКЗАМЕНЫ 24.11.2026 (разделы 7–10); каждое утверждение привязано к курсу и строке файла.
+# Не приводим: пороги оценок A*–E, пары опций «вашей школы» (FM), граничные баллы STEP, шкалу итогового балла AP,
+# модели калькуляторов AP, даты экзамена 2027 для Edexcel (в спецификации их нет). Пункты-пересказы (STEP 1 и 9) и
+# фрагмент про формулы (A-level Maths, 8) не усиливаем.
+_EDX_FM_URL = "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Mathematics/2017/specification-and-sample-assesment/a-level-l3-further-mathematics-specification.pdf"
+_EDX_M_URL = "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Mathematics/2017/specification-and-sample-assesment/a-level-l3-mathematics-specification-issue4.pdf"
+_OCR_STEP_URL = "https://www.ocr.org.uk/students/step-mathematics/"
+_OCR_STEP_SPEC_URL = "https://www.ocr.org.uk/Images/696329-step-specification-2026.pdf"
+_OCR_STEP_SCORE_URL = "https://www.ocr.org.uk/students/step-mathematics/scoring-and-results/"
+_OCR_STEP_DATES_URL = "https://www.ocr.org.uk/students/step-mathematics/key-dates-and-fees/"
+_CAM_STEP_URL = "https://www.undergraduate.study.cam.ac.uk/apply/after/sixth-term-exam-STEP"
+_AP_PRECALC_URL = "https://apcentral.collegeboard.org/courses/ap-precalculus/exam"
+_AP_PRECALC_CLARIF_URL = "https://apcentral.collegeboard.org/media/pdf/ap-precalculus-ced-clarification-and-guidance.pdf"
+_ASK_TASK_FAQ = ("Можно ли прислать свою задачу на разбор?", "Да: пришлите условие, и мы разберём её на занятии. Цель разбора — найти, где ломается рассуждение; результат он не обещает.")
+
+# 415 — A-level Further Mathematics (Edexcel 9FM0)
+QUERIES_MATH[415] = "A-level Further Maths (Edexcel 9FM0) онлайн на русском: структура, core и optional"
+_ALFM_TABLE_RU = {'title': 'Структура A-level Further Mathematics Edexcel 9FM0 (по спецификации Issue 4)',
+ 'head': ['Работа', 'Содержание', 'Время', 'Доля квалификации', 'Баллы'],
+ 'rows': [['Paper 1', 'Core Pure (обязательная)', '1 ч 30 мин', '25%', '75'],
+          ['Paper 2', 'Core Pure (обязательная)', '1 ч 30 мин', '25%', '75'],
+          ['Опциональная работа 1', 'по выбору из восьми опций', '1 ч 30 мин', '25%', '75'],
+          ['Опциональная работа 2', 'по выбору из восьми опций', '1 ч 30 мин', '25%', '75']]}
+_ALFM_ENTRY_RU = {"n": 415, "slug": "a-level-further-maths-edexcel-9fm0-tutor-online", "lang": "ru", "task": True,
+ "title": "A-level Further Maths Edexcel 9FM0 онлайн на русском",
+ "desc": "A-level Further Maths (Edexcel 9FM0) онлайн на русском: четыре работы по 1 ч 30 мин, две Core Pure и две по выбору. Физик МГУ, 1:1.",
+ "h1": "A-level Further Maths (Edexcel 9FM0) онлайн на русском: структура, core и optional",
+ "answer": "По спецификации Pearson Edexcel 9FM0 (Issue 4) Further Mathematics — четыре письменные работы по 1 ч 30 мин, по 25% квалификации и 75 баллов: две обязательные Core Pure и две по выбору. Онлайн один на один с физиком МГУ.",
+ "facts": ["Четыре письменные работы: Paper 1 и Paper 2 (обязательные Core Pure) и две опциональные (спецификация Pearson Edexcel 9FM0, Issue 4, июнь 2023)",
+           "Paper 1 и Paper 2 (Core Pure): по 1 ч 30 мин, по 25% квалификации, по 75 баллов",
+           "Темы Core Pure: доказательство, комплексные числа, матрицы, углублённая алгебра и функции (Further algebra and functions), углублённый анализ (Further calculus), углублённые векторы (Further vectors), полярные координаты, гиперболические функции, дифференциальные уравнения",
+           "Опции: Further Pure, Further Statistics, Further Mechanics, Decision Mathematics, по два варианта каждой (Option 1 и Option 2)",
+           "Каждая опциональная работа: 1 ч 30 мин, 25% квалификации, 75 баллов; допустимы десять пар опций",
+           "Калькуляторы разрешены; формулы и таблицы выдаются буклетом; все экзамены сдаются в мае–июне одного года; все вопросы обязательны",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Core Pure: две обязательные работы", "<p>По спецификации 9FM0 ученик обязан сдать Paper 1 и Paper 2 — две обязательные работы Core Pure. Каждая идёт 1 ч 30 мин, даёт 25% квалификации и 75 баллов. Темы Core Pure по спецификации: доказательство, комплексные числа, матрицы, углублённая алгебра и функции (Further algebra and functions), углублённый анализ (Further calculus), углублённые векторы (Further vectors), полярные координаты, гиперболические функции и дифференциальные уравнения.</p>"),
+   ("Опциональные работы", "<p>Две оставшиеся работы выбираются из восьми опций: Further Pure, Further Statistics, Further Mechanics и Decision Mathematics, у каждой по два варианта (Option 1 и Option 2). Каждая опциональная работа — 1 ч 30 мин, 25% квалификации и 75 баллов. Спецификация допускает десять разных пар опций: любые два Option 1 либо парные Option 1 и Option 2. Какие именно пары доступны вам, зависит от того, где вы сдаёте; на этой странице это не приводится.</p>"),
+   ("Правила экзамена", "<p>Калькуляторы на экзамене разрешены. Буклет «Mathematical Formulae and Statistical Tables» выдаётся для использования на экзамене. Все экзамены нужно сдать в мае–июне одного и того же года, все вопросы обязательны.</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Официальные документы", "<p>Состав и формат экзамена публикует Pearson: " + _ext(_EDX_FM_URL, "спецификация Pearson Edexcel Level 3 Advanced GCE in Further Mathematics (9FM0), Issue 4, июнь 2023 (PDF)") + ". Данные сверены 24.11.2026 по этому документу; появление более новых выпусков спецификации не проверялось, поэтому сверьте выпуск на сайте Pearson. Пороги оценок A*–E на этой странице не приводятся.</p>"),
+ ],
+ "faq": [
+   ("Сколько работ в A-level Further Maths Edexcel 9FM0?", "Четыре письменные работы: две обязательные Core Pure (Paper 1 и Paper 2) и две опциональные."),
+   ("Сколько длятся работы и какова их доля?", "Каждая из четырёх работ идёт 1 ч 30 мин, даёт 25% квалификации и 75 баллов."),
+   ("Какие темы входят в Core Pure?", "Доказательство, комплексные числа, матрицы, углублённая алгебра и функции (Further algebra and functions), углублённый анализ (Further calculus), углублённые векторы (Further vectors), полярные координаты, гиперболические функции и дифференциальные уравнения."),
+   ("Какие опции можно выбрать?", "Further Pure, Further Statistics, Further Mechanics и Decision Mathematics, по два варианта каждой (Option 1 и Option 2). По спецификации допустимы десять пар опций."),
+   ("Можно ли пользоваться калькулятором?", "Да, калькуляторы на экзамене разрешены. Формулы и таблицы выдаются буклетом «Mathematical Formulae and Statistical Tables»."),
+   ("Когда сдаются экзамены?", "Все экзамены сдаются в мае–июне одного года, и на все вопросы нужно отвечать."),
+   _ASK_TASK_FAQ,
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _ALFM_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("A-level Further Maths (Edexcel 9FM0) онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к A-level Further Mathematics по спецификации Edexcel 9FM0: Core Pure, опции, разбор задач на русском."),
+}
+ANSWERS_MATH.append(_ALFM_ENTRY_RU)
+
+# 416 — STEP (Cambridge)
+QUERIES_MATH[416] = "STEP 2 и STEP 3 онлайн на русском: формат, шкала оценок и подготовка к Cambridge"
+_STEP_TABLE_RU = {'title': 'Формат STEP Mathematics 2 и 3 (по спецификации OCR)',
+ 'head': ['Параметр', 'Значение'],
+ 'rows': [['Работы', 'STEP 2 и STEP 3, у каждой 3 часа и три раздела'],
+          ['Вопросов в работе', '12: восемь по чистой математике, два по механике, два по вероятности и статистике'],
+          ['Максимум за вопрос', '20 баллов'],
+          ['Что засчитывается', 'шесть лучших ответов в каждой работе; ограничений по разделам нет'],
+          ['Калькулятор и формулы', 'калькуляторы запрещены, формульный буклет не выдаётся'],
+          ['Шкала оценок', 'пятибалльная: S, 1, 2, 3, U'],
+          ['Даты 2027', 'STEP 2 — 14 июня, STEP 3 — 21 июня; результаты — 12 августа']]}
+_STEP_ENTRY_RU = {"n": 416, "slug": "step-maths-cambridge-tutor-online", "lang": "ru", "task": True,
+ "title": "STEP Maths (Cambridge) онлайн на русском: формат и шкала",
+ "desc": "STEP Maths (Cambridge) онлайн на русском: STEP 2 и 3, по 3 часа, 12 вопросов, шесть лучших ответов, шкала S, 1, 2, 3, U. Физик МГУ, 1:1.",
+ "h1": "STEP Maths (Cambridge) онлайн на русском: STEP 2 и STEP 3, формат и шкала оценок",
+ "answer": "STEP Mathematics проводит OCR: STEP 2 и STEP 3 идут по 3 часа, в каждой 12 вопросов по 20 баллов, засчитываются шесть лучших ответов, калькуляторы запрещены. Оценки: S, 1, 2, 3, U. Онлайн один на один с физиком МГУ.",
+ "facts": ["Две работы: STEP 2 и STEP 3; STEP Mathematics проводит OCR (OCR, страница STEP Mathematics)",
+           "Каждая работа — 3 часа, три раздела, 12 вопросов: восемь по чистой математике, два по механике, два по вероятности и статистике (спецификация STEP 2026)",
+           "Максимум за каждый вопрос — 20 баллов; оцениваются шесть лучших ответов в работе; ограничений по разделам нет",
+           "Калькуляторы запрещены, формульный буклет не выдаётся",
+           "Оценки по пятибалльной шкале: S, 1, 2, 3, U",
+           "Даты сессии 2027: STEP 2 — 14 июня, STEP 3 — 21 июня; регистрация с 1 марта по 4 мая 2027; результаты 12 августа 2027 (организация оставляет право менять даты)",
+           "Cambridge использует STEP почти во всех условных предложениях на Mathematics и Mathematics with Physics",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Формат работ", "<p>По спецификации STEP, STEP Mathematics 2 и STEP Mathematics 3 — это работы по 3 часа, разделённые на три раздела. Раздел A — чистая математика, восемь вопросов; раздел B — механика, два вопроса; раздел C — вероятность и статистика, два вопроса. У каждого вопроса максимум 20 баллов. В каждой работе оцениваются шесть лучших ответов, ограничений по разделам нет. Калькуляторы не разрешены и не нужны, формульный буклет не выдаётся.</p>"),
+   ("Шкала оценок", "<p>Работы оцениваются по пятибалльной шкале: S (outstanding), 1 (very good), 2 (good), 3 (satisfactory) и U (unclassified). Граничные баллы для S, 1, 2 и 3 текущего года на этой странице не приводятся: их смотрите в материалах OCR.</p>"),
+   ("Даты сессии 2027", "<p>По странице OCR с датами и стоимостью: STEP 2 — 14 июня 2027 года, STEP 3 — 21 июня 2027 года; регистрация идёт с 1 марта по 4 мая 2027 года; результаты — 12 августа 2027 года. Организация оставляет за собой право менять даты, поэтому перед планированием сверьтесь со страницей " + _ext(_OCR_STEP_DATES_URL, "Key dates and fees") + ".</p>"),
+   ("Роль в Cambridge", "<p>По странице поступления Cambridge, STEP используется как часть почти всех условных предложений университета на Mathematics и Mathematics with Physics. Какие работы и оценки нужны именно вам, уточняйте в требованиях вуза: на этой странице это не приводится.</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Официальные документы", "<p>Формат и правила публикуют OCR и Cambridge: " + _ext(_OCR_STEP_URL, "STEP Mathematics на сайте OCR") + ", " + _ext(_OCR_STEP_SPEC_URL, "спецификация STEP 2026 (PDF)") + ", " + _ext(_OCR_STEP_SCORE_URL, "оценки и результаты") + ", " + _ext(_CAM_STEP_URL, "STEP на сайте Cambridge") + ". Данные сверены 24.11.2026.</p>"),
+ ],
+ "faq": [
+   ("Какие бывают работы STEP?", "STEP 2 и STEP 3. Каждая идёт 3 часа и разделена на три раздела."),
+   ("Сколько вопросов и сколько баллов?", "В каждой работе 12 вопросов: восемь по чистой математике, два по механике и два по вероятности и статистике. Максимум за вопрос — 20 баллов."),
+   ("Сколько ответов засчитывается?", "Шесть лучших ответов в каждой работе; ограничений по разделам нет."),
+   ("Можно ли пользоваться калькулятором?", "Нет: калькуляторы запрещены. Формульный буклет тоже не выдаётся."),
+   ("По какой шкале выставляются оценки?", "По пятибалльной: S, 1, 2, 3 и U."),
+   ("Когда проходит STEP в 2027 году?", "По странице OCR: STEP 2 — 14 июня, STEP 3 — 21 июня 2027 года; регистрация с 1 марта по 4 мая; результаты 12 августа. Даты могут быть изменены организацией."),
+   ("Зачем STEP нужен для Cambridge?", "По странице поступления Cambridge, STEP входит почти во все условные предложения на Mathematics и Mathematics with Physics."),
+   _ASK_TASK_FAQ,
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _STEP_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("STEP Maths (Cambridge) онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к STEP 2 и STEP 3: формат OCR, шкала оценок, разбор задач на русском."),
+}
+ANSWERS_MATH.append(_STEP_ENTRY_RU)
+
+# 417 — AP Precalculus
+QUERIES_MATH[417] = "AP Precalculus онлайн на русском: формат экзамена, тест и FRQ"
+_APPRE_TABLE_RU = {'title': 'Формат экзамена AP Precalculus (по AP Central, раскладка 2027)',
+ 'head': ['Часть', 'Вопросы', 'Время', 'Калькулятор', 'Доля оценки'],
+ 'rows': [['Секция I (тест)', '42', '1 ч 45 мин', 'по частям, ниже', '62,5%'],
+          ['Секция I, часть A', '29', '65 мин', 'не разрешён', '43,75%'],
+          ['Секция I, часть B', '13', '40 мин', 'нужен графический', '18,75%'],
+          ['Секция II (FRQ)', '4', '1 ч 10 мин', 'по частям, ниже', '37,5%'],
+          ['Секция II, часть A', '2', '35 мин', 'нужен графический', '18,75%'],
+          ['Секция II, часть B', '2', '35 мин', 'не разрешён', '18,75%']]}
+_APPRE_ENTRY_RU = {"n": 417, "slug": "ap-precalculus-tutor-online", "lang": "ru", "task": True,
+ "title": "AP Precalculus онлайн на русском: формат экзамена",
+ "desc": "AP Precalculus онлайн на русском: экзамен 11 мая 2027, 42 вопроса теста и 4 FRQ, 1 ч 45 мин и 1 ч 10 мин. Физик МГУ, 1:1.",
+ "h1": "AP Precalculus онлайн на русском: формат экзамена, тест и FRQ",
+ "answer": "Экзамен AP Precalculus в 2027 году — вторник, 11 мая, первая сессия: тест из 42 вопросов (1 ч 45 мин, 62,5% оценки) и 4 развёрнутых вопроса FRQ (1 ч 10 мин, 37,5%). Онлайн один на один с физиком МГУ: формат, части с калькулятором, ваши задачи.",
+ "facts": ["Дата экзамена AP Precalculus в 2027 году — вторник, 11 мая, первая сессия (AP Central)",
+           "Секция I (тест): 42 вопроса, 1 ч 45 мин, 62,5% оценки; секция II (FRQ): 4 вопроса, 1 ч 10 мин, 37,5% оценки",
+           "Секция I, часть A: 29 вопросов, 65 мин, без калькулятора; часть B: 13 вопросов, 40 мин, нужен графический калькулятор",
+           "Секция II, часть A: 2 вопроса, 35 мин, нужен графический калькулятор (Q1 Function Concepts, Q2 Modeling a Non-Periodic Context); часть B: 2 вопроса, 35 мин, без калькулятора (Q3 Modeling a Periodic Context, Q4 Symbolic Manipulations)",
+           "С экзамена мая 2027 изменились число вопросов и время: часть A — с 28 до 29 вопросов и с 80 до 65 мин; часть B — с 12 до 13 вопросов; FRQ — с 30 до 35 мин на часть",
+           "Формат гибридный: тест цифровой, ответы на FRQ пишутся от руки в бумажных буклетах",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Тест и FRQ: что в каких частях", "<p>Секция I — тест из 42 вопросов на 1 ч 45 мин, это 62,5% оценки. Часть A (29 вопросов, 65 минут, 43,75% оценки) идёт без калькулятора, часть B (13 вопросов, 40 минут, 18,75% оценки) требует графического калькулятора. Секция II — четыре развёрнутых вопроса на 1 ч 10 мин, это 37,5% оценки: часть A (два вопроса, 35 минут, 18,75%) с графическим калькулятором, часть B (два вопроса, 35 минут, 18,75%) без калькулятора.</p>"),
+   ("Какие вопросы в FRQ", "<p>По странице экзамена на AP Central, в части A: вопрос 1 — Function Concepts, вопрос 2 — Modeling a Non-Periodic Context. В части B: вопрос 3 — Modeling a Periodic Context, вопрос 4 — Symbolic Manipulations. Ответы на FRQ пишутся от руки в бумажных буклетах, которые отправляют на проверку.</p>"),
+   ("Что изменилось с мая 2027", "<p>По разъяснениям College Board, с экзамена мая 2027 года число вопросов в части A теста выросло с 28 до 29, а время сократилось с 80 до 65 минут; в части B стало 13 вопросов вместо 12; время на каждую часть FRQ выросло с 30 до 35 минут; структура вопроса 2 обновлена. Все числа на этой странице — по новой раскладке 2027 года. Если вы готовитесь по старым материалам, сверяйте их с таблицей выше.</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Что на странице не приводится", "<p>Шкала итогового балла и перечень разрешённых моделей калькуляторов на этой странице намеренно не приводятся: смотрите их на " + _ext("https://apcentral.collegeboard.org/", "AP Central") + ".</p>"),
+   ("Официальные документы", "<p>Формат и даты публикует College Board: " + _ext(_AP_PRECALC_URL, "страница экзамена AP Precalculus") + ", " + _ext(_AP_PRECALC_CLARIF_URL, "разъяснения по изменению формата (PDF)") + ". Данные сверены 24.11.2026; перед планированием проверьте их на официальном сайте.</p>"),
+ ],
+ "faq": [
+   ("Когда экзамен AP Precalculus в 2027 году?", "Во вторник, 11 мая 2027 года, первая сессия — по странице экзамена на AP Central."),
+   ("Из чего состоит экзамен?", "Из теста (42 вопроса, 1 ч 45 мин, 62,5% оценки) и четырёх развёрнутых вопросов FRQ (1 ч 10 мин, 37,5% оценки)."),
+   ("В каких частях нужен калькулятор?", "Графический калькулятор нужен в части B теста (13 вопросов, 40 мин) и в части A FRQ (2 вопроса, 35 мин). В части A теста (29 вопросов, 65 мин) и части B FRQ (2 вопроса, 35 мин) калькулятор не разрешён."),
+   ("Что изменилось в формате с мая 2027?", "В части A теста стало 29 вопросов вместо 28 и 65 минут вместо 80; в части B — 13 вопросов вместо 12; на каждую часть FRQ — 35 минут вместо 30."),
+   ("Как сдаются FRQ?", "Ответы на FRQ пишутся от руки в бумажных буклетах, которые возвращаются на проверку; тест цифровой."),
+   _ASK_TASK_FAQ,
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _APPRE_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("AP Precalculus онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к экзамену AP Precalculus: формат College Board, тест и FRQ, разбор задач на русском."),
+}
+ANSWERS_MATH.append(_APPRE_ENTRY_RU)
+
+# 418 — A-level Mathematics (Edexcel 9MA0)
+QUERIES_MATH[418] = "A-level Maths (Edexcel 9MA0) онлайн на русском: три работы, темы и оценка"
+_ALM_TABLE_RU = {'title': 'Структура A-level Mathematics Edexcel 9MA0 (по спецификации Issue 4)',
+ 'head': ['Работа', 'Содержание', 'Время', 'Доля квалификации', 'Баллы'],
+ 'rows': [['Paper 1', 'Pure Mathematics 1', '2 часа', '33,33%', '100'],
+          ['Paper 2', 'Pure Mathematics 2', '2 часа', '33,33%', '100'],
+          ['Paper 3', 'Statistics (раздел A) и Mechanics (раздел B)', '2 часа', '33,33%', '100']]}
+_ALM_ENTRY_RU = {"n": 418, "slug": "a-level-maths-edexcel-9ma0-tutor-online", "lang": "ru", "task": True,
+ "title": "A-level Maths Edexcel 9MA0 онлайн на русском",
+ "desc": "A-level Maths (Edexcel 9MA0) онлайн на русском: три работы по 2 часа и 100 баллов, Pure, Statistics и Mechanics, оценка A*–E. Физик МГУ, 1:1.",
+ "h1": "A-level Maths (Edexcel 9MA0) онлайн на русском: три работы, темы и оценка",
+ "answer": "По спецификации Pearson Edexcel 9MA0 (Issue 4) A-level Mathematics — три письменные работы по 2 часа, по 33,33% квалификации и 100 баллов: две Pure Mathematics и одна Statistics and Mechanics. Оценка A*–E по сумме 300 баллов. Онлайн один на один с физиком МГУ.",
+ "facts": ["Три внешние письменные работы; все экзамены сдаются в мае–июне одного года (спецификация Pearson Edexcel 9MA0, Issue 4, февраль 2020)",
+           "Paper 1 и Paper 2 — Pure Mathematics: каждая 2 часа, 33,33% квалификации, 100 баллов",
+           "Paper 3 — Statistics and Mechanics: 2 часа, 33,33% квалификации, 100 баллов; раздел A — Statistics, раздел B — Mechanics",
+           "Pure: десять тем — доказательство, алгебра и функции, координатная геометрия, последовательности, тригонометрия, экспоненты и логарифмы, дифференцирование, интегрирование, численные методы, векторы; на обеих Pure-работах могут быть вопросы по любым темам",
+           "Калькуляторы разрешены; все вопросы обязательны",
+           "Итоговая оценка по шкале A*–E из суммы 300 баллов за три обязательные работы; отдельные работы не оцениваются",
+           "Занятия: онлайн, 1:1, русский язык, под ваш часовой пояс; разбор своей задачи — по присланному условию"],
+ "sections": [
+   ("Три работы", "<p>По спецификации 9MA0 квалификация состоит из трёх внешних письменных работ. Paper 1 и Paper 2 — Pure Mathematics, Paper 3 — Statistics and Mechanics: раздел A — Statistics, раздел B — Mechanics. Каждая работа идёт 2 часа, даёт 33,33% квалификации и 100 баллов. Все экзамены нужно сдать в мае–июне одного и того же года.</p>"),
+   ("Темы Pure Mathematics", "<p>Спецификация выделяет десять тем Pure: доказательство, алгебра и функции, координатная геометрия, последовательности, тригонометрия, экспоненты и логарифмы, дифференцирование, интегрирование, численные методы и векторы. Paper 1 и Paper 2 могут содержать вопросы по любым темам Pure Mathematics.</p>"),
+   ("Оценка", "<p>Итоговая оценка выставляется по шкале из шести градаций от A* до E по сумме баллов за три обязательные работы (из 300). Отдельные работы не оцениваются.</p>"),
+   ("Калькулятор и формулы", "<p>Калькуляторы на экзамене разрешены, на все вопросы нужно отвечать. В целях оценивания спецификация упоминает буклет «Mathematical Formulae and Statistical Tables» и формулы из Appendix 1, которые нужно уметь вспомнить; точный перечень смотрите в самой спецификации.</p>"),
+   ("Как проходят занятия", _LESSONS_NEWANS),
+   ("Официальные документы", "<p>Состав и формат экзамена публикует Pearson: " + _ext(_EDX_M_URL, "спецификация Pearson Edexcel Level 3 Advanced GCE in Mathematics (9MA0), Issue 4, февраль 2020 (PDF)") + ". Данные сверены 24.11.2026 по этому документу; появление более новых выпусков не проверялось, поэтому сверьте выпуск на сайте Pearson.</p>"),
+ ],
+ "faq": [
+   ("Сколько работ в A-level Maths Edexcel 9MA0?", "Три внешние письменные работы: две Pure Mathematics (Paper 1 и Paper 2) и одна Statistics and Mechanics (Paper 3)."),
+   ("Сколько длится каждая работа и сколько в ней баллов?", "Каждая работа идёт 2 часа, даёт 33,33% квалификации и 100 баллов."),
+   ("Какие темы входят в Pure Mathematics?", "Доказательство, алгебра и функции, координатная геометрия, последовательности, тригонометрия, экспоненты и логарифмы, дифференцирование, интегрирование, численные методы и векторы."),
+   ("Как выставляется итоговая оценка?", "По шкале A*–E из суммы 300 баллов за три обязательные работы. Отдельные работы не оцениваются."),
+   ("Можно ли пользоваться калькулятором?", "Да, калькуляторы на экзамене разрешены; на все вопросы нужно отвечать."),
+   ("Когда сдаются экзамены?", "Все экзамены сдаются в мае–июне одного года."),
+   _ASK_TASK_FAQ,
+ ],
+ "updated": UPDATED_NEWANS,
+ "table": _ALM_TABLE_RU,
+ "who": _RU_WHO_MATH,
+ "course": ("A-level Maths (Edexcel 9MA0) онлайн на русском (1:1)", "Индивидуальная онлайн-подготовка к A-level Mathematics по спецификации Edexcel 9MA0: Pure, Statistics, Mechanics, разбор задач на русском."),
+}
+ANSWERS_MATH.append(_ALM_ENTRY_RU)
+
+# ── 28.11 (замер ИИ 28.11, наборы A–F, J–L): по ОДНОЙ правке на провал #407, #408, #410. Метрика: из_ИИ_на_репетитора.
+# Первое предложение lead дословно повторяет запрос. Факты — только уже стоящие на этих страницах.
+UPDATED_PROBE_AL = "2026-11-28"
+
+
+def _ph(n):
+    return next(x for x in ANSWERS_PHYS if x["n"] == n)
+
+
+# #407: lead + нужный FAQ первым (близкий вопрос про срок переименован и переставлен, не продублирован)
+_ph(407)["answer"] = ("AP Physics и AP Calculus онлайн программа подготовки к майским экзаменам. "
+                      "Это семь месяцев, с ноября по май: диагностика, юниты по порядку, с февраля работы на время, в конце полные экзамены. "
+                      "AP Physics C и Calculus AB/BC один на один ведёт физик МГУ Владимир Подлевских.")
+_ph(407)["faq"] = [("Когда начинать готовиться к майским экзаменам AP?",
+    "Типовой каркас на странице — семь месяцев, с ноября по май. Если вы начинаете позже, юниты, где диагностика показала уверенный результат, сжимаются.")
+    ] + [f for f in _ph(407)["faq"] if f[0] != "Сколько месяцев нужно на подготовку к майским экзаменам?"]
+# #408: lead + FAQ о связи с поступлением первым (без льгот, баллов и квот)
+_ph(408)["answer"] = ("Олимпиадная физика онлайн подготовка к поступлению в технические вузы программа по месяцам. "
+                      "Это шесть относительных месяцев по разделам физики: оценки, симметрия, предельные случаи, разбор каждой задачи. "
+                      "Занятия один на один ведёт физик МГУ.")
+_ph(408)["faq"] = [("Как олимпиадная подготовка связана с поступлением?",
+    "Олимпиадные задачи развивают умение решать нестандартные задачи — оно нужно и на вступительных испытаниях. "
+    "Условия льгот, перечень олимпиад и состав вступительных испытаний публикуют организаторы олимпиад и приёмные комиссии вузов: "
+    "смотрите их на официальных сайтах.")] + list(_ph(408)["faq"])
+# #410: только lead; про ESAT — вторым предложением
+_ph(410)["answer"] = ("Физика для поступления в зарубежные вузы онлайн UCAS Oxford PAT Cambridge план подготовки. "
+                      "Прежний Oxford PAT не используется, на физику сдают ESAT; подача через UCAS до 15 октября, затем собеседование. "
+                      "Онлайн один на один с физиком МГУ: диагностика, математика, физика, пробные модули.")
+for _n in (407, 408, 410):
+    _ph(_n)["updated"] = UPDATED_PROBE_AL

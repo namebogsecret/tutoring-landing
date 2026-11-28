@@ -239,9 +239,36 @@ def build_page(p):
         [f'<link rel="alternate" hreflang="{l}" href="{BASE}{u}" />' for l, u in p.get("alternates", [])]
         + head_extra)
 
+    # Мобильная скорость страниц-ответов и хаба (/answers/…): шрифты Google не блокируют
+    # первый рендер (preload→stylesheet по onload, font-display=swap уже в URL), site.js — defer.
+    # Остальные страницы сайта не затронуты. Порядок событий site.js не меняется.
+    fast_head = p["url"].startswith("/answers/")
+    _fonts = ('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500'
+              '&family=Hanken+Grotesk:wght@400;500;600;700&display=swap')
+    if fast_head:
+        fonts_link = (f'<link rel="preload" as="style" href="{_fonts}" onload="this.onload=null;this.rel=\'stylesheet\'" />\n'
+                      f'<noscript><link href="{_fonts}" rel="stylesheet" /></noscript>')
+    else:
+        fonts_link = f'<link href="{_fonts}" rel="stylesheet" />'
+    # .reveal (opacity:0 до JS) держал первый экран невидимым → LCP «ждал» IntersectionObserver.
+    fast_css = ('<style>.reveal{opacity:1;transform:none;transition:none}'
+                '.top-cta{display:none}'
+                '@media(max-width:680px){.top-cta{display:inline-flex;margin-left:auto;white-space:nowrap}'
+                '.nav-inner{gap:10px}.brand-name{font-size:13px}}</style>\n') if fast_head else ""
     canonical = BASE + p["url"]
     html_lang = p["lang"]
     no_cta = bool(p.get("no_cta"))
+    nav_html = nav(no_cta, html_lang, 'id="book"' in body)
+    if fast_head:
+        # CTA на первом экране телефона (360×800): раньше ссылка к репетитору была в 2800–12000 px ниже.
+        # data-tutor-src="top-<страница>" → site.js шлёт cta-to-tutor-answers-top-<страница> (префикс клики_к_репетитору).
+        from answer_pages import TUTOR_PAGE
+        _tail = p["url"].strip("/").split("/")
+        _src = "top-" + ("hub" + ("-en" if _tail[-1] == "en" else "") if len(_tail) == 1 or _tail[-1] == "en" and len(_tail) == 2 else _tail[-1])
+        _label = "К репетитору →" if html_lang == "ru" else "Tutor (RU) →"
+        _cta = (f'<a class="btn btn-primary btn-sm top-cta" data-tutor-src="{_src}" '
+                f'href="{TUTOR_PAGE}?utm_source=answers&amp;utm_medium=top-cta&amp;utm_campaign={_src}#razbor-zapros">{_label}</a>')
+        nav_html = nav_html.replace("  </div>\n</header>", f"    {_cta}\n  </div>\n</header>", 1)
     # Фавиконка — РЕАЛЬНЫМИ файлами, не data:-URI: Яндекс не считает inline-иконку
     # фавиконкой сайта (диагностика «фавиконка недоступна», письмо Вебмастера 2026-08-10).
     favicon = """<link rel="icon" href="/favicon.ico" sizes="any" />
@@ -269,14 +296,14 @@ def build_page(p):
 {favicon}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+{fonts_link}
 <link rel="stylesheet" href="/assets/site.css" />
 <link rel="stylesheet" href="/assets/content.css" />
-<noscript><style>.reveal{{opacity:1!important;transform:none!important;}}</style></noscript>
+{fast_css}<noscript><style>.reveal{{opacity:1!important;transform:none!important;}}</style></noscript>
 </head>
 <body>
 
-{nav(no_cta, html_lang, 'id="book"' in body)}
+{nav_html}
 
 {render_crumbs(p['crumbs'])}
 
@@ -286,7 +313,7 @@ def build_page(p):
 
 {footer(html_lang, no_cta, p.get("lastmod"))}
 
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js"{" defer" if fast_head else ""}></script>
 
 <!-- RR-SNIPPET: session-replay (клики / время на странице). Неблокирующий: грузится
      после window.load, ошибки проглатываются, готовность страницы от него не зависит.

@@ -27,7 +27,15 @@ META = {
     503: ("ap", "physics", "guide"), 504: ("ib", "physics", "guide"),
     405: ("ege", "math", "guide"), 406: ("igcse", "physics+math", "guide"),
     407: ("ap", "physics+math", "guide"),
-    408: ("any", "physics", "guide"),            # олимпиадная физика + технические вузы: конкретного экзамена нет
+    # 408 (олимпиадная физика, техвузы) и 410 (UCAS/Oxford/Cambridge): h1 не называет экзамен → any
+    # (тест test_meta_labels_match_registry_h1 сверяет метку с h1).
+    408: ("any", "physics", "guide"), 410: ("any", "physics", "guide"),
+    # 411/412: AP (математика); 413 (ОГЭ) и 414 (GCSE): h1 не называет ни один из экзаменов EXAM_ORDER → any
+    411: ("ap", "math", "landing"), 412: ("ap", "math", "landing"),
+    413: ("any", "physics", "landing"), 414: ("any", "physics", "landing"),
+    # 415/418: A-level (математика); 416 (STEP): h1 экзамен из EXAM_ORDER не называет → any; 417: AP (математика)
+    415: ("alevel", "math", "landing"), 416: ("any", "math", "landing"),
+    417: ("ap", "math", "landing"), 418: ("alevel", "math", "landing"),
     409: ("sat", "physics+math", "guide"),       # SAT Math + ACT Science (естествознание → physics); оба экзамена в одном кластере «sat»
 }
 
