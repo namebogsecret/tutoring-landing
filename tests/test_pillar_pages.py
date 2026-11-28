@@ -294,6 +294,16 @@ class TestMathPages(Base):
         with open(os.path.join(ROOT, "assets", "site.js"), encoding="utf-8") as f:
             self.assertRegex(f.read(), r"threshold: 0,")
 
+    def test_prose_link_color_does_not_hide_primary_button(self):
+        # .prose a { color: accent } делал текст .btn-primary золотым на золотом фоне
+        with open(os.path.join(ROOT, "assets", "content.css"), encoding="utf-8") as f:
+            css = re.sub(r"(?s)/\*.*?\*/", "", f.read())
+        rule = re.search(r"\.prose a\.btn-primary,\s*\.prose a\.btn-primary:hover\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(rule)
+        self.assertRegex(rule.group(1), r"(?<![-\w])color:\s*var\(--accent-ink\)")
+        self.assertRegex(rule.group(1), r"border-color:\s*transparent")
+        self.assertGreater(rule.start(), css.index(".prose a:hover"))
+
     def test_sitemap_lastmod(self):
         for u in MATH + ("/",):
             self.assertRegex(sitemap(), r"<loc>%s%s</loc>\s*<lastmod>2026-11-28<" % (BASE, u))
