@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Источник визита (first-touch) в CTA-скриптах: cookie pdl_ft, &r=<источник> только у /cta-*.
 Контракт: ~/воронка-репетитор/components/site-analytics-ft. Прогон кода через node (vm)."""
-import json, os, re, shutil, subprocess, sys, unittest
+import json, os, shutil, subprocess, unittest
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILES = ["index.html", "quiz.html", "quiz-ru.html", "assets/site.js"]
 
