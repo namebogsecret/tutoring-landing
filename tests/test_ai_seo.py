@@ -4,7 +4,7 @@
 Запуск: python3 tests/test_ai_seo.py  или  python3 -m pytest -q tests/test_ai_seo.py
 Страницы /answers/ — страницы замеров: проверяются только на школу/Кипр и sitemap,
 их нарушения не валят тест (печатаются как XFAIL)."""
-import glob, html, json, os, re, subprocess, sys, urllib.robotparser
+import html, json, os, re, subprocess, sys, urllib.robotparser
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
